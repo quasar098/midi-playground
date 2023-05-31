@@ -17,8 +17,9 @@ def main():
     parser.add_argument('-s', '--squarespeed', type=int, default=500, help="Square speed in pixels per second. Default = 500")
     parser.add_argument('-v', '--volume', type=int, default=50, help="Volume out of 100. Default = 50")
     parser.add_argument('-l', '--last', type=float, default=1, help="Last bounce offset time. Default = 1")
-    parser.add_argument('-o', '--offset', type=int, default=0, help="Music offset in millis. Positive is music is delayed. " +
-                                                                    "Negative is music is first. Default = 0")
+    parser.add_argument('--hallway', action='store_true', help="Enable this flag for hallway mode. Default = off")
+    parser.add_argument('-o', '--offset', type=int, default=-300, help="Music offset in millis. Positive is music is delayed. " +
+                                                                       "Negative is music is first. Default = -300")
     ns = parser.parse_args()
     from bouncegen import do_the_things as do_bouncing
     raw_bounce_args = {
@@ -29,7 +30,8 @@ def main():
         "bounce_min_space": ns.delay, 
         "sq_speed": ns.squarespeed, 
         "volume": ns.volume, 
-        "music_offset": ns.offset
+        "music_offset": ns.offset,
+        "percent_chance_dir_change": 30 if not ns.hallway else 10
     }
     filtered_args = {}
     for k, v in raw_bounce_args.items():

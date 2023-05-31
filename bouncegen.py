@@ -12,14 +12,52 @@ CAMERA_SPEED = 500
 SQUARE_SIZE = 50
 PLATFORM_WIDTH_PERCENT = 10
 GLOBAL_TIME_OFFSET = 1000
+PARTICLE_SPEED = 10
 WALL_COLOR = pygame.Color((60, 63, 65))
 BG_COLOR = pygame.Color((214, 209, 205))
 SQUARE_COLORS = [
     (224, 26, 79),
-    (241, 89, 70),
+    (173, 247, 182),
     (249, 194, 46),
     (83, 179, 203)
 ]
+
+
+class Particle:
+    def __init__(self, pos: list[float], delta: list[float]):
+        self.pos = pos.copy()
+        self.size = random.randint(7, 14)
+        self.delta = delta.copy()
+        self.delta[0] += random.randint(-4, 4)/8
+        self.delta[1] += random.randint(-4, 4)/8
+
+    def age(self):
+        self.size -= 15/FRAMERATE
+        self.x += self.delta[0] * PARTICLE_SPEED
+        self.y += self.delta[1] * PARTICLE_SPEED
+        self.x = self.x * 1-(10/FRAMERATE)
+        self.y = self.y * 1-(10/FRAMERATE)
+        return self.size <= 0
+
+    @property
+    def x(self):
+        return self.pos[0]
+    
+    @x.setter
+    def x(self, val: float):
+        self.pos[0] = val
+
+    @property
+    def y(self):
+        return self.pos[1]
+
+    @y.setter
+    def y(self, val: float):
+        self.pos[1] = val
+
+    @property
+    def rect(self):
+        return pygame.Rect(self.x-self.size/2, self.y-self.size/2, *(2*[self.size]))
 
 
 class Bounce:
@@ -95,7 +133,8 @@ class Square:
         ss = int(SQUARE_SIZE*4/5)
         surf = pygame.Surface((ss, ss))
         for index, col in enumerate(self.past_colors):
-            pygame.draw.line(surf, col, (0, index), (ss, index))
+            y = index if self.dir_y != 1 else ss-1-index
+            pygame.draw.line(surf, col, (0, y), (ss, y))
         return pygame.transform.scale(surf, size)
 
     def copy(self) -> "Square":
@@ -209,6 +248,7 @@ class World:
         self.bounce_min_space = 0.05
         self.max_notes = None
         self.rectangles: list[pygame.Rect] = []
+        self.particles: list[Particle] = []
         self.music_offset = 0
         self.percent_chance_dir_change = 30
 
@@ -219,11 +259,26 @@ class World:
         self.past_bounces.append(self.future_bounces.pop(0))
         return self.past_bounces[-1]
 
+    def add_particles(self, sp: list[float], sd: list[float]):
+        for _ in range(10):
+            new = Particle([sp[0]+random.randint(-10, 10), sp[1]+random.randint(-10, 10)], sd)
+            self.particles.append(new)
+
     def handle_bouncing(self, square: Square):
         if len(self.future_bounces):
             if (self.time * 1000 + self.music_offset)/1000 > self.future_bounces[0].time:
                 current_bounce = self.next_bounce()
+                before = square.dir.copy()
                 square.obey_bounce(current_bounce)
+                changed = square.dir.copy()
+                for _ in range(2):
+                    if before[_] == changed[_]:
+                        changed[_] = 0
+                    else:
+                        changed[_] = -changed[_]
+                self.add_particles(square.pos, changed)
+
+                # stop square at end
                 if len(self.future_bounces) == 0:
                     square.dir = [0, 0]
                     square.pos = current_bounce.square_pos
@@ -250,9 +305,9 @@ class World:
             if bounces_so_far is None:
                 bounces_so_far = []
             gone_through_percent = (total_notes-len(notes)) * 100 // total_notes
-            if gone_through_percent > max_percent:
-                max_percent = gone_through_percent
-                print(f"Map {gone_through_percent}% generated")
+            while gone_through_percent > max_percent:
+                max_percent += 1
+                print(f"Map {max_percent}% generated")
 
             all_bounce_rects = [_bounc.get_collision_rect() for _bounc in bounces_so_far]
             if len(notes) == 0:
@@ -311,6 +366,8 @@ class World:
                 if square.rect.collidelist(all_bounce_rects) != -1 or othercheck:
                     if depth > 300:
                         if random.random() > 0.97:
+                            print(f"Backtracking at {max_percent}%")
+                            max_percent -= 5
                             force_return = 20
 
                     while len(path) != path_segment_start:
@@ -378,12 +435,12 @@ def remove_too_close_values(lst: list[float], threshold=0.1) -> list[float]:
     return new
 
 
-def do_the_things(
-        settings: dict = {}
-) -> None:
+def do_the_things(settings=None) -> None:
     """Example of bad code"""
 
     # settings
+    if settings is None:
+        settings = {}
     midi_file_name = settings.get("midi_file_name", None)
     assert midi_file_name is not None, "Midi file name is none (try inputting it?)"
     audio_file = settings.get("audio_file", midi_file_name)
@@ -509,6 +566,12 @@ def do_the_things(
             if offsetted.colliderect(screen_rect):
                 total_rects += 1
                 pygame.draw.rect(screen, WALL_COLOR, offsetted)
+
+        # particles
+        for particle in world.particles:
+            pygame.draw.rect(screen, BG_COLOR, camera.offset(particle.rect))
+        for remove_particle in [particle for particle in world.particles if particle.age()]:
+            world.particles.remove(remove_particle)
 
         # draw square outline
         pygame.draw.rect(screen, (0, 0, 0), sqrect)
