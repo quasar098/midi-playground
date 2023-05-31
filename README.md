@@ -12,7 +12,7 @@ cant remember where i got the others from (sorry if i stole midi file)
 
 ## how to run
 
-example: `python3 main.py ./samples/cruel-angels-thesis.mid -m cruel-angels-thesis.mainlines.mid`
+example: `python3 main.py ./samples/cruel-angels-thesis-mainlines.mid -m cruel-angels-thesis.mid`
 
 for instructions on CLI tool, use `python3 main.py -h`
 
