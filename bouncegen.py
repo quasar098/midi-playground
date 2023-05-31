@@ -11,9 +11,15 @@ WIDTH, HEIGHT = 1920, 1080
 CAMERA_SPEED = 500
 SQUARE_SIZE = 50
 PLATFORM_WIDTH_PERCENT = 10
-DIRECTION_CHANGE_PERCENT_CHANGE = 20
 GLOBAL_TIME_OFFSET = 1000
-BG_COLOR = pygame.Color((60, 63, 65))
+WALL_COLOR = pygame.Color((60, 63, 65))
+BG_COLOR = pygame.Color((214, 209, 205))
+SQUARE_COLORS = [
+    (224, 26, 79),
+    (241, 89, 70),
+    (249, 194, 46),
+    (83, 179, 203)
+]
 
 
 class Bounce:
@@ -144,6 +150,11 @@ class Camera:
     def __init__(self, x: int = WIDTH/2, y: int = HEIGHT/2):
         self.x = x
         self.y = y
+        # ?x, ?y are variables for misc things
+        self.ax = 0
+        self.ay = 0
+        self.bx = 0
+        self.by = 0
         self.locked_on_square = True
         self.lock_type: CameraFollow = CameraFollow(2)
 
@@ -177,16 +188,18 @@ class Camera:
         if self.lock_type == CameraFollow.Smoothed:
             self.x = (square.x - WIDTH/2)*3/FRAMERATE + self.x-3*self.x/FRAMERATE
             self.y = (square.y - HEIGHT/2)*3/FRAMERATE + self.y-3*self.y/FRAMERATE
+        if self.lock_type == CameraFollow.Predictive:
+            self.ax = (square.x - WIDTH/2)*3/FRAMERATE + self.ax-3*self.ax/FRAMERATE
+            self.ay = (square.y - HEIGHT/2)*3/FRAMERATE + self.ay-3*self.ay/FRAMERATE
+            damping = 1
+            self.bx = square.x - damping*(self.ax - square.x) - WIDTH/2 - WIDTH/2*damping
+            self.by = square.y - damping*(self.ay - square.y) - HEIGHT/2 - HEIGHT/2*damping
+            self.x = self.x*(1-3/FRAMERATE)+self.bx*3/FRAMERATE
+            self.y = self.y*(1-3/FRAMERATE)+self.by*3/FRAMERATE
 
 
 class World:
     """it's a cruel world out there"""
-    SQUARE_COLORS = [
-        (255, 128, 0),
-        (128, 255, 128),
-        (255, 0, 128),
-        (0, 128, 255)
-    ]
 
     def __init__(self):
         self.future_bounces: list[Bounce] = []
@@ -197,6 +210,7 @@ class World:
         self.max_notes = None
         self.rectangles: list[pygame.Rect] = []
         self.music_offset = 0
+        self.percent_chance_dir_change = 30
 
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time
@@ -210,6 +224,9 @@ class World:
             if (self.time * 1000 + self.music_offset)/1000 > self.future_bounces[0].time:
                 current_bounce = self.next_bounce()
                 square.obey_bounce(current_bounce)
+                if len(self.future_bounces) == 0:
+                    square.dir = [0, 0]
+                    square.pos = current_bounce.square_pos
 
     def gen_future_bounces(self, _start_square: Square, _start_notes: list[tuple[int, int, int]]):
         """Recursive solution is necessary"""
@@ -252,7 +269,7 @@ class World:
                     bounce_indexes = prev_index_priority
 
                     # randomly change direction every X% of the time
-                    if random.random() * 100 < DIRECTION_CHANGE_PERCENT_CHANGE:
+                    if random.random() * 100 < self.percent_chance_dir_change:
                         bounce_indexes = list(bounce_indexes.__reversed__())
 
                     # add safe area
@@ -362,19 +379,30 @@ def remove_too_close_values(lst: list[float], threshold=0.1) -> list[float]:
 
 
 def do_the_things(
-        midi_file_name: str,
-        audio_file: str = None,
-        camera_mode: int = 2,
-        max_notes=None,
-        bounce_min_space: float = 0.05,
-        sq_speed: int = 500,
-        volume: int = 50,
-        music_offset: int = 0
+        settings: dict = {}
 ) -> None:
     """Example of bad code"""
 
+    # settings
+    midi_file_name = settings.get("midi_file_name", None)
+    assert midi_file_name is not None, "Midi file name is none (try inputting it?)"
+    audio_file = settings.get("audio_file", midi_file_name)
+    if audio_file is None:
+        audio_file = midi_file_name
+    camera_mode = settings.get("camera_mode", 2)
+    max_notes = settings.get("max_notes", None)
+    bounce_min_space = settings.get("bounce_min_space", 0.05)
+    sq_speed = settings.get("sq_speed", 500)
+    volume = settings.get("volume", 50)
+    music_offset = settings.get("music_offset", 0)
+    percent_chance_dir_change = settings.get("percent_chance_dir_change", 30)
+    last_bounce_offset = settings.get("last_bounce_offset", 1)
+
+    # load notes
     _, notes = read_midi_file(midi_file_name)
     notes = [(note[0], note[1]+GLOBAL_TIME_OFFSET/1000, note[2]) for note in notes]
+    if len(notes):
+        notes.append((notes[-1][0], notes[-1][1]+last_bounce_offset, notes[-1][2]))
 
     # pygame stuff
     music_has_played = False
@@ -400,6 +428,7 @@ def do_the_things(
     world.bounce_min_space = bounce_min_space
     pygame.mixer.music.set_volume(volume/100)
     world.music_offset = music_offset
+    world.percent_chance_dir_change = percent_chance_dir_change
 
     # preload square
     if len(world.future_bounces):
@@ -421,7 +450,7 @@ def do_the_things(
             if world.time > GLOBAL_TIME_OFFSET/1000:
                 music_has_played = True
                 pygame.mixer.music.play()
-        screen.fill(BG_COLOR)
+        screen.fill(WALL_COLOR)
 
         # handle events
         for event in pygame.event.get():
@@ -472,19 +501,19 @@ def do_the_things(
             offsetted = camera.offset(safe_area)
             if offsetted.colliderect(screen_rect):
                 total_rects += 1
-                pygame.draw.rect(screen, (255, 255, 255), offsetted)
+                pygame.draw.rect(screen, BG_COLOR, offsetted)
 
         # draw pegs
         for bounce in world.rectangles:
             offsetted = camera.offset(bounce)
             if offsetted.colliderect(screen_rect):
                 total_rects += 1
-                pygame.draw.rect(screen, BG_COLOR, offsetted)
+                pygame.draw.rect(screen, WALL_COLOR, offsetted)
 
         # draw square outline
         pygame.draw.rect(screen, (0, 0, 0), sqrect)
         square_color_index = round((square.dir_x + 1)/2 + square.dir_y + 1)
-        square.register_past_color(world.SQUARE_COLORS[square_color_index])
+        square.register_past_color(SQUARE_COLORS[square_color_index])
         sq_surf = square.get_surface(tuple(sqrect.inflate(-int(SQUARE_SIZE/5), -int(SQUARE_SIZE/5))[2:]))
         screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
 

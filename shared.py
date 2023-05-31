@@ -18,6 +18,7 @@ class CameraFollow(Enum):
     Centre = 0
     Lazy = 1
     Smoothed = 2
+    Predictive = 3
 
 
 # noinspection PyUnresolvedReferences

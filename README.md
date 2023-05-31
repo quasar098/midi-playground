@@ -8,6 +8,8 @@ almost all samples from [bitmidi.com](https://bitmidi.com/)
 
 wikipedia.mid from wikipedia (credit to dogman15)
 
+cant remember where i got the others from (sorry if i stole midi file)
+
 ## how to run
 
 example: `python3 main.py ./samples/cruel-angels-thesis.mid -m cruel-angels-thesis.mainlines.mid`
