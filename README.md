@@ -19,3 +19,11 @@ example: `python3 main.py ./samples/cruel-angels-thesis-mainlines.mid -m cruel-a
 for instructions on CLI tool, use `python3 main.py -h`
 
 there are different CLI flags that you can use, like `-c` for camera mode
+
+## todo
+
+- see entire map at the end
+- themes (dark mode, light mode, rainbow, chaos, neon, etc)
+- make it a playable game
+- midi text events at specific timestamps to change the speed of the cube
+- light switch that turns on and off at each bounce ? idk would be cool
