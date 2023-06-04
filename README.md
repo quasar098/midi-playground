@@ -10,6 +10,8 @@ wikipedia.mid from wikipedia (credit to dogman15)
 
 bad-piggies.mid from [here](https://www.vgmusic.com/new-files/Bad_Piggies_MIDIPIANO.mid)
 
+thanks to gershen for making the classical vip midi
+
 cant remember where i got the others from (sorry if i stole midi file)
 
 ## how to run
