@@ -478,12 +478,6 @@ def do_the_things(settings=None) -> None:
     pygame.mouse.set_visible(False)
     pygame.mixer.music.load(audio_file)
 
-    screen = pygame.display.set_mode(
-        [WIDTH, HEIGHT],
-        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.SCALED,
-        vsync=1
-    )
-
     # the big guns
     square = Square()
     square.speed = sq_speed
@@ -504,6 +498,12 @@ def do_the_things(settings=None) -> None:
     if len(world.future_bounces):
         square.pos = world.future_bounces[0].square_pos
         square.dir = [0, 0]  # freeze square
+
+    screen = pygame.display.set_mode(
+        [WIDTH, HEIGHT],
+        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.SCALED,
+        vsync=1
+    )
 
     screen_rect = screen.get_rect()
     clock = pygame.time.Clock()
