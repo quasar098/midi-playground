@@ -3,13 +3,11 @@ import random
 from world import World
 from camera import Camera
 from utils import *
+from menu import Menu
 import pygame
 
 
-def do_bouncing() -> None:
-    """Example of bad code"""
-
-    random.seed(Config.seed)
+def do_bouncing():
 
     # load notes
     notes = read_midi_file(Config.midi_file_name)
@@ -17,11 +15,13 @@ def do_bouncing() -> None:
     if len(notes):
         notes.append((notes[-1][0], notes[-1][1]+Config.last_bounce_delay, notes[-1][2]))
 
+    # set random seed
+    random.seed(Config.seed)
+
     # pygame stuff
     music_has_played = False
     offset_happened = False
     pygame.init()
-    pygame.display.set_caption("bouncing squares")
     pygame.mixer.init()
 
     font = pygame.font.SysFont("Arial", 30)
@@ -140,7 +140,7 @@ def do_bouncing() -> None:
         square_color_index = round((world.square.dir_x + 1)/2 + world.square.dir_y + 1)
         world.square.register_past_color(Config.Colors.square_colors[square_color_index])
         sq_surf = world.square.get_surface(tuple(sqrect.inflate(-int(Config.SQUARE_SIZE/5), -int(Config.SQUARE_SIZE/5))[2:]))
-        screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
+        screen.blit(sq_surf, sq_surf.get_rect_for_render(center=sqrect.center))
 
         if not camera.locked_on_square:
             screen.blit(camera_ctrl_text, (10, 10))
@@ -149,3 +149,39 @@ def do_bouncing() -> None:
         clock.tick(FRAMERATE)
 
     pygame.quit()
+
+
+def main():
+    pygame.init()
+
+    pygame.mixer.music.load("./assets/mainmenu.mp3")
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play()
+
+    clock = pygame.time.Clock()
+    screen = pygame.display.set_mode(
+        [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
+        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.SCALED,
+        vsync=1
+    )
+
+    menu = Menu()
+
+    running = True
+    while running:
+        screen.fill((26, 27, 30))
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+
+        # code here
+        menu.draw(screen)
+
+        pygame.display.flip()
+        clock.tick(FRAMERATE)
+    pygame.quit()
+
+
+if __name__ == '__main__':
+    main()

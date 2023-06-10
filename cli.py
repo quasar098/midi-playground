@@ -5,6 +5,8 @@ from random import randint as rand
 from config import Config
 
 
+# todo: remove this code, replace with gui
+
 def main():
     parser = argparse.ArgumentParser(
             prog='./cli.py',

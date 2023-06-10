@@ -14,13 +14,13 @@ class Config:
 
     # colors
     class Colors:
-        wall_color = pygame.Color((60, 63, 65))
-        bg_color = pygame.Color((214, 209, 205))
+        wall_color = pygame.Color(60, 63, 65)
+        bg_color = pygame.Color(214, 209, 205)
         square_colors = [
-            (224, 26, 79),
-            (173, 247, 182),
-            (249, 194, 46),
-            (83, 179, 203)
+            pygame.Color(224, 26, 79),
+            pygame.Color(173, 247, 182),
+            pygame.Color(249, 194, 46),
+            pygame.Color(83, 179, 203)
         ]
 
     # intended configurable settings
