@@ -1,53 +1,151 @@
-#!/usr/bin/env python3
+from time import time as get_current_time
+import random
+from world import World
+from camera import Camera
+from utils import *
+import pygame
 
-import argparse
-from random import randint as rand
 
+def do_bouncing() -> None:
+    """Example of bad code"""
 
-def main():
-    parser = argparse.ArgumentParser(
-            prog='./main.py',
-            description='Bounce the squares!',
-            epilog='Example: python3 main.py ./samples/cruel-angels-thesis-mainlines.mid -m ./samples/cruel-angels-thesis.mid'
+    random.seed(Config.seed)
+
+    # load notes
+    notes = read_midi_file(Config.midi_file_name)
+    notes = [(note[0], note[1], note[2]) for note in notes]
+    if len(notes):
+        notes.append((notes[-1][0], notes[-1][1]+Config.last_bounce_delay, notes[-1][2]))
+
+    # pygame stuff
+    music_has_played = False
+    offset_happened = False
+    pygame.init()
+    pygame.display.set_caption("bouncing squares")
+    pygame.mixer.init()
+
+    font = pygame.font.SysFont("Arial", 30)
+    camera_ctrl_text = font.render("Manual Camera Control Activated", True, (0, 255, 0))
+
+    pygame.mouse.set_visible(False)
+    pygame.mixer.music.load(Config.audio_file_name)
+
+    # the big guns
+    camera = Camera()
+    camera.lock_type = CameraFollow(Config.camera_mode)
+    world = World()
+
+    safe_areas: list[pygame.Rect] = world.gen_future_bounces(notes)
+    world.start_time = get_current_time()
+    pygame.mixer.music.set_volume(Config.volume/100)
+
+    # preload square
+    if len(world.future_bounces):
+        world.square.pos = world.future_bounces[0].square_pos
+        world.square.dir = [0, 0]  # freeze square
+
+    screen = pygame.display.set_mode(
+        [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
+        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.SCALED,
+        vsync=1
     )
-    parser.add_argument('infile', help="MIDI file to read in from and put the notes there")
-    parser.add_argument('-m', '--music', help='Music file. Can be a MIDI (tested), an mp3 (tested), or a wav (untested)')
-    parser.add_argument('-c', '--camera', default=2, type=int, help='Camera mode (0=static, 1=lazy, 2=smooth, 3=predictive). Default is 2')
-    parser.add_argument('-n', '--notes', type=int, help='Max number of notes (timestamps) to calculate for. Default is infinity')
-    parser.add_argument('-d', '--delay', type=float, help='Minimum delay between bounces. Default = 0.05')
-    parser.add_argument('-s', '--square-speed', type=int, default=500, help="Square speed in pixels per second. Default = 500")
-    parser.add_argument('-v', '--volume', type=int, default=50, help="Volume out of 100. Default = 50")
-    parser.add_argument('-l', '--last', type=float, default=1, help="Last bounce offset time. Default = 1")
-    parser.add_argument('--hallway', action='store_true', help="Enable this flag for hallway mode. Default = off")
-    parser.add_argument("-b", '--backtrack-chance', type=float, default=0.03, help="Chance to backtrack on failure. Default = 0.01")
-    parser.add_argument("-B", '--backtrack-amount', type=int, default=20, help="Steps to backtrack on failure. Default = 20")
-    parser.add_argument('-S', '--seed', type=int, default=rand(1, 2345)*7+8, help="Seed for random generation. Default is a random number from 15 to 16423")
-    parser.add_argument('-o', '--offset', type=int, default=-300, help="Music offset in millis. Positive is music is delayed. " +
-                                                                       "Negative is music is first. Default = -300")
-    ns = parser.parse_args()
-    from bouncegen import do_the_things as do_bouncing
-    raw_bounce_args = {
-        "midi_file_name": ns.infile,
-        "audio_file": ns.music,
-        "camera_mode": ns.camera,
-        "max_notes": ns.notes,
-        "bounce_min_space": ns.delay,
-        "sq_speed": ns.square_speed,
-        "volume": ns.volume,
-        "music_offset": ns.offset,
-        "percent_chance_dir_change": 30 if not ns.hallway else 10,
-        "backtrack_chance": ns.backtrack_chance,
-        "backtrack_amount": ns.backtrack_amount,
-        "seed": ns.seed
-    }
-    filtered_args = {}
-    for k, v in raw_bounce_args.items():
-        if v is not None:
-            filtered_args[k] = v
-    do_bouncing(filtered_args)
 
+    screen_rect = screen.get_rect()
+    clock = pygame.time.Clock()
 
-if __name__ == "__main__":
-    main()
+    # game loop
+    running = True
+    while running:
+        if not music_has_played:
+            if not offset_happened:
+                for bnc_change in world.future_bounces:
+                    bnc_change.time += Config.GLOBAL_TIME_OFFSET/1000
+            offset_happened = True
+            if world.time > Config.GLOBAL_TIME_OFFSET/1000:
+                music_has_played = True
+                song_load_before = get_current_time()
+                pygame.mixer.music.play()
+                for bnc_change in world.future_bounces:
+                    bnc_change.time += (get_current_time()-song_load_before)/1000
 
+        screen.fill(Config.Colors.wall_color)
 
+        # handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.mouse.set_visible(True)
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.mouse.set_visible(True)
+                    running = False
+                if event.key == pygame.K_TAB:
+                    camera.locked_on_square = not camera.locked_on_square
+                if 97+26 > event.key >= 97 or event.key == pygame.K_SPACE:  # press a to z key
+                    world.handle_keypress()
+
+        # set world time
+        world.update_time()
+
+        # move camera (only works if not locked on square)
+        camera.attempt_movement()
+
+        # handle square bounces
+        world.handle_bouncing(world.square)
+
+        # move square
+        world.square.reg_move()
+
+        # square in center of camera if locked
+        if camera.locked_on_square:
+            camera.follow(world.square)
+
+        # bounce anim
+        sqrect = camera.offset(world.square.rect)
+        if (world.time - 0.25) + Config.music_offset / 1000 < world.square.last_bounce_time:
+            lerp = abs((world.time - 0.25 + Config.music_offset / 1000) - world.square.last_bounce_time) * 5
+            lerp = lerp ** 2  # square it for better-looking interpolation
+            if world.square.latest_bounce_direction:
+                sqrect.inflate_ip((lerp * 5, -10 * lerp))
+            else:
+                sqrect.inflate_ip((-10 * lerp, lerp * 5))
+
+        total_rects = 0
+
+        # safe areas
+        for safe_area in safe_areas:
+            offsetted = camera.offset(safe_area)
+            if offsetted.colliderect(screen_rect):
+                total_rects += 1
+                pygame.draw.rect(screen, Config.Colors.bg_color, offsetted)
+
+        # draw pegs
+        for bounce in world.rectangles:
+            offsetted = camera.offset(bounce)
+            if offsetted.colliderect(screen_rect):
+                total_rects += 1
+                pygame.draw.rect(screen, Config.Colors.wall_color, offsetted)
+
+        # particles
+        for particle in world.particles:
+            pygame.draw.rect(screen, Config.Colors.bg_color, camera.offset(particle.rect))
+        for remove_particle in [particle for particle in world.particles if particle.age()]:
+            world.particles.remove(remove_particle)
+
+        mimic = font.render(world.latest_thing, True, (255, 255, 255))
+        screen.blit(mimic, (100, 100))
+
+        # draw square outline
+        pygame.draw.rect(screen, (0, 0, 0), sqrect)
+        square_color_index = round((world.square.dir_x + 1)/2 + world.square.dir_y + 1)
+        world.square.register_past_color(Config.Colors.square_colors[square_color_index])
+        sq_surf = world.square.get_surface(tuple(sqrect.inflate(-int(Config.SQUARE_SIZE/5), -int(Config.SQUARE_SIZE/5))[2:]))
+        screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
+
+        if not camera.locked_on_square:
+            screen.blit(camera_ctrl_text, (10, 10))
+
+        pygame.display.flip()
+        clock.tick(FRAMERATE)
+
+    pygame.quit()
