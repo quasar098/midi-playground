@@ -252,9 +252,7 @@ class World:
         self.music_offset = 0
         self.percent_chance_dir_change = 30
         self.backtrack_amount = 20
-        self.backtrack_chance = 0.01
-        self.timestamps = []
-        self.latest_thing = "None"
+        self.backtrack_chance = 0.03
 
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time
@@ -286,16 +284,6 @@ class World:
                 if len(self.future_bounces) == 0:
                     square.dir = [0, 0]
                     square.pos = current_bounce.square_pos
-
-    def handle_keypress(self):
-        closest = 10
-        abs_closest = 10
-        for _ in self.timestamps:
-            t = self.time - _ + self.music_offset/1000 - GLOBAL_TIME_OFFSET/1000
-            if abs(t) < abs_closest:
-                abs_closest = int(abs(t)*100)/100
-                closest = int(t*100)/100
-        self.latest_thing = str(closest)
 
     def gen_future_bounces(self, _start_square: Square, _start_notes: list[tuple[int, int, int]]):
         """Recursive solution is necessary"""
@@ -388,9 +376,7 @@ class World:
                         path.pop()
                     return False
 
-        _start_notes = _start_notes[:self.max_notes] if self.max_notes is not None else _start_notes
-
-        self.timestamps = [_sn[1] for _sn in _start_notes]
+        _start_notes = _start_notes[:self.max_notes] if self.max_notes is not None else _start_notes[1:]
 
         self.future_bounces = recurs(
             square=_start_square.copy(),
@@ -470,7 +456,7 @@ def do_the_things(settings=None) -> None:
     music_offset = settings.get("music_offset", 300)
     percent_chance_dir_change = settings.get("percent_chance_dir_change", 30)
     last_bounce_offset = settings.get("last_bounce_offset", 1)
-    backtrack_chance = settings.get("backtrack_chance", 0.01)
+    backtrack_chance = settings.get("backtrack_chance", 0.03)
     backtrack_amount = settings.get("backtrack_amount", 20)
 
     # load notes
@@ -550,8 +536,6 @@ def do_the_things(settings=None) -> None:
                     running = False
                 if event.key == pygame.K_TAB:
                     camera.locked_on_square = not camera.locked_on_square
-                if 97+26 > event.key >= 97 or event.key == pygame.K_SPACE:  # press a to z key
-                    world.handle_keypress()
 
         # set world time
         world.update_time()
@@ -604,9 +588,6 @@ def do_the_things(settings=None) -> None:
             pygame.draw.rect(screen, BG_COLOR, camera.offset(particle.rect))
         for remove_particle in [particle for particle in world.particles if particle.age()]:
             world.particles.remove(remove_particle)
-
-        mimic = font.render(world.latest_thing, True, (255, 255, 255))
-        screen.blit(mimic, (100, 100))
 
         # draw square outline
         pygame.draw.rect(screen, (0, 0, 0), sqrect)
