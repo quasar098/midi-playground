@@ -472,6 +472,9 @@ def do_the_things(settings=None) -> None:
     last_bounce_offset = settings.get("last_bounce_offset", 1)
     backtrack_chance = settings.get("backtrack_chance", 0.01)
     backtrack_amount = settings.get("backtrack_amount", 20)
+    seed = settings.get("seed", random.randint(2, 3456)*7+8)
+    print(seed)
+    random.seed(seed)
 
     # load notes
     _, notes = read_midi_file(midi_file_name)

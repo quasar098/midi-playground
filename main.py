@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from random import randint as rand
 
 
 def main():
@@ -20,6 +21,7 @@ def main():
     parser.add_argument('--hallway', action='store_true', help="Enable this flag for hallway mode. Default = off")
     parser.add_argument("-b", '--backtrack-chance', type=float, default=0.03, help="Chance to backtrack on failure. Default = 0.01")
     parser.add_argument("-B", '--backtrack-amount', type=int, default=20, help="Steps to backtrack on failure. Default = 20")
+    parser.add_argument('-S', '--seed', type=int, default=rand(1, 2345)*7+8, help="Seed for random generation. Default is a random number from 15 to 16423")
     parser.add_argument('-o', '--offset', type=int, default=-300, help="Music offset in millis. Positive is music is delayed. " +
                                                                        "Negative is music is first. Default = -300")
     ns = parser.parse_args()
@@ -35,7 +37,8 @@ def main():
         "music_offset": ns.offset,
         "percent_chance_dir_change": 30 if not ns.hallway else 10,
         "backtrack_chance": ns.backtrack_chance,
-        "backtrack_amount": ns.backtrack_amount
+        "backtrack_amount": ns.backtrack_amount,
+        "seed": ns.seed
     }
     filtered_args = {}
     for k, v in raw_bounce_args.items():
