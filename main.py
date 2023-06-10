@@ -18,7 +18,7 @@ def main():
     parser.add_argument('-v', '--volume', type=int, default=50, help="Volume out of 100. Default = 50")
     parser.add_argument('-l', '--last', type=float, default=1, help="Last bounce offset time. Default = 1")
     parser.add_argument('--hallway', action='store_true', help="Enable this flag for hallway mode. Default = off")
-    parser.add_argument("-b", '--backtrack-chance', type=float, default=0.03, help="Chance to backtrack on failure. Default = 0.03")
+    parser.add_argument("-b", '--backtrack-chance', type=float, default=0.03, help="Chance to backtrack on failure. Default = 0.01")
     parser.add_argument("-B", '--backtrack-amount', type=int, default=20, help="Steps to backtrack on failure. Default = 20")
     parser.add_argument('-o', '--offset', type=int, default=-300, help="Music offset in millis. Positive is music is delayed. " +
                                                                        "Negative is music is first. Default = -300")
