@@ -35,8 +35,8 @@ class Particle:
         self.size -= 15/FRAMERATE
         self.x += self.delta[0] * PARTICLE_SPEED
         self.y += self.delta[1] * PARTICLE_SPEED
-        self.x = self.x * 1-(10/FRAMERATE)
-        self.y = self.y * 1-(10/FRAMERATE)
+        self.x = self.x * 1-(20/FRAMERATE)
+        self.y = self.y * 1-(20/FRAMERATE)
         return self.size <= 0
 
     @property
