@@ -62,3 +62,16 @@ def remove_too_close_values(lst: list[float], threshold=0.03) -> list[float]:
 def debug_rect(rect: pygame.Rect):
     """Print a copy-pastable equation for debugging in desmos graphing calculator"""
     print(f"\\operatorname\x7Bpolygon\x7D({rect.topleft}, {rect.topright}, {rect.bottomright}, {rect.bottomleft})")
+
+
+_font_registry: dict[str, pygame.font.Font] = {}
+
+
+def get_font(font_name: str, size: int = 24) -> pygame.font.Font:
+    if font_name not in _font_registry:
+        try:
+            _font_registry[font_name] = pygame.font.Font(font_name, size)
+        except FileNotFoundError:
+            print(f"Font file {font_name} not found!")
+            _font_registry[font_name] = pygame.font.SysFont("Arial", size)
+    return _font_registry[font_name]

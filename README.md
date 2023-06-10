@@ -20,7 +20,7 @@ if you do not enjoy me using your midi or songs, i can remove it from this proje
 
 ## how to run
 
-example: `python3 main.py ./samples/cruel-angels-thesis-mainlines.mid -m cruel-angels-thesis.mid`
+example: `python3 cli.py ./songs/cruel-angels-thesis-mainlines.mid -m ./songs/cruel-angels-thesis.mid`
 
 for instructions on CLI tool, use `python3 main.py -h`
 

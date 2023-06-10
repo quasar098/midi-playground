@@ -4,6 +4,9 @@ from world import World
 from camera import Camera
 from utils import *
 from menu import Menu
+from os import startfile, getcwd
+from os.path import join
+import webbrowser
 import pygame
 
 
@@ -140,7 +143,7 @@ def do_bouncing():
         square_color_index = round((world.square.dir_x + 1)/2 + world.square.dir_y + 1)
         world.square.register_past_color(Config.Colors.square_colors[square_color_index])
         sq_surf = world.square.get_surface(tuple(sqrect.inflate(-int(Config.SQUARE_SIZE/5), -int(Config.SQUARE_SIZE/5))[2:]))
-        screen.blit(sq_surf, sq_surf.get_rect_for_render(center=sqrect.center))
+        screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
 
         if not camera.locked_on_square:
             screen.blit(camera_ctrl_text, (10, 10))
@@ -152,12 +155,12 @@ def do_bouncing():
 
 
 def main():
-    pygame.init()
 
+    # pygame init stuff
+    pygame.init()
     pygame.mixer.music.load("./assets/mainmenu.mp3")
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play()
-
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode(
         [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
@@ -165,17 +168,37 @@ def main():
         vsync=1
     )
 
+    # the big guns
     menu = Menu()
 
+    # game loop
     running = True
     while running:
-        screen.fill((26, 27, 30))
+        screen.fill(Config.Colors.wall_color)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
 
-        # code here
+            # handle menu events
+            option_id = menu.handle_event(event)
+            if option_id:
+                if option_id == "open-songs-folder":
+                    startfile(join(getcwd(), "songs"))
+                    continue
+                if option_id == "contribute":
+                    webbrowser.open("https://github.com/quasar098/midi-playground")
+                    continue
+                menu.supposed_to_be_shown = False
+                if option_id == "play":
+                    pass
+                if option_id == "quit":
+                    running = False
+                continue
+
+            # handle song selector events
+
+        # draw stuff here
         menu.draw(screen)
 
         pygame.display.flip()
