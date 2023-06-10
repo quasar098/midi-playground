@@ -251,6 +251,8 @@ class World:
         self.particles: list[Particle] = []
         self.music_offset = 0
         self.percent_chance_dir_change = 30
+        self.backtrack_amount = 20
+        self.backtrack_chance = 0.03
 
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time
@@ -365,10 +367,10 @@ class World:
                     othercheck = bounces_so_far[-1].get_collision_rect().collidelist(path[:-10])+1
                 if square.rect.collidelist(all_bounce_rects) != -1 or othercheck:
                     if depth > 300:
-                        if random.random() > 0.97:
+                        if random.random() < self.backtrack_chance:
                             print(f"Backtracking at {max_percent}%")
-                            max_percent -= 5
-                            force_return = 20
+                            max_percent -= (self.backtrack_amount * 100 // total_notes) + 1
+                            force_return = self.backtrack_amount
 
                     while len(path) != path_segment_start:
                         path.pop()
@@ -451,18 +453,21 @@ def do_the_things(settings=None) -> None:
     bounce_min_space = settings.get("bounce_min_space", 0.05)
     sq_speed = settings.get("sq_speed", 500)
     volume = settings.get("volume", 50)
-    music_offset = settings.get("music_offset", 0)
+    music_offset = settings.get("music_offset", 300)
     percent_chance_dir_change = settings.get("percent_chance_dir_change", 30)
     last_bounce_offset = settings.get("last_bounce_offset", 1)
+    backtrack_chance = settings.get("backtrack_chance", 0.03)
+    backtrack_amount = settings.get("backtrack_amount", 20)
 
     # load notes
     _, notes = read_midi_file(midi_file_name)
-    notes = [(note[0], note[1]+GLOBAL_TIME_OFFSET/1000, note[2]) for note in notes]
+    notes = [(note[0], note[1], note[2]) for note in notes]
     if len(notes):
         notes.append((notes[-1][0], notes[-1][1]+last_bounce_offset, notes[-1][2]))
 
     # pygame stuff
     music_has_played = False
+    offset_happened = False
     pygame.init()
     pygame.display.set_caption("bouncing squares")
     pygame.mixer.init()
@@ -479,6 +484,8 @@ def do_the_things(settings=None) -> None:
     camera = Camera()
     camera.lock_type = CameraFollow(camera_mode)
     world = World()
+    world.backtrack_chance = backtrack_chance
+    world.backtrack_amount = backtrack_amount
     world.max_notes = max_notes
     safe_areas: list[pygame.Rect] = world.gen_future_bounces(square, notes)
     world.start_time = get_current_time()
@@ -497,6 +504,7 @@ def do_the_things(settings=None) -> None:
         pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.SCALED,
         vsync=1
     )
+
     screen_rect = screen.get_rect()
     clock = pygame.time.Clock()
 
@@ -504,9 +512,17 @@ def do_the_things(settings=None) -> None:
     running = True
     while running:
         if not music_has_played:
+            if not offset_happened:
+                for bnc_change in world.future_bounces:
+                    bnc_change.time += GLOBAL_TIME_OFFSET/1000
+            offset_happened = True
             if world.time > GLOBAL_TIME_OFFSET/1000:
                 music_has_played = True
+                song_load_before = get_current_time()
                 pygame.mixer.music.play()
+                for bnc_change in world.future_bounces:
+                    bnc_change.time += (get_current_time()-song_load_before)/1000
+
         screen.fill(WALL_COLOR)
 
         # handle events

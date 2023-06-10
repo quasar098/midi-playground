@@ -4,7 +4,7 @@ from sys import argv
 
 
 WIDTH, HEIGHT = 1280, 720
-START_OFFSET = 410
+START_OFFSET = 600
 LINE_OFFSET = 400
 NOTE_SPEED = 500
 INSTRUMENT_COLORS = {
@@ -44,6 +44,11 @@ def main():
                     goal_y_scroll -= 50 * (event.button * 2 - 9)
                 if event.button == 1:
                     print(round(pygame.time.get_ticks()/10)/100)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    goal_y_scroll -= 50
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    goal_y_scroll += 50
 
         y_scroll = (goal_y_scroll*0.1 + y_scroll*0.9)
 
