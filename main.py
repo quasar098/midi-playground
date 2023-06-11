@@ -71,11 +71,19 @@ def main():
             # handle song selector events
             song = song_selector.handle_event(event)
             if song:
+                if isinstance(song, bool):
+                    menu.active = True
+                    if song_selector.selected_index+1:
+                        pygame.mixer.music.load("./assets/mainmenu.mp3")
+                        pygame.mixer.music.set_volume(0.3)
+                        pygame.mixer.music.play(loops=-1, start=2)
+                        song_selector.selected_index = -1
+                    continue
                 # starting song now
                 Config.midi_file_name = song.midi_file_name
                 Config.audio_file_name = song.audio_file_name
                 game.active = True
-                game.start_song()
+                game.start_song(screen)
 
             if game.handle_event(event):
                 game.active = False

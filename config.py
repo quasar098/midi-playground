@@ -35,5 +35,5 @@ class Config:
     music_offset: Optional[int] = -300
     direction_change_chance: Optional[int] = 30
     last_bounce_delay: Optional[float] = 1
-    backtrack_chance: Optional[float] = 0.01
-    backtrack_amount: Optional[int] = 20
+    backtrack_chance: Optional[float] = 0.02
+    backtrack_amount: Optional[int] = 10

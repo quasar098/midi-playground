@@ -6,6 +6,7 @@ from os import listdir
 class Song:
     def __init__(self, midi_file: str, audio_file: Optional[str] = None):
         self.midi_file_name: str = midi_file
+        self.anim = 0
         self.audio_file_name: str = audio_file if audio_file is not None else self.midi_file_name
         text_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 48).render(self.title, True, (0, 0, 6))
         col = pygame.Color(229, 97, 196)
@@ -47,8 +48,10 @@ class SongSelector:
         self.active = False
         self.selected_index = -1
         self.anim = 0
-        self.play_button_rect = pygame.Rect(Config.SCREEN_WIDTH - 300, 100, 250, 140)
+        self.play_button_rect = pygame.Rect(Config.SCREEN_WIDTH - 300, 150, 250, 100)
         self.play_button_text = get_font("./assets/poppins-regular.ttf", 48).render("Play", True, (0, 0, 0))
+        self.back_button_rect = pygame.Rect(Config.SCREEN_WIDTH - 300, 20, 250, 150-40)
+        self.back_button_text = get_font("./assets/poppins-regular.ttf", 48).render("Back", True, (0, 0, 0))
 
     def reload_songs(self):
         self.songs = []
@@ -62,12 +65,13 @@ class SongSelector:
 
     def get_song_rect(self, index: int):
         rect = pygame.Rect(
-            -100,
+            -200,
             index * (SongSelector.ITEM_HEIGHT + SongSelector.ITEM_SPACING) + 100 + self.scroll,
             int(Config.SCREEN_WIDTH / 2),
             SongSelector.ITEM_HEIGHT
         )
         rect.move_ip(-int(abs(Config.SCREEN_HEIGHT / 2 - rect.centery)) / 10, 0)
+        rect.move_ip(interpolate_fn(self.songs[index].anim) * 60, 0)
         return rect
 
     def handle_event(self, event: pygame.event.Event):
@@ -80,6 +84,8 @@ class SongSelector:
                 for index, song in enumerate(self.songs):
                     rect = self.get_song_rect(index)
                     if rect.collidepoint(pygame.mouse.get_pos()):
+                        if self.selected_index == index:
+                            continue
                         play_sound("select.mp3")
                         pygame.mixer.music.load(join(".", "songs", song.audio_file_name))
                         pygame.mixer.music.set_volume(0.7)
@@ -92,6 +98,10 @@ class SongSelector:
                         pygame.mixer.music.stop()
                         self.active = False
                         return self.songs[self.selected_index]
+                if self.back_button_rect.collidepoint(pygame.mouse.get_pos()):
+                    play_sound("select.mp3")
+                    self.active = False
+                    return True
 
     def draw(self, screen: pygame.Surface):
         if self.active:
@@ -120,9 +130,19 @@ class SongSelector:
                 play_sound("wood.wav")
             song.before_hover = new_hover
 
+            # for anim
+            if new_hover:
+                if self.anim == 0:
+                    self.anim = 0.3
+                song.anim += 3.6 / FRAMERATE
+            else:
+                song.anim -= 3.6 / FRAMERATE
+
+            song.anim = max(min(song.anim, 1), 0)
+
             if self.selected_index == index:
                 song.selected_surface.set_alpha(int(self.anim*255))
-                screen.blit(song.selected_surface, rect)
+                screen.blit(song.selected_surface, rect.move(80, 0))
             else:
                 song.surface.set_alpha(int(self.anim*255))
                 screen.blit(song.surface, rect)
@@ -135,6 +155,17 @@ class SongSelector:
             if self.scroll < - bottom - 200:
                 self.scroll_velocity -= (self.scroll-bottom)/2000
 
+        self.back_button_rect.x = Config.SCREEN_WIDTH - 500 * interpolate_fn(self.anim) + 200
+        back_button_hovered = self.back_button_rect.collidepoint(pygame.mouse.get_pos())
+        pygame.draw.rect(screen, pygame.Color(226, 109, 92).lerp((0, 0, 0), 0.4), self.back_button_rect, border_radius=8)
+        pygame.draw.rect(
+            screen, pygame.Color(226, 109, 92).lerp(
+                (255, 255, 255), back_button_hovered * 0.1
+            ), self.back_button_rect.inflate(-8, -8), border_radius=2
+        )
+        screen.blit(self.back_button_text, self.back_button_text.get_rect(center=self.back_button_rect.center))
+
+        # only continue from here if something is selected
         if not self.selected_index + 1:
             return
 

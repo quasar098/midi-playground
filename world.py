@@ -62,7 +62,7 @@ class World:
                 closest = int(t*100)/100
         self.latest_thing = str(closest)
 
-    def gen_future_bounces(self, _start_notes: list[tuple[int, int, int]]):
+    def gen_future_bounces(self, _start_notes: list[tuple[int, int, int]], percent_update_callback):
         """Recursive solution is necessary"""
         total_notes = len(_start_notes)
         max_percent = 0
@@ -86,7 +86,7 @@ class World:
             gone_through_percent = (total_notes-len(notes)) * 100 // total_notes
             while gone_through_percent > max_percent:
                 max_percent += 1
-                print(f"Map {max_percent}% generated")
+                percent_update_callback(max_percent)
 
             all_bounce_rects = [_bounc.get_collision_rect() for _bounc in bounces_so_far]
             if len(notes) == 0:
@@ -142,12 +142,9 @@ class World:
                 othercheck = False
                 if len(bounces_so_far):
                     othercheck = bounces_so_far[-1].get_collision_rect().collidelist(path[:-10])+1
-                    if bounces_so_far[-1] is None:
-                        print(bounces_so_far)
                 if square.rect.collidelist(all_bounce_rects) != -1 or othercheck:
                     if depth > 300:
                         if random.random() < Config.backtrack_chance:
-                            print(f"Backtracking at {max_percent}%")
                             max_percent -= (Config.backtrack_amount * 100 // total_notes) + 1
                             force_return = Config.backtrack_amount
 
@@ -166,11 +163,11 @@ class World:
                 threshold=Config.bounce_min_spacing
             )
         )
+
         assert self.future_bounces is not False, "recurs function failed"
         assert len(self.future_bounces) != 0, "no recurs list"
 
         # eliminate fully overlapping safe areas
-        print("Eliminating fully overlapping safe rectangles")
         safe_areas: list[pygame.Rect]
         while True:
             new = []
@@ -187,6 +184,12 @@ class World:
             after_safe_count = len(safe_areas)
             if after_safe_count == before_safe_count:
                 break
+        safe_areas = safe_areas[1:]
+
+        # todo: shrink rectangles so double-drawing is no longer
+        # uncomment and put print output in desmos to see the problem
+        # for safe_area in safe_areas:
+        #     debug_rect(safe_area)
 
         self.rectangles = [_fb.get_collision_rect() for _fb in self.future_bounces]
         return safe_areas

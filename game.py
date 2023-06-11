@@ -16,8 +16,9 @@ class Game:
         self.camera_ctrl_text = get_font("./assets/poppins-regular.ttf", 24).render("Manual Camera Control Activated", True, (0, 255, 0))
         self.music_has_played = False
         self.offset_happened = False
+        self.loading_text = get_font("./assets/poppins-regular.ttf", 24).render("Loading...", True, (255, 255, 255))
 
-    def start_song(self, song_path: str = None):
+    def start_song(self, screen: pygame.Surface, song_path: str = None):
         random.seed(Config.seed)
         # load song and notes
         if song_path is None:
@@ -35,7 +36,22 @@ class Game:
         self.music_has_played = False
         self.offset_happened = False
         self.camera.lock_type = CameraFollow(Config.camera_mode)
-        self.safe_areas = self.world.gen_future_bounces(self.notes)
+        screen.fill(Config.Colors.wall_color)
+        pygame.display.flip()
+
+        def update_loading_screen(pdone: int):
+            screen.fill(Config.Colors.wall_color, pygame.Rect(0, 0, Config.SCREEN_WIDTH, 100))
+            message = f"{pdone}% done loading" if pdone != 100 else "Removing duplicate rectangles"
+            if pdone < 70:
+                if random.randint(1, 3) == 1:
+                    return
+            if pdone < 40:
+                if random.randint(1, 9) != 1:
+                    return
+            screen.blit(get_font("./assets/poppins-regular.ttf", 60).render(message, True, (255, 255, 255)), (10, 10))
+            pygame.display.flip()
+
+        self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
         self.world.start_time = get_current_time()
         self.world.square.dir = [0, 0]
 
@@ -127,5 +143,6 @@ class Game:
                 return True
             if event.key == pygame.K_TAB:
                 self.camera.locked_on_square = not self.camera.locked_on_square
-            if 97+26 > event.key >= 97 or event.key == pygame.K_SPACE:  # press a to z key
-                self.world.handle_keypress()
+            if self.camera.locked_on_square:
+                if 97+26 > event.key >= 97 or event.key == pygame.K_SPACE:  # press a to z key
+                    self.world.handle_keypress()
