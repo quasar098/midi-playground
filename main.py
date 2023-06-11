@@ -1,6 +1,7 @@
 from utils import *
 from menu import Menu
 from game import Game
+from configpage import ConfigPage
 from songselector import SongSelector
 from os import startfile, getcwd
 import webbrowser
@@ -24,6 +25,7 @@ def main():
     # the big guns
     menu = Menu()
     song_selector = SongSelector()
+    config_page = ConfigPage()
     game = Game()
 
     # game loop
@@ -50,6 +52,10 @@ def main():
                         pygame.mixer.music.play(loops=-1, start=2)
                         song_selector.selected_index = -1
                         continue
+                    if config_page.active:
+                        config_page.active = False
+                        menu.active = True
+                        continue
                     running = False
 
             # handle menu events
@@ -62,6 +68,8 @@ def main():
                     webbrowser.open("https://github.com/quasar098/midi-playground")
                     continue
                 menu.active = False
+                if option_id == "config":
+                    config_page.active = True
                 if option_id == "play":
                     song_selector.active = True
                 if option_id == "quit":
@@ -85,6 +93,12 @@ def main():
                 game.active = True
                 game.start_song(screen)
 
+            # handle config page events
+            if config_page.handle_event(event):
+                config_page.active = True
+                menu.active = False
+
+            # handle game events
             if game.handle_event(event):
                 game.active = False
                 song_selector.active = True
@@ -92,6 +106,7 @@ def main():
         # draw stuff here
         game.draw(screen)
         song_selector.draw(screen)
+        config_page.draw(screen)
         menu.draw(screen)
 
         pygame.display.flip()

@@ -54,6 +54,7 @@ class Game:
         self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
         self.world.start_time = get_current_time()
         self.world.square.dir = [0, 0]
+        self.world.square.pos = self.world.future_bounces[0].square_pos
 
     def draw(self, screen: pygame.Surface):
         if not self.active:
