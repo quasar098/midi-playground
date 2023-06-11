@@ -56,7 +56,7 @@ class World:
         closest = 10
         abs_closest = 10
         for _ in self.timestamps:
-            t = self.time - _ + Config.music_offset/1000 - Config.GLOBAL_TIME_OFFSET/1000
+            t = self.time - _ + Config.music_offset / 1000 - Config.start_playing_delay / 1000
             if abs(t) < abs_closest:
                 abs_closest = int(abs(t)*100)/100
                 closest = int(t*100)/100
@@ -142,6 +142,8 @@ class World:
                 othercheck = False
                 if len(bounces_so_far):
                     othercheck = bounces_so_far[-1].get_collision_rect().collidelist(path[:-10])+1
+                    if bounces_so_far[-1] is None:
+                        print(bounces_so_far)
                 if square.rect.collidelist(all_bounce_rects) != -1 or othercheck:
                     if depth > 300:
                         if random.random() < Config.backtrack_chance:

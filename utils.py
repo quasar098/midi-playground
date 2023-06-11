@@ -4,7 +4,10 @@ import pygame
 from sys import platform
 from enum import Enum
 from config import Config
+from os.path import join
+from math import sin, pi
 from sys import setrecursionlimit
+from time import time as get_current_time
 setrecursionlimit(10000)  # increase if more notes
 
 
@@ -68,10 +71,41 @@ _font_registry: dict[str, pygame.font.Font] = {}
 
 
 def get_font(font_name: str, size: int = 24) -> pygame.font.Font:
-    if font_name not in _font_registry:
+    fn_id = f"[{font_name}/{size}]"
+    if fn_id not in _font_registry:
         try:
-            _font_registry[font_name] = pygame.font.Font(font_name, size)
+            _font_registry[fn_id] = pygame.font.Font(font_name, size)
         except FileNotFoundError:
-            print(f"Font file {font_name} not found!")
-            _font_registry[font_name] = pygame.font.SysFont("Arial", size)
-    return _font_registry[font_name]
+            print(f"Font {fn_id} not found!")
+            _font_registry[fn_id] = pygame.font.SysFont("Arial", size)
+    return _font_registry[fn_id]
+
+
+_channels = []
+_sound_registry: dict[str, pygame.mixer.Sound] = {}
+
+
+def play_sound(snd_name: str, vol: float = 0.5):
+    if len(_channels) == 0:
+        pygame.mixer.set_num_channels(40)
+        for _ in range(1, 20):
+            _channels.append(pygame.mixer.Channel(_))
+
+    if snd_name not in _sound_registry:
+        _sound_registry[snd_name] = pygame.mixer.Sound(join("assets", snd_name))
+
+    chan = pygame.mixer.find_channel(False)
+    if not chan:
+        return False
+    if chan.get_busy():
+        return False
+    chan.set_volume(vol)
+    chan.play(_sound_registry[snd_name])
+    return True
+
+
+def interpolate_fn(n):
+    """Interpolate sigmoidally from 0-1"""
+    n = min(max(n, 0), 1)
+
+    return sin(pi * (n - 0.5)) / 2 + 0.5

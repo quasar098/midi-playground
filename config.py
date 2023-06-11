@@ -9,7 +9,6 @@ class Config:
     SCREEN_HEIGHT = 1080
     CAMERA_SPEED = 500
     SQUARE_SIZE = 50
-    GLOBAL_TIME_OFFSET = 1000
     PARTICLE_SPEED = 10
 
     # colors
@@ -28,9 +27,10 @@ class Config:
     midi_file_name: Optional[str] = None
     audio_file_name: Optional[str] = None
     camera_mode: Optional[int] = 2
+    start_playing_delay = 3000
     max_notes: Optional[int] = None
     bounce_min_spacing: Optional[float] = 0.03
-    square_speed: Optional[int] = 500
+    square_speed: Optional[int] = 600
     volume: Optional[int] = 50
     music_offset: Optional[int] = -300
     direction_change_chance: Optional[int] = 30
