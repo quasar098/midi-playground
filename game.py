@@ -57,6 +57,8 @@ class Game:
         self.world.square.pos = self.world.future_bounces[0].square_pos
 
     def draw(self, screen: pygame.Surface):
+        self.world.scorekeeper.penalize_misses(self.world.time)
+
         if not self.active:
             return
 
@@ -122,7 +124,7 @@ class Game:
         for remove_particle in [particle for particle in self.world.particles if particle.age()]:
             self.world.particles.remove(remove_particle)
 
-        mimic = get_font("./assets/poppins-regular.ttf", 24).render(self.world.latest_thing, True, (255, 255, 255))
+        mimic = get_font("./assets/poppins-regular.ttf", 24).render(self.world.scorekeeper.latest_message, True, (255, 255, 255))
         screen.blit(mimic, (100, 100))
 
         # draw square outline

@@ -3,6 +3,7 @@ from bounce import Bounce
 from particle import Particle
 from square import Square
 from time import time as get_current_time
+from scorekeeper import Scorekeeper
 import random
 import pygame
 
@@ -18,8 +19,8 @@ class World:
         self.rectangles: list[pygame.Rect] = []
         self.particles: list[Particle] = []
         self.timestamps = []
-        self.latest_thing = "None"
         self.square = Square()
+        self.scorekeeper = Scorekeeper()
 
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time
@@ -53,14 +54,7 @@ class World:
                     square.pos = current_bounce.square_pos
 
     def handle_keypress(self):
-        closest = 10
-        abs_closest = 10
-        for _ in self.timestamps:
-            t = self.time - _ + Config.music_offset / 1000 - Config.start_playing_delay / 1000
-            if abs(t) < abs_closest:
-                abs_closest = int(abs(t)*100)/100
-                closest = int(t*100)/100
-        self.latest_thing = str(closest)
+        self.scorekeeper.attempt_log(self.time)
 
     def gen_future_bounces(self, _start_notes: list[tuple[int, int, int]], percent_update_callback):
         """Recursive solution is necessary"""
@@ -154,7 +148,7 @@ class World:
 
         _start_notes = _start_notes[:Config.max_notes] if Config.max_notes is not None else _start_notes
 
-        self.timestamps = [_sn[1] for _sn in _start_notes]
+        self.scorekeeper.unhit_notes = remove_too_close_values([_sn[1] for _sn in _start_notes[:-1]], Config.bounce_min_spacing)
 
         self.future_bounces = recurs(
             square=self.square.copy(),
