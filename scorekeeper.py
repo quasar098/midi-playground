@@ -13,7 +13,6 @@ class Scorekeeper:
         for note in self.unhit_notes:
             t = current_time - note + Config.music_offset / 1000 - Config.start_playing_delay / 1000
             if t > 0.1:
-                print(note, current_time)
                 self.score -= 100
                 self.latest_message = f"Score: {self.score}"
                 continue

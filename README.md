@@ -30,6 +30,10 @@ if you do not enjoy me using your midi or songs, i can remove it from this proje
 
 ### generic
 
+- redo scoring because it currently sucks
+- add a timer in the beginning so you can predict first note
+- visual aid for timing
+- life bar
 - see entire map at the end
 - themes (dark mode, light mode, rainbow, chaos, neon, idk)
 - add scoring and make it good
