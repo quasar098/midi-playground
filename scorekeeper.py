@@ -32,18 +32,17 @@ class Scorekeeper:
                 closest = int(t*100)/100
                 to_remove = unhit
         if closest > 0.1 or closest < -0.08:
-            self.score -= 50
+            self.score -= 300
             self.latest_message = f"Score: {self.score}"
             return
         if to_remove is not None:
             self.unhit_notes.remove(to_remove)
-        print(f"hit {to_remove} at {current_time}")
-        if closest > 0.1:  # to prevent mashing
-            self.score -= 15
-        elif closest > 0.04:
-            self.score += 15
+        if closest > 0.04:
+            self.score += 100
         elif closest > -0.02:
+            self.score += 300
+        elif closest > -0.04:
             self.score += 100
         else:
-            self.score += 15
+            self.score -= 100
         self.latest_message = f"Score: {self.score}"

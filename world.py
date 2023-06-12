@@ -178,7 +178,7 @@ class World:
             after_safe_count = len(safe_areas)
             if after_safe_count == before_safe_count:
                 break
-        safe_areas = safe_areas[1:]
+        safe_areas = safe_areas
 
         # todo: shrink rectangles so double-drawing is no longer
         # uncomment and put print output in desmos to see the problem

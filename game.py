@@ -142,6 +142,9 @@ class Game:
             return False
 
         if event.type == pygame.KEYDOWN:
+            if event.type == pygame.K_F1:
+                for rect in self.safe_areas:
+                    debug_rect(rect)
             if event.key == pygame.K_ESCAPE:
                 return True
             if event.key == pygame.K_TAB:
