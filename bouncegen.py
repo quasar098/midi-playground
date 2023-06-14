@@ -230,6 +230,7 @@ class Camera:
         self.by = 0
         self.locked_on_square = True
         self.lock_type: CameraFollow = CameraFollow(2)
+        self.lazy_follow_distance = 500
 
     @property
     def pos(self):
@@ -249,14 +250,13 @@ class Camera:
         if self.lock_type == CameraFollow.Centre:
             self.pos = [square.x - WIDTH/2, square.y - HEIGHT/2]
         if self.lock_type == CameraFollow.Lazy:
-            lazy_follow_distance = 250
-            while square.x - WIDTH + lazy_follow_distance > self.x:
+            while square.x - WIDTH + self.lazy_follow_distance > self.x:
                 self.x += 1
-            while square.y - HEIGHT + lazy_follow_distance > self.y:
+            while square.y - HEIGHT + self.lazy_follow_distance > self.y:
                 self.y += 1
-            while square.x - lazy_follow_distance < self.x:
+            while square.x - self.lazy_follow_distance < self.x:
                 self.x -= 1
-            while square.y - lazy_follow_distance < self.y:
+            while square.y - self.lazy_follow_distance < self.y:
                 self.y -= 1
         if self.lock_type == CameraFollow.Smoothed:
             self.x = (square.x - WIDTH/2)*3/FRAMERATE + self.x-3*self.x/FRAMERATE
@@ -494,6 +494,7 @@ def do_the_things(settings=None) -> None:
     backtrack_amount = settings.get("backtrack_amount", 20)
     do_particles = settings.get("draw_particles", True)
     do_anim = settings.get("anim", True)
+    lazy_follow_dist = settings.get("lazy_follow_dist", 500)
 
     theme = settings.get("theme", None)
     if theme == "dark":
@@ -581,6 +582,7 @@ def do_the_things(settings=None) -> None:
     square.speed = sq_speed
     camera = Camera()
     camera.lock_type = CameraFollow(camera_mode)
+    camera.lazy_follow_distance = lazy_follow_dist
     world = World()
     world.backtrack_chance = backtrack_chance
     world.backtrack_amount = backtrack_amount
