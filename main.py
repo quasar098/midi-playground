@@ -31,7 +31,17 @@ def main():
     # game loop
     running = True
     while running:
-        screen.fill(Config.Colors.wall_color)
+        # thanks to TheCodeCrafter for the implementation
+        if Config.theme == "rainbow":
+            to_set_as_rainbow = pygame.Color((0, 0, 0))
+            to_set_as_rainbow2 = pygame.Color((0, 0, 0))
+            to_set_as_rainbow.hsva = (((pygame.time.get_ticks()/1000)*Config.rainbow_speed) % 360, 100, 75, 100)
+            to_set_as_rainbow2.hsva = ((((pygame.time.get_ticks()/1000)*Config.rainbow_speed)+180) % 360, 100, 75, 100)
+            get_colors()["background"] = to_set_as_rainbow
+            get_colors()["hallway"] = to_set_as_rainbow2
+            get_colors()["square"][0] = to_set_as_rainbow
+
+        screen.fill(get_colors()["background"])
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:

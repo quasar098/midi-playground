@@ -3,7 +3,7 @@ import mido
 import pygame
 from sys import platform
 from enum import Enum
-from config import Config
+from config import Config, get_colors
 from os.path import join
 from math import sin, pi
 from sys import setrecursionlimit

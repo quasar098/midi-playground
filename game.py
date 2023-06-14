@@ -34,11 +34,11 @@ class Game:
         self.music_has_played = False
         self.offset_happened = False
         self.camera.lock_type = CameraFollow(Config.camera_mode)
-        screen.fill(Config.Colors.wall_color)
+        screen.fill(get_colors()["background"])
         pygame.display.flip()
 
         def update_loading_screen(pdone: int):
-            screen.fill(Config.Colors.wall_color, pygame.Rect(0, 0, Config.SCREEN_WIDTH, 100))
+            screen.fill(get_colors()["background"], pygame.Rect(0, 0, Config.SCREEN_WIDTH, 100))
             message = f"{pdone}% done loading" if pdone != 100 else "Removing duplicate rectangles"
             if pdone < 70:
                 if random.randint(1, 3) == 1:
@@ -46,7 +46,7 @@ class Game:
             if pdone < 40:
                 if random.randint(1, 9) != 1:
                     return
-            screen.blit(get_font("./assets/poppins-regular.ttf", 60).render(message, True, (255, 255, 255)), (10, 10))
+            screen.blit(get_font("./assets/poppins-regular.ttf", 60).render(message, True, get_colors()["hallway"]), (10, 10))
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -114,18 +114,18 @@ class Game:
             offsetted = self.camera.offset(safe_area)
             if screen_rect.colliderect(offsetted):
                 total_rects += 1
-                pygame.draw.rect(screen, Config.Colors.bg_color, offsetted)
+                pygame.draw.rect(screen, get_colors()["hallway"], offsetted)
 
         # draw pegs
         for bounce in self.world.rectangles:
             offsetted = self.camera.offset(bounce)
             if offsetted.colliderect(screen_rect):
                 total_rects += 1
-                pygame.draw.rect(screen, Config.Colors.wall_color, offsetted)
+                pygame.draw.rect(screen, get_colors()["background"], offsetted)
 
         # particles
         for particle in self.world.particles:
-            pygame.draw.rect(screen, Config.Colors.bg_color, self.camera.offset(particle.rect))
+            pygame.draw.rect(screen, get_colors()["hallway"], self.camera.offset(particle.rect))
         for remove_particle in [particle for particle in self.world.particles if particle.age()]:
             self.world.particles.remove(remove_particle)
 
@@ -135,7 +135,7 @@ class Game:
         # draw square outline
         pygame.draw.rect(screen, (0, 0, 0), sqrect)
         square_color_index = round((self.world.square.dir_x + 1)/2 + self.world.square.dir_y + 1)
-        self.world.square.register_past_color(Config.Colors.square_colors[square_color_index])
+        self.world.square.register_past_color(get_colors()["square"][square_color_index % len(get_colors()["square"])])
         sq_surf = self.world.square.get_surface(tuple(sqrect.inflate(-int(Config.SQUARE_SIZE/5), -int(Config.SQUARE_SIZE/5))[2:]))
         screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
 

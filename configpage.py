@@ -135,6 +135,18 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        self.s_color_theme = pgui.elements.UIDropDownMenu(
+            [theme for theme in Config.color_themes],
+            relative_rect=pygame.Rect((930, 90, 300, 30)),
+            starting_option=Config.theme,
+            manager=self.ui_manager
+        )
+        self.s_color_theme_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((630, 90, 240, 30)),
+            text="Color theme:",
+            manager=self.ui_manager
+        )
+
     def handle_event(self, event: pygame.event.Event):
         if not self.active:
             return
@@ -153,6 +165,9 @@ class ConfigPage:
             if event.ui_element == self.s_camera_mode:
                 play_sound("wood.wav")
                 Config.camera_mode = "CLSP".index(event.text[0])
+            if event.ui_element == self.s_color_theme:
+                play_sound("wood.wav")
+                Config.theme = event.text
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:

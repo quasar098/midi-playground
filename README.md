@@ -36,15 +36,16 @@ if you do not enjoy me using your midi or songs, i can remove it from this proje
 - life bar
 - see entire map at the end
 - themes (dark mode, light mode, rainbow, chaos, neon, idk)
-- add scoring and make it good
+- make scoring good
 - implement modifiers like osu (DT, HR, HD, EZ, etc)
 - midi text events at specific timestamps to change the speed of the cube
 - more songs
 - map editor if time
 - add monitor framerate finder for linux (not macos b/c i hate mac users) [link here](https://stackoverflow.com/questions/1225057/how-can-i-determine-the-monitor-refresh-rate)
+- i think there are sync issues idk
 
 ### modifiers
 
 - light switch that turns on and off at each bounce ? (flashlight)
-- precise mode (~0.04 or less room for error else a miss)
+- precise mode (no 100s, only 300s or misses)
 - theatre mode (no scoring)
