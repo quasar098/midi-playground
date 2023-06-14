@@ -1,3 +1,4 @@
 mido>=1.2.10
 pygame>=2.0.1
 pywin32>=301
+pygame_gui>=0.6.9

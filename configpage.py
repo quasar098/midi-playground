@@ -1,85 +1,200 @@
 from utils import *
 import pygame
-from typing import Any
-
-
-class ConfigOption:
-    def __init__(self, attr):
-        self.attr = attr
-
-    def draw(self, screen: pygame.Surface, topleft: tuple[float, float]) -> tuple[float, float]:
-        pass
-
-    def get_next_pos(self, curr: tuple[float, float]) -> tuple[float, float]:
-        pass
-
-    def handle_event(self, topleft: tuple[float, float], event: pygame.event.Event) -> tuple[float, float]:
-        pass
-
-
-class ConfigOptionMultiselectInteger(ConfigOption):
-    def __init__(self, attr: str, options: dict[Any]):
-        super().__init__(attr)
-        self.options = options
-        fn = get_font("./assets/poppins-regular.ttf")
-        self.rendered_options = [fn.render(f"{self.formatted_title}: {options[option]}", True, (0, 0, 0)) for option in options]
-
-    @property
-    def formatted_title(self):
-        return " ".join(_.capitalize() for _ in self.attr.replace("_", ' ').split(" "))
-
-    @property
-    def selected_index(self):
-        return getattr(Config, "camera_mode")
-
-    @selected_index.setter
-    def selected_index(self, val: int):
-        setattr(Config, "camera_mode", val)
-
-    # noinspection PyMethodMayBeStatic
-    def rect(self, tl: tuple[float, float]):
-        return pygame.Rect(tl[0], tl[1], 500, 80)
-
-    @property
-    def selected_surf(self):
-        return self.rendered_options[self.selected_index]
-
-    def get_next_pos(self, curr: tuple[float, float]) -> tuple[float, float]:
-        return curr[0], curr[1]+100
-
-    def handle_event(self, topleft: tuple[float, float], event: pygame.event.Event) -> tuple[float, float]:
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                if self.rect(topleft).collidepoint(pygame.mouse.get_pos()):
-                    print("clicked")
-        return self.get_next_pos(topleft)
-
-    def draw(self, screen: pygame.Surface, topleft: tuple[float, float]) -> tuple[float, float]:
-        sr = self.rect(topleft)
-        pygame.draw.rect(screen, (0, 0, 0), sr, border_radius=8)
-        pygame.draw.rect(screen, (220, 220, 220), sr.inflate(-8, -8), border_radius=2)
-        screen.blit(self.selected_surf, self.selected_surf.get_rect(center=self.rect(topleft).center))
-
-        return self.get_next_pos(topleft)
+import pygame_gui as pgui
+import webbrowser
 
 
 class ConfigPage:
+    @property
+    def made_with_pgui_rect(self):
+        return self.made_with_pgui_surf.get_rect(bottomleft=(30, Config.SCREEN_HEIGHT-30))
+
     def __init__(self):
         self.active = False
-        self.options: list[ConfigOption] = [
-            ConfigOptionMultiselectInteger("camera_mode", options={0: "Center", 1: "Lazy", 2: "Smoothed (Default)", 3: "Predictive"})
-        ]
+        self.made_with_pgui_surf = get_font("./assets/poppins-regular.ttf").render("Config page made with pygame_gui library", True, (255, 255, 255))
+
+        # pygame_gui stuff
+        self.ui_manager = pgui.UIManager((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
+        self.back_button = pgui.elements.UIButton(
+            relative_rect=pygame.Rect((Config.SCREEN_WIDTH-120, 30, 90, 30)),
+            text="Back",
+            manager=self.ui_manager
+        )
+
+        # all attributes matching /s_.+/ are "s"ettings
+
+        self.s_camera_mode = pgui.elements.UIDropDownMenu(
+            ["Center", "Lazy", "Smoothed (Default)", "Predictive"],
+            relative_rect=pygame.Rect((300, 30, 300, 30)),
+            starting_option=["Center", "Lazy", "Smoothed (Default)", "Predictive"][Config.camera_mode],
+            manager=self.ui_manager
+        )
+        self.s_camera_mode_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 30, 240, 30)),
+            text="Camera mode:",
+            manager=self.ui_manager
+        )
+
+        self.s_seed = pgui.elements.UITextEntryLine(
+            relative_rect=pygame.Rect((300, 90, 300, 30)),
+            placeholder_text="Default is random number",
+            manager=self.ui_manager
+        )
+        self.s_seed.set_allowed_characters('numbers')
+        self.s_seed.set_text(str(Config.seed if Config.seed is not None else ''))
+        self.s_seed_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 90, 240, 30)),
+            text="RNG seed:",
+            manager=self.ui_manager
+        )
+
+        self.s_start_playing_delay = pgui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((300, 150, 300, 30)),
+            start_value=Config.start_playing_delay,
+            value_range=(1000, 5000),
+            manager=self.ui_manager
+        )
+        self.s_start_playing_delay_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 150, 240, 30)),
+            text=f"Starting time delay ({self.s_start_playing_delay.get_current_value()}ms):",
+            manager=self.ui_manager
+        )
+
+        self.s_max_notes = pgui.elements.UITextEntryLine(
+            relative_rect=pygame.Rect((300, 210, 300, 30)),
+            placeholder_text="Default is infinity",
+            manager=self.ui_manager
+        )
+        self.s_max_notes.set_allowed_characters('numbers')
+        self.s_max_notes.set_text(str(Config.max_notes if Config.max_notes is not None else ''))
+        self.s_max_notes_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 210, 240, 30)),
+            text="Max notes to generate:",
+            manager=self.ui_manager
+        )
+
+        self.s_bounce_min_spacing = pgui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((300, 270, 300, 30)),
+            start_value=Config.bounce_min_spacing,
+            value_range=(5, 50),
+            manager=self.ui_manager
+        )
+        self.s_bounce_min_spacing_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 270, 240, 30)),
+            text=f"Bounce min spacing ({Config.bounce_min_spacing}ms):",
+            manager=self.ui_manager
+        )
+
+        self.s_square_speed = pgui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((300, 330, 300, 30)),
+            start_value=Config.square_speed,
+            value_range=(600, 900),
+            manager=self.ui_manager
+        )
+        self.s_square_speed_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 330, 240, 30)),
+            text=f"Square speed ({Config.square_speed} pixels/s):",
+            manager=self.ui_manager
+        )
+
+        self.s_music_offset = pgui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((300, 390, 300, 30)),
+            start_value=Config.music_offset,
+            value_range=(-500, 500),
+            manager=self.ui_manager
+        )
+        self.s_music_offset_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 390, 240, 30)),
+            text=f"Music offset ({Config.music_offset}ms):",
+            manager=self.ui_manager
+        )
+
+        self.s_direction_change_chance = pgui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((300, 450, 300, 30)),
+            start_value=Config.direction_change_chance,
+            value_range=(0, 100),
+            manager=self.ui_manager
+        )
+        self.s_direction_change_chance_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 450, 240, 30)),
+            text=f"Change dir chance ({Config.direction_change_chance}%):",
+            manager=self.ui_manager
+        )
+
+        # audio and general settings
+
+        self.s_game_volume = pgui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((930, 30, 300, 30)),
+            start_value=Config.volume,
+            value_range=(0, 100),
+            manager=self.ui_manager
+        )
+        self.s_game_volume_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((630, 30, 240, 30)),
+            text=f"Game volume ({Config.volume}%):",
+            manager=self.ui_manager
+        )
 
     def handle_event(self, event: pygame.event.Event):
         if not self.active:
             return
-        prev_pos = (100, 100)
-        for option in self.options:
-            prev_pos = option.handle_event(prev_pos, event)
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if self.made_with_pgui_rect.collidepoint(pygame.mouse.get_pos()):
+                    webbrowser.open("https://github.com/MyreMylar/pygame_gui")
+
+        if event.type == pgui.UI_BUTTON_PRESSED:
+            if event.ui_element == self.back_button:
+                play_sound("wood.wav")
+                return True
+
+        if event.type == pgui.UI_DROP_DOWN_MENU_CHANGED:
+            if event.ui_element == self.s_camera_mode:
+                play_sound("wood.wav")
+                Config.camera_mode = "CLSP".index(event.text[0])
+
+        if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
+            if event.ui_element == self.s_seed:
+                text: str = event.text
+                if text.isnumeric() and len(text):
+                    Config.seed = int(text)
+                else:
+                    Config.seed = None
+            if event.ui_element == self.s_max_notes:
+                text: str = event.text
+                if text.isnumeric() and len(text):
+                    Config.max_notes = int(text)
+                else:
+                    Config.max_notes = None
+
+        if event.type == pgui.UI_HORIZONTAL_SLIDER_MOVED:
+            if event.ui_element == self.s_start_playing_delay:
+                self.s_start_playing_delay_label.set_text(f"Starting time delay ({event.value}ms):")
+                Config.start_playing_delay = event.value
+            if event.ui_element == self.s_bounce_min_spacing:
+                self.s_bounce_min_spacing_label.set_text(f"Bounce min spacing ({event.value}ms):")
+                Config.bounce_min_spacing = event.value
+            if event.ui_element == self.s_square_speed:
+                self.s_square_speed_label.set_text(f"Square speed ({event.value} pixels/s):")
+                Config.square_speed = event.value
+            if event.ui_element == self.s_game_volume:
+                self.s_game_volume_label.set_text(f"Game volume ({event.value}%):")
+                Config.volume = event.value
+                pygame.mixer.music.set_volume(event.value/100)
+            if event.ui_element == self.s_music_offset:
+                self.s_music_offset_label.set_text(f"Music offset ({event.value}ms):")
+                Config.music_offset = event.value
+            if event.ui_element == self.s_direction_change_chance:
+                self.s_direction_change_chance_label.set_text(f"Change dir chance ({event.value}%):")
+                Config.direction_change_chance = event.value
+
+        self.ui_manager.process_events(event)
 
     def draw(self, screen: pygame.Surface):
         if not self.active:
             return
-        prev_pos = (100, 100)
-        for option in self.options:
-            prev_pos = option.draw(screen, prev_pos)
+        self.ui_manager.update(1/FRAMERATE)  # supposed to use dt but whatever
+        self.ui_manager.draw_ui(screen)
+
+        screen.blit(self.made_with_pgui_surf, self.made_with_pgui_rect)

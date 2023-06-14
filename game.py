@@ -26,8 +26,6 @@ class Game:
 
         notes = read_midi_file(song_path)
         notes = [(note[0], note[1], note[2]) for note in notes]
-        if len(notes):
-            notes.append((notes[-1][0], notes[-1][1]+Config.last_bounce_delay, notes[-1][2]))
         self.notes = notes
 
         # other settings
@@ -49,9 +47,16 @@ class Game:
                 if random.randint(1, 9) != 1:
                     return
             screen.blit(get_font("./assets/poppins-regular.ttf", 60).render(message, True, (255, 255, 255)), (10, 10))
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return True
             pygame.display.flip()
 
-        self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
+        try:
+            self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
+        except UserCancelsLoading:
+            return True
         self.world.start_time = get_current_time()
         self.world.square.dir = [0, 0]
         self.world.square.pos = self.world.future_bounces[0].square_pos

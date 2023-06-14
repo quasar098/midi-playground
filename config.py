@@ -29,11 +29,10 @@ class Config:
     camera_mode: Optional[int] = 2
     start_playing_delay = 3000
     max_notes: Optional[int] = None
-    bounce_min_spacing: Optional[float] = 0.03
+    bounce_min_spacing: Optional[float] = 30
     square_speed: Optional[int] = 600
-    volume: Optional[int] = 50
+    volume: Optional[int] = 30
     music_offset: Optional[int] = -300
     direction_change_chance: Optional[int] = 30
-    last_bounce_delay: Optional[float] = 1
-    backtrack_chance: Optional[float] = 0.02
-    backtrack_amount: Optional[int] = 10
+    backtrack_chance: Optional[float] = 0.01
+    backtrack_amount: Optional[int] = 40

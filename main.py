@@ -40,7 +40,7 @@ def main():
                         menu.active = True
                         if song_selector.selected_index+1:
                             pygame.mixer.music.load("./assets/mainmenu.mp3")
-                            pygame.mixer.music.set_volume(0.3)
+                            pygame.mixer.music.set_volume(Config.volume/100)
                             pygame.mixer.music.play(loops=-1, start=2)
                             song_selector.selected_index = -1
                         continue
@@ -48,7 +48,7 @@ def main():
                         game.active = False
                         song_selector.active = True
                         pygame.mixer.music.load("./assets/mainmenu.mp3")
-                        pygame.mixer.music.set_volume(0.3)
+                        pygame.mixer.music.set_volume(Config.volume/100)
                         pygame.mixer.music.play(loops=-1, start=2)
                         song_selector.selected_index = -1
                         continue
@@ -83,7 +83,7 @@ def main():
                     menu.active = True
                     if song_selector.selected_index+1:
                         pygame.mixer.music.load("./assets/mainmenu.mp3")
-                        pygame.mixer.music.set_volume(0.3)
+                        pygame.mixer.music.set_volume(Config.volume/100)
                         pygame.mixer.music.play(loops=-1, start=2)
                         song_selector.selected_index = -1
                     continue
@@ -91,12 +91,17 @@ def main():
                 Config.midi_file_name = song.midi_file_name
                 Config.audio_file_name = song.audio_file_name
                 game.active = True
-                game.start_song(screen)
+                if game.start_song(screen):
+                    game.active = False
+                    song_selector.active = True
+                    pygame.mixer.music.load("./assets/mainmenu.mp3")
+                    pygame.mixer.music.set_volume(Config.volume/100)
+                    pygame.mixer.music.play(loops=-1, start=2)
 
             # handle config page events
             if config_page.handle_event(event):
-                config_page.active = True
-                menu.active = False
+                config_page.active = False
+                menu.active = True
 
             # handle game events
             if game.handle_event(event):

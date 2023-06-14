@@ -11,6 +11,11 @@ from time import time as get_current_time
 setrecursionlimit(10000)  # increase if more notes
 
 
+class UserCancelsLoading(Exception):
+    """User cancels the loading screen"""
+    pass
+
+
 # vsync framerate if on windows, else 60
 try:
     import win32api
@@ -46,7 +51,7 @@ def read_midi_file(filename):
 
 
 # remove values that are too close to each other
-def remove_too_close_values(lst: list[float], threshold=0.03) -> list[float]:
+def remove_too_close_values(lst: list[float], threshold=30) -> list[float]:
     """Assumes the list is sorted"""
     new = []
     before = None
@@ -55,7 +60,7 @@ def remove_too_close_values(lst: list[float], threshold=0.03) -> list[float]:
             before = _
             new.append(_)
             continue
-        if before+threshold > _:
+        if before+threshold/1000 > _:
             continue
         before = _
         new.append(_)

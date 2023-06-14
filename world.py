@@ -80,7 +80,8 @@ class World:
             gone_through_percent = (total_notes-len(notes)) * 100 // total_notes
             while gone_through_percent > max_percent:
                 max_percent += 1
-                percent_update_callback(max_percent)
+                if percent_update_callback(max_percent):
+                    raise UserCancelsLoading()
 
             all_bounce_rects = [_bounc.get_collision_rect() for _bounc in bounces_so_far]
             if len(notes) == 0:
