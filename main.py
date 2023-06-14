@@ -31,7 +31,7 @@ def main():
     # game loop
     running = True
     while running:
-        # thanks to TheCodeCrafter for the implementation
+        # thanks to TheCodingCrafter for the implementation
         if Config.theme == "rainbow":
             to_set_as_rainbow = pygame.Color((0, 0, 0))
             to_set_as_rainbow2 = pygame.Color((0, 0, 0))

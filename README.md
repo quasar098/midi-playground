@@ -26,6 +26,11 @@ mainmenu.mp3 song is Aerial City by Chika for tetr.io (will replace later, but t
 
 if you do not enjoy me using your midi or songs, i can remove it from this project and replace them
 
+## contributors
+
+- [quasar098](https://github.com/quasar098)
+- [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes + QOL
+
 ## todo
 
 ### generic
