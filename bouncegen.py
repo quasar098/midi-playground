@@ -4,7 +4,8 @@ from time import time as get_current_time
 from typing import Union
 import random
 from sys import setrecursionlimit
-setrecursionlimit(10000)  # increase if more notes
+import datetime, os
+setrecursionlimit(40000)  # increase if more notes
 
 
 WIDTH, HEIGHT = 1920, 1080
@@ -13,8 +14,41 @@ SQUARE_SIZE = 50
 PLATFORM_WIDTH_PERCENT = 10
 GLOBAL_TIME_OFFSET = 1000
 PARTICLE_SPEED = 10
+
+# Light theme wall - 214, 209, 205 : bg - 60, 63, 65
+LIGHT_WALL_COLOR = pygame.Color((214, 209, 205))
+LIGHT_BG_COLOR = pygame.Color((60, 63, 65))
+
+# Dark theme wall - 60, 63, 65 : bg - 214, 209, 205
+DARK_WALL_COLOR = pygame.Color((60, 63, 65))
+DARK_BG_COLOR = pygame.Color((214, 209, 205))
+
+# Rainbow theme
+RAINBOW_WALL_COLOR = pygame.Color((60, 63, 65))
+RAINBOW_BG_COLOR = pygame.Color((214, 209, 205))
+RAINBOW_ON = False
+RAINBOW_SPEED = 10
+
+# Autumn theme wall - #F77F00 : bg - #FCBF49
+AUTUMN_WALL_COLOR = pygame.Color((247, 127, 0))
+AUTUMN_BG_COLOR = pygame.Color((252, 191, 73))
+
+# Winter theme wall - #00B4D8 : bg - #CAF0F8
+WINTER_WALL_COLOR = pygame.Color((0, 180, 216))
+WINTER_BG_COLOR = pygame.Color((202, 240, 255))
+
+# Spring theme wall - #70E000 : bg - #ABFF4F
+SPRING_WALL_COLOR = pygame.Color((112, 224, 0))
+SPRING_BG_COLOR = pygame.Color((158, 240, 26))
+
+# Maroon theme wall - #DA344D : bg - #EF7674
+MAROON_WALL_COLOR = pygame.Color((218, 52, 77))
+MAROON_BG_COLOR = pygame.Color((239, 118, 116))
+
 WALL_COLOR = pygame.Color((60, 63, 65))
 BG_COLOR = pygame.Color((214, 209, 205))
+
+global SQUARE_COLORS
 SQUARE_COLORS = [
     (224, 26, 79),
     (173, 247, 182),
@@ -458,6 +492,70 @@ def do_the_things(settings=None) -> None:
     last_bounce_offset = settings.get("last_bounce_offset", 1)
     backtrack_chance = settings.get("backtrack_chance", 0.03)
     backtrack_amount = settings.get("backtrack_amount", 20)
+    do_particles = settings.get("draw_particles", True)
+    do_anim = settings.get("anim", True)
+
+    theme = settings.get("theme", None)
+    if theme == "dark":
+        WALL_COLOR = DARK_WALL_COLOR
+        BG_COLOR = DARK_BG_COLOR
+        SQUARE_COLORS = [
+            WALL_COLOR
+        ]
+
+    elif theme == "light":
+        WALL_COLOR = LIGHT_WALL_COLOR
+        BG_COLOR = LIGHT_BG_COLOR
+        SQUARE_COLORS = [
+            WALL_COLOR
+        ]
+
+    elif theme == "rainbow":
+        WALL_COLOR = RAINBOW_WALL_COLOR
+        BG_COLOR = RAINBOW_BG_COLOR
+        global RAINBOW_ON
+        RAINBOW_ON = True
+        SQUARE_COLORS = [
+            (224, 26, 79),
+            (173, 247, 182),
+            (249, 194, 46),
+            (83, 179, 203)
+        ]
+    
+    elif theme == "autumn":
+        WALL_COLOR = AUTUMN_WALL_COLOR
+        BG_COLOR = AUTUMN_BG_COLOR
+        SQUARE_COLORS = [
+            WALL_COLOR
+        ]
+
+    elif theme == "winter":
+        WALL_COLOR = WINTER_WALL_COLOR
+        BG_COLOR = WINTER_BG_COLOR
+        SQUARE_COLORS = [
+            WALL_COLOR
+        ]
+    
+    elif theme == "spring":
+        WALL_COLOR = SPRING_WALL_COLOR
+        BG_COLOR = SPRING_BG_COLOR
+        SQUARE_COLORS = [
+            WALL_COLOR
+        ]
+    
+    elif theme == "maroon":
+        WALL_COLOR = MAROON_WALL_COLOR
+        BG_COLOR = MAROON_BG_COLOR
+        SQUARE_COLORS = [
+            WALL_COLOR
+        ]
+    
+    else:
+        WALL_COLOR = DARK_WALL_COLOR
+        BG_COLOR = DARK_BG_COLOR
+        SQUARE_COLORS = [
+            WALL_COLOR
+        ]
 
     # load notes
     _, notes = read_midi_file(midi_file_name)
@@ -559,13 +657,14 @@ def do_the_things(settings=None) -> None:
 
         # bounce anim
         sqrect = camera.offset(square.rect)
-        if (world.time - 0.25) + music_offset / 1000 < square.last_bounce_time:
-            lerp = abs((world.time - 0.25 + music_offset / 1000) - square.last_bounce_time) * 5
-            lerp = lerp ** 2  # square it for better-looking interpolation
-            if square.latest_bounce_direction:
-                sqrect.inflate_ip((lerp * 5, -10 * lerp))
-            else:
-                sqrect.inflate_ip((-10 * lerp, lerp * 5))
+        if do_anim:
+            if (world.time - 0.25) + music_offset / 1000 < square.last_bounce_time:
+                lerp = abs((world.time - 0.25 + music_offset / 1000) - square.last_bounce_time) * 5
+                lerp = lerp ** 2  # square it for better-looking interpolation
+                if square.latest_bounce_direction:
+                    sqrect.inflate_ip((lerp * 5, -10 * lerp))
+                else:
+                    sqrect.inflate_ip((-10 * lerp, lerp * 5))
 
         total_rects = 0
 
@@ -580,18 +679,24 @@ def do_the_things(settings=None) -> None:
         for bounce in world.rectangles:
             offsetted = camera.offset(bounce)
             if offsetted.colliderect(screen_rect):
+                if RAINBOW_ON:
+                    WALL_COLOR.hsva = ((world.time*RAINBOW_SPEED) % 360, 100, 75, 100)
+                    
                 total_rects += 1
-                pygame.draw.rect(screen, WALL_COLOR, offsetted)
+                pygame.draw.rect(screen, WALL_COLOR, offsetted)          
 
         # particles
-        for particle in world.particles:
-            pygame.draw.rect(screen, BG_COLOR, camera.offset(particle.rect))
-        for remove_particle in [particle for particle in world.particles if particle.age()]:
-            world.particles.remove(remove_particle)
+        if do_particles:
+            for particle in world.particles:
+                pygame.draw.rect(screen, BG_COLOR, camera.offset(particle.rect))
+            for remove_particle in [particle for particle in world.particles if particle.age()]:
+                world.particles.remove(remove_particle)
+        else:
+            world.particles = []
 
         # draw square outline
         pygame.draw.rect(screen, (0, 0, 0), sqrect)
-        square_color_index = round((square.dir_x + 1)/2 + square.dir_y + 1)
+        square_color_index = round((square.dir_x + 1)/2 + square.dir_y + 1) if len(SQUARE_COLORS) > 1 else 0
         square.register_past_color(SQUARE_COLORS[square_color_index])
         sq_surf = square.get_surface(tuple(sqrect.inflate(-int(SQUARE_SIZE/5), -int(SQUARE_SIZE/5))[2:]))
         screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
