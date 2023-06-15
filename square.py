@@ -12,9 +12,8 @@ class Square:
         self.past_colors = []
 
     def register_past_color(self, col: tuple[int, int, int]):
-        self.past_colors.insert(0, col)
-        self.past_colors.insert(0, col)
-        self.past_colors.insert(0, col)
+        for _ in range(max(Config.square_swipe_anim_speed, 1)):
+            self.past_colors.insert(0, col)
         while len(self.past_colors) > Config.SQUARE_SIZE*4/5:
             self.past_colors.pop()
 
@@ -39,6 +38,33 @@ class Square:
     @property
     def y(self):
         return self.pos[1]
+
+    def title_screen_physics(self, bounding: pygame.Rect):
+        self.reg_move()
+        r = self.rect
+        if r.right > bounding.right:
+            self.dir[0] = -1
+            self.latest_bounce_direction = 0
+        elif r.left < bounding.left:
+            self.dir[0] = 1
+            self.latest_bounce_direction = 0
+        elif r.bottom > bounding.bottom:
+            self.dir[1] = -1
+            self.latest_bounce_direction = 1
+        elif r.top < bounding.top:
+            self.dir[1] = 1
+            self.latest_bounce_direction = 1
+        else:
+            return False
+        self.last_bounce_time = get_current_time()
+        return True
+
+    def draw(self, screen: pygame.Surface, sqrect: pygame.Rect):
+        pygame.draw.rect(screen, (0, 0, 0), sqrect)
+        square_color_index = round((self.dir_x + 1)/2 + self.dir_y + 1)
+        self.register_past_color(get_colors()["square"][square_color_index % len(get_colors()["square"])])
+        sq_surf = self.get_surface(tuple(sqrect.inflate(-int(Config.SQUARE_SIZE/5), -int(Config.SQUARE_SIZE/5))[2:]))
+        screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
 
     @x.setter
     def x(self, val: int):

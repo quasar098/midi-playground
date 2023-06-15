@@ -30,7 +30,7 @@ class World:
         return self.past_bounces[-1]
 
     def add_particles(self, sp: list[float], sd: list[float]):
-        for _ in range(10):
+        for _ in range(Config.particle_amount):
             new = Particle([sp[0]+random.randint(-10, 10), sp[1]+random.randint(-10, 10)], sd)
             self.particles.append(new)
 

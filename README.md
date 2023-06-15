@@ -44,8 +44,10 @@ if you do not enjoy me using your midi or songs, i can remove it from this proje
 - midi text events at specific timestamps to change the speed of the cube
 - more songs
 - map editor if time
+- rectangle duplicate overlap area remover for hallways
 - add monitor framerate finder for linux (not macos b/c i hate mac users) [link here](https://stackoverflow.com/questions/1225057/how-can-i-determine-the-monitor-refresh-rate)
 - reset to default button for config page
+- square bounce intensity, particle intensity (sorry, TheCodingCrafter! merge conflicts strike again)
 - i think there are sync issues idk
 
 ### modifiers

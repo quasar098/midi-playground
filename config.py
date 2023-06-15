@@ -5,7 +5,6 @@ from os.path import isfile
 
 
 class Config:
-
     # constants
     SCREEN_WIDTH = 1920
     SCREEN_HEIGHT = 1080
@@ -109,8 +108,10 @@ class Config:
 
     # settings that are not configurable (yet)
     backtrack_chance: Optional[float] = 0.01
-    rainbow_speed: Optional[int] = 30
     backtrack_amount: Optional[int] = 40
+    rainbow_speed: Optional[int] = 30
+    square_swipe_anim_speed: Optional[int] = 4
+    particle_amount = 10
 
     # just global stuff
     midi_file_name: Optional[str] = None
@@ -118,7 +119,7 @@ class Config:
 
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
-            "square_speed", "volume", "music_offset", "direction_change_chance"]
+                  "square_speed", "volume", "music_offset", "direction_change_chance"]
 
 
 def get_colors():
@@ -148,4 +149,3 @@ def load_from_file():
 
 if __name__ == "config":
     load_from_file()
-

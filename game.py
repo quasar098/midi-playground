@@ -107,9 +107,8 @@ class Game:
             else:
                 sqrect.inflate_ip((-10 * lerp, lerp * 5))
 
-        total_rects = 0
-
         # safe areas
+        total_rects = 0
         for safe_area in self.safe_areas:
             offsetted = self.camera.offset(safe_area)
             if screen_rect.colliderect(offsetted):
@@ -132,12 +131,8 @@ class Game:
         mimic = get_font("./assets/poppins-regular.ttf", 24).render(self.world.scorekeeper.latest_message, True, (255, 255, 255))
         screen.blit(mimic, (100, 100))
 
-        # draw square outline
-        pygame.draw.rect(screen, (0, 0, 0), sqrect)
-        square_color_index = round((self.world.square.dir_x + 1)/2 + self.world.square.dir_y + 1)
-        self.world.square.register_past_color(get_colors()["square"][square_color_index % len(get_colors()["square"])])
-        sq_surf = self.world.square.get_surface(tuple(sqrect.inflate(-int(Config.SQUARE_SIZE/5), -int(Config.SQUARE_SIZE/5))[2:]))
-        screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
+        # draw square
+        self.world.square.draw(screen, sqrect)
 
         if not self.camera.locked_on_square:
             screen.blit(self.camera_ctrl_text, (10, 10))

@@ -141,10 +141,10 @@ class SongSelector:
             song.anim = max(min(song.anim, 1), 0)
 
             if self.selected_index == index:
-                song.selected_surface.set_alpha(int(self.anim*255))
+                # song.selected_surface.set_alpha(int(self.anim*255))
                 screen.blit(song.selected_surface, rect.move(80, 0))
             else:
-                song.surface.set_alpha(int(self.anim*255))
+                # song.surface.set_alpha(int(self.anim*255))
                 screen.blit(song.surface, rect)
 
         if self.scroll > 100:

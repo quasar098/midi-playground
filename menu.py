@@ -1,5 +1,8 @@
 import pygame
+from particle import Particle
+from square import Square
 from utils import *
+from random import randint
 
 
 def draw_beveled_rectangle(surf: pygame.Surface, color: pygame.Color, rect: pygame.Rect) -> None:
@@ -59,8 +62,12 @@ class Menu:
         ]
         self.anim = 1
         self.active = True
-        self.todo_interesting_here_text = get_font("./assets/poppins-regular.ttf", 48).render(
-            "todo: put something fun here", True, (0, 0, 0))
+        self.square = Square(Config.SQUARE_SIZE/2, Config.SQUARE_SIZE/2)
+        self.particles: list[Particle] = []
+
+    @property
+    def screensaver_rect(self):
+        return pygame.Rect(0, 0, int(Config.SCREEN_WIDTH/2-100), Config.SCREEN_HEIGHT).inflate(-100, -100)
 
     def draw(self, screen: pygame.Surface):
         if self.active:
@@ -72,6 +79,41 @@ class Menu:
         self.anim = max(min(self.anim, 1), 0)
         if not self.anim:
             return
+
+        # interesting here
+        if self.active:
+            # x_offset = interpolate_fn(1-self.anim)*(self.screensaver_rect.width*2)
+            x_offset = 0
+
+            sqrect = self.square.rect
+            if (get_current_time() - 0.25) < self.square.last_bounce_time:
+                lerp = abs((get_current_time() - 0.25) - self.square.last_bounce_time) * 5
+                lerp = lerp ** 2  # square it for better-looking interpolation
+                if self.square.latest_bounce_direction:
+                    sqrect.inflate_ip((lerp * 5, -10 * lerp))
+                else:
+                    sqrect.inflate_ip((-10 * lerp, lerp * 5))
+
+            pygame.draw.rect(screen, get_colors()["hallway"], self.screensaver_rect.move(-x_offset, 0))
+
+            # particles
+            for particle in self.particles:
+                pygame.draw.rect(screen, get_colors()["hallway"], particle.rect)
+            for remove_particle in [particle for particle in self.particles if particle.age()]:
+                self.particles.remove(remove_particle)
+
+            self.square.draw(screen, sqrect.move(-x_offset, 0))
+            bounced = self.square.title_screen_physics(self.screensaver_rect.move(-x_offset, 0))
+            if bounced:
+                latest_dir = self.square.latest_bounce_direction
+                sd = self.square.dir.copy()
+                sd[latest_dir] *= -1
+                sd[1-latest_dir] = 0
+                sp = self.square.pos
+                for _ in range(Config.particle_amount):
+                    new = Particle([sp[0]+randint(-10, 10), sp[1]+randint(-10, 10)], sd)
+                    self.particles.append(new)
+
         for index, option in enumerate(self.menu_options):
             y_value = index * (option.HEIGHT + option.SPACING) + 250
             # update the hover if completely active
@@ -91,13 +133,6 @@ class Menu:
                 play_sound("wood.wav")
             option.before_hover = new_hover
 
-        # todo interesting here
-        self.todo_interesting_here_text.set_alpha(int(self.anim*255))
-        screen.blit(
-            self.todo_interesting_here_text,
-            self.todo_interesting_here_text.get_rect(midleft=screen.get_rect().midleft).move(50, 0)
-        )
-
     def handle_event(self, event: pygame.event.Event):
         if not self.active:
             return
@@ -108,3 +143,9 @@ class Menu:
                     or (event.type == pygame.KEYDOWN and event.key == 49 + index):
                 play_sound("select.mp3")
                 return option.id
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button in (1, 2, 3):
+                # inflate for more enjoyment (aim trainer minigame !?!? crazy)
+                if self.square.rect.inflate(20, 20).collidepoint(pygame.mouse.get_pos()):
+                    play_sound("wood.wav", 1)
+                    self.square.dir[randint(0, 1)] *= -1
