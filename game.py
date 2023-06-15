@@ -128,11 +128,24 @@ class Game:
         for remove_particle in [particle for particle in self.world.particles if particle.age()]:
             self.world.particles.remove(remove_particle)
 
+        # scorekeeper drawing
         mimic = get_font("./assets/poppins-regular.ttf", 24).render(self.world.scorekeeper.latest_message, True, (255, 255, 255))
         screen.blit(mimic, (100, 100))
 
         # draw square
         self.world.square.draw(screen, sqrect)
+
+        # countdown to start
+        time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
+        if time_from_start < 0:
+            repr_time = f"{abs(int((time_from_start+0.065)*10)/10)}s"
+            countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_time, True, (255, 255, 255))
+            screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
+        elif time_from_start < 0.5:
+            repr_zero = f"0.0s"
+            countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_zero, True, (255, 255, 255))
+            countdown_surface.set_alpha((0.5-time_from_start)*2*255)
+            screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
 
         if not self.camera.locked_on_square:
             screen.blit(self.camera_ctrl_text, (10, 10))
@@ -150,5 +163,9 @@ class Game:
             if event.key == pygame.K_TAB:
                 self.camera.locked_on_square = not self.camera.locked_on_square
             if self.camera.locked_on_square:
-                if 97+26 > event.key >= 97 or event.key == pygame.K_SPACE:  # press a to z key
+                time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
+                if time_from_start < 0:
+                    return
+                arrows_n_space = pygame.K_SPACE, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN
+                if 97+26 > event.key >= 97 or event.key in arrows_n_space:  # press a to z key or space or arrows
                     self.world.handle_keypress()

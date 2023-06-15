@@ -4,19 +4,25 @@ import pygame
 
 
 class Particle:
+    SPEED_VARIATION = 4
+    SIZE_MIN = 7
+    SIZE_MAX = 14
+    AGE_RATE = 10
+    SLOW_DOWN_RATE = 1.2
+
     def __init__(self, pos: list[float], delta: list[float]):
         self.pos = pos.copy()
-        self.size = random.randint(7, 14)
+        self.size = random.randint(Particle.SIZE_MIN, Particle.SIZE_MAX)
         self.delta = delta.copy()
-        self.delta[0] += random.randint(-4, 4)/8
-        self.delta[1] += random.randint(-4, 4)/8
+        self.delta[0] += random.randint(-Particle.SPEED_VARIATION, Particle.SPEED_VARIATION)/8
+        self.delta[1] += random.randint(-Particle.SPEED_VARIATION, Particle.SPEED_VARIATION)/8
 
     def age(self):
-        self.size -= 15/FRAMERATE
+        self.size -= Particle.AGE_RATE/FRAMERATE
         self.x += self.delta[0] * Config.PARTICLE_SPEED
         self.y += self.delta[1] * Config.PARTICLE_SPEED
-        self.x = self.x * 1-(10/FRAMERATE)
-        self.y = self.y * 1-(10/FRAMERATE)
+        self.delta[0] /= (Particle.SLOW_DOWN_RATE+FRAMERATE)/FRAMERATE
+        self.delta[1] /= (Particle.SLOW_DOWN_RATE+FRAMERATE)/FRAMERATE
         return self.size <= 0
 
     @property
