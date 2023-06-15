@@ -1,5 +1,7 @@
 import pygame
-from typing import Optional
+from typing import Optional, Any
+from json import load, dump
+from os.path import isfile
 
 
 class Config:
@@ -101,7 +103,7 @@ class Config:
     max_notes: Optional[int] = None
     bounce_min_spacing: Optional[float] = 30
     square_speed: Optional[int] = 600
-    volume: Optional[int] = 30
+    volume: Optional[int] = 70
     music_offset: Optional[int] = -300
     direction_change_chance: Optional[int] = 30
 
@@ -114,6 +116,36 @@ class Config:
     midi_file_name: Optional[str] = None
     audio_file_name: Optional[str] = None
 
+    # keys to save and load
+    save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
+            "square_speed", "volume", "music_offset", "direction_change_chance"]
+
 
 def get_colors():
     return Config.color_themes.get(Config.theme, "dark")
+
+
+def save_to_file(dat: Optional[dict[str, Any]] = None):
+    if dat is None:
+        dat = {k: getattr(Config, k) for k in Config.save_attrs}
+    with open("./assets/settings.json", "w") as f:
+        dump(dat, f)
+
+
+def load_from_file():
+    try:
+        if isfile("./assets/settings.json"):
+            with open("./assets/settings.json", "r") as f:
+                data = load(f)
+                for setting in data:
+                    setattr(Config, setting, data[setting])
+        else:
+            with open("./assets/settings.json", "w") as f:
+                f.write("{}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+if __name__ == "config":
+    load_from_file()
+

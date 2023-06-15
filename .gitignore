@@ -2,3 +2,4 @@
 .vscode
 build
 __pycache__
+assets/settings.json

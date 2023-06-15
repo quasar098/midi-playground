@@ -88,7 +88,7 @@ class SongSelector:
                             continue
                         play_sound("select.mp3")
                         pygame.mixer.music.load(join(".", "songs", song.audio_file_name))
-                        pygame.mixer.music.set_volume(0.7)
+                        pygame.mixer.music.set_volume(Config.volume/100)
                         pygame.mixer.music.play()
                         self.selected_index = index
                         return

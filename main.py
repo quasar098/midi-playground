@@ -4,6 +4,7 @@ from game import Game
 from configpage import ConfigPage
 from songselector import SongSelector
 from os import startfile, getcwd
+from config import save_to_file
 import webbrowser
 import pygame
 
@@ -13,7 +14,7 @@ def main():
     # pygame and other boilerplate
     pygame.init()
     pygame.mixer.music.load("./assets/mainmenu.mp3")
-    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.set_volume(Config.volume/100)
     pygame.mixer.music.play(loops=-1, start=2)
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode(
@@ -127,6 +128,7 @@ def main():
         pygame.display.flip()
         clock.tick(FRAMERATE)
     pygame.quit()
+    save_to_file()
 
 
 if __name__ == '__main__':

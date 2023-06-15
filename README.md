@@ -40,13 +40,12 @@ if you do not enjoy me using your midi or songs, i can remove it from this proje
 - visual aid for timing
 - life bar
 - see entire map at the end
-- themes (dark mode, light mode, rainbow, chaos, neon, idk)
-- make scoring good
 - implement modifiers like osu (DT, HR, HD, EZ, etc)
 - midi text events at specific timestamps to change the speed of the cube
 - more songs
 - map editor if time
 - add monitor framerate finder for linux (not macos b/c i hate mac users) [link here](https://stackoverflow.com/questions/1225057/how-can-i-determine-the-monitor-refresh-rate)
+- reset to default button for config page
 - i think there are sync issues idk
 
 ### modifiers
