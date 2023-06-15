@@ -3,6 +3,7 @@ import pygame
 from world import World
 import random
 from camera import Camera
+from keystrokes import Keystrokes
 from particle import Particle
 
 
@@ -17,6 +18,8 @@ class Game:
         self.music_has_played = False
         self.offset_happened = False
         self.loading_text = get_font("./assets/poppins-regular.ttf", 24).render("Loading...", True, (255, 255, 255))
+        self.try_again_text = get_font("./assets/poppins-regular.ttf", 36).render("Press escape to go back", True, (255, 255, 255))
+        self.keystrokes = Keystrokes()
 
     def start_song(self, screen: pygame.Surface, song_path: str = None):
         random.seed(Config.seed)
@@ -62,7 +65,6 @@ class Game:
         self.world.square.pos = self.world.future_bounces[0].square_pos
 
     def draw(self, screen: pygame.Surface):
-        self.world.scorekeeper.penalize_misses(self.world.time)
 
         if not self.active:
             return
@@ -129,24 +131,50 @@ class Game:
             self.world.particles.remove(remove_particle)
 
         # scorekeeper drawing
-        mimic = get_font("./assets/poppins-regular.ttf", 24).render(self.world.scorekeeper.latest_message, True, (255, 255, 255))
-        screen.blit(mimic, (100, 100))
+        time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
+        if not Config.theatre_mode:
+            self.world.scorekeeper.draw(screen, time_from_start if len(self.world.future_bounces) else -1)
+
+            # hit icons
+            to_remove = []
+            for hiticon in self.world.scorekeeper.hit_icons:
+                if hiticon.draw(screen, self.camera):
+                    to_remove.append(hiticon)
+            for remove in to_remove:
+                self.world.scorekeeper.hit_icons.remove(remove)
+
+            if self.world.scorekeeper.hp <= 0 and not self.world.square.died:
+                self.world.square.died = True
+                self.world.square.dir = [0, 0]
+                pygame.mixer.music.stop()
+                play_sound("death.mp3", 0.5)
+                self.world.future_bounces = []
+                for _ in range(100):
+                    self.world.particles.append(Particle(self.world.square.pos, [random.randint(-3, 3), random.randint(-3, 3)]))
+            if self.world.square.died:
+                self.world.scorekeeper.hp = 0
 
         # draw square
         self.world.square.draw(screen, sqrect)
 
-        # countdown to start
-        time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
-        if time_from_start < 0:
-            repr_time = f"{abs(int((time_from_start+0.065)*10)/10)}s"
-            countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_time, True, (255, 255, 255))
-            screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
-        elif time_from_start < 0.5:
-            repr_zero = f"0.0s"
-            countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_zero, True, (255, 255, 255))
-            countdown_surface.set_alpha((0.5-time_from_start)*2*255)
-            screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
+        if not Config.theatre_mode:
+            # keystrokes
+            self.keystrokes.draw(screen)
 
+            # countdown to start
+            if time_from_start < 0:
+                repr_time = f"{abs(int((time_from_start+0.065)*10)/10)}s"
+                countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_time, True, (255, 255, 255))
+                screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
+            elif time_from_start < 0.5:
+                repr_zero = f"0.0s"
+                countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_zero, True, (255, 255, 255))
+                countdown_surface.set_alpha((0.5-time_from_start)*2*255)
+                screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
+
+            # failure message
+            if self.world.square.died:
+                screen.blit(self.try_again_text, self.try_again_text.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
         if not self.camera.locked_on_square:
             screen.blit(self.camera_ctrl_text, (10, 10))
 
@@ -162,10 +190,12 @@ class Game:
                 return True
             if event.key == pygame.K_TAB:
                 self.camera.locked_on_square = not self.camera.locked_on_square
-            if self.camera.locked_on_square:
-                time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
-                if time_from_start < 0:
-                    return
-                arrows_n_space = pygame.K_SPACE, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN
-                if 97+26 > event.key >= 97 or event.key in arrows_n_space:  # press a to z key or space or arrows
-                    self.world.handle_keypress()
+            if not Config.theatre_mode:
+                if self.camera.locked_on_square:
+                    time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
+                    if time_from_start < -0.2:
+                        return
+                    # arrows_n_space = pygame.K_SPACE, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN
+                    arrows_n_space = ()
+                    if 97+26 > event.key >= 97 or event.key in arrows_n_space:  # press a to z key or space or arrows
+                        self.world.handle_keypress(time_from_start)

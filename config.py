@@ -13,6 +13,12 @@ class Config:
     PARTICLE_SPEED = 10
 
     # colors
+    #
+    # each color theme requires a hallway color, a background color, and at least one square color
+    # optionally, the color theme provides an hp_bar_border color (default 10, 9, 8),
+    # an hp_bar_background color (default 34, 51, 59), and a list
+    # of hp_bar_fill colors (default (156, 198, 155), (189, 228, 168), (215, 242, 186))
+    #
     color_themes = {
         "dark": {
             "hallway": pygame.Color(214, 209, 205),
@@ -105,6 +111,8 @@ class Config:
     volume: Optional[int] = 70
     music_offset: Optional[int] = -300
     direction_change_chance: Optional[int] = 30
+    hp_drain_rate = 10
+    theatre_mode = False
 
     # settings that are not configurable (yet)
     backtrack_chance: Optional[float] = 0.01
@@ -119,7 +127,7 @@ class Config:
 
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
-                  "square_speed", "volume", "music_offset", "direction_change_chance"]
+                  "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode"]
 
 
 def get_colors():

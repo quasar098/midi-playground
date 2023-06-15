@@ -24,7 +24,11 @@ cant remember where i got the others from (sorry if i stole midi file)
 
 mainmenu.mp3 song is Aerial City by Chika for tetr.io (will replace later, but this is fine for now i think)
 
-if you do not enjoy me using your midi or songs, i can remove it from this project and replace them
+death sound is undertale gaster fade
+
+colors generated using [coolors.co](https://coolors.co/generate)
+
+if you do not enjoy me using your assets, i can remove it from this project and replace them with other things
 
 ## contributors
 
@@ -35,12 +39,10 @@ if you do not enjoy me using your midi or songs, i can remove it from this proje
 
 ### generic
 
-- redo scoring because it currently sucks
-- visual aid for timing
-- life bar
+- prevent spamming during scoring
+- visual aid for timing of square bounce (ghost square where next bounce?)
 - see entire map at the end
 - implement modifiers like osu (DT, HR, HD, EZ, etc)
-- midi text events at specific timestamps to change the speed of the cube
 - more songs
 - map editor if time
 - rectangle duplicate overlap area remover for hallways
@@ -48,9 +50,10 @@ if you do not enjoy me using your midi or songs, i can remove it from this proje
 - reset to default button for config page
 - square bounce intensity, particle intensity (sorry, TheCodingCrafter! merge conflicts strike again)
 - i think there are sync issues idk
+- keystrokes icons for space, arrow keys before reactivating arrow keys and space
+- 4 key gamemode
 
 ### modifiers
 
 - light switch that turns on and off at each bounce ? (flashlight)
 - precise mode (no 100s, only 300s or misses)
-- theatre mode (no scoring)

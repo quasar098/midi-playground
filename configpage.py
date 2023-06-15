@@ -121,6 +121,18 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        self.s_hp_drain_rate = pgui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((300, 510, 300, 30)),
+            start_value=Config.hp_drain_rate,
+            value_range=(3, 20),
+            manager=self.ui_manager
+        )
+        self.s_hp_drain_rate_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((30, 510, 240, 30)),
+            text=f"HP drain rate ({Config.hp_drain_rate}/s):",
+            manager=self.ui_manager
+        )
+
         # audio and general settings
 
         self.s_game_volume = pgui.elements.UIHorizontalSlider(
@@ -147,6 +159,18 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        self.s_theatre_mode = pgui.elements.UIDropDownMenu(
+            ["Off", "On"],
+            relative_rect=pygame.Rect((930, 150, 300, 30)),
+            starting_option=["Off", "On"][int(Config.theatre_mode)],
+            manager=self.ui_manager
+        )
+        self.s_theatre_mode_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((630, 150, 240, 30)),
+            text="Theatre mode:",
+            manager=self.ui_manager
+        )
+
     def handle_event(self, event: pygame.event.Event):
         if not self.active:
             return
@@ -168,6 +192,9 @@ class ConfigPage:
             if event.ui_element == self.s_color_theme:
                 play_sound("wood.wav")
                 Config.theme = event.text
+            if event.ui_element == self.s_theatre_mode:
+                play_sound("wood.wav")
+                Config.theatre_mode = bool("fn".index(event.text[1]))
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:
@@ -203,6 +230,9 @@ class ConfigPage:
             if event.ui_element == self.s_direction_change_chance:
                 self.s_direction_change_chance_label.set_text(f"Change dir chance ({event.value}%):")
                 Config.direction_change_chance = event.value
+            if event.ui_element == self.s_hp_drain_rate:
+                self.s_hp_drain_rate_label.set_text(f"HP drain rate ({event.value}/s):")
+                Config.hp_drain_rate = event.value
 
         self.ui_manager.process_events(event)
 

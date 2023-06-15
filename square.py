@@ -10,6 +10,7 @@ class Square:
         self.last_bounce_time = -100
         self.latest_bounce_direction = 0  # 0 = horiz, 1 = vert
         self.past_colors = []
+        self.died = False
 
     def register_past_color(self, col: tuple[int, int, int]):
         for _ in range(max(Config.square_swipe_anim_speed, 1)):
@@ -60,6 +61,8 @@ class Square:
         return True
 
     def draw(self, screen: pygame.Surface, sqrect: pygame.Rect):
+        if self.died:
+            return
         pygame.draw.rect(screen, (0, 0, 0), sqrect)
         square_color_index = round((self.dir_x + 1)/2 + self.dir_y + 1)
         self.register_past_color(get_colors()["square"][square_color_index % len(get_colors()["square"])])

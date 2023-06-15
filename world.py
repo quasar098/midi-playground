@@ -20,12 +20,12 @@ class World:
         self.particles: list[Particle] = []
         self.timestamps = []
         self.square = Square()
-        self.scorekeeper = Scorekeeper()
+        self.scorekeeper = Scorekeeper(self)
 
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time
 
-    def next_bounce(self):
+    def next_bounce(self) -> Bounce:
         self.past_bounces.append(self.future_bounces.pop(0))
         return self.past_bounces[-1]
 
@@ -53,8 +53,8 @@ class World:
                     square.dir = [0, 0]
                     square.pos = current_bounce.square_pos
 
-    def handle_keypress(self):
-        self.scorekeeper.attempt_log(self.time)
+    def handle_keypress(self, time_from_start):
+        self.scorekeeper.do_keypress(time_from_start)
 
     def gen_future_bounces(self, _start_notes: list[tuple[int, int, int]], percent_update_callback):
         """Recursive solution is necessary"""
@@ -149,7 +149,7 @@ class World:
 
         _start_notes = _start_notes[:Config.max_notes] if Config.max_notes is not None else _start_notes
 
-        self.scorekeeper.unhit_notes = remove_too_close_values([_sn[1] for _sn in _start_notes[:-1]], Config.bounce_min_spacing)
+        self.scorekeeper.unhit_notes = remove_too_close_values([_sn[1] for _sn in _start_notes], Config.bounce_min_spacing)
 
         self.future_bounces = recurs(
             square=self.square.copy(),
