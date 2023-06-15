@@ -29,7 +29,7 @@ class Game:
         self.notes = notes
 
         # other settings
-        pygame.mixer.music.set_volume(Config.volume/100)
+
         self.world = World()
         self.music_has_played = False
         self.offset_happened = False

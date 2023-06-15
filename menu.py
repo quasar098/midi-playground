@@ -62,7 +62,7 @@ class Menu:
         ]
         self.anim = 1
         self.active = True
-        self.square = Square(Config.SQUARE_SIZE/2, Config.SQUARE_SIZE/2)
+        self.square = Square(100, 320)
         self.particles: list[Particle] = []
 
     @property

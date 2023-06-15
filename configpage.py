@@ -131,7 +131,7 @@ class ConfigPage:
         )
         self.s_game_volume_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((630, 30, 240, 30)),
-            text=f"Game volume ({Config.volume}%):",
+            text=f"Music volume ({Config.volume}%):",
             manager=self.ui_manager
         )
 
@@ -194,7 +194,7 @@ class ConfigPage:
                 self.s_square_speed_label.set_text(f"Square speed ({event.value} pixels/s):")
                 Config.square_speed = event.value
             if event.ui_element == self.s_game_volume:
-                self.s_game_volume_label.set_text(f"Game volume ({event.value}%):")
+                self.s_game_volume_label.set_text(f"Music volume ({event.value}%):")
                 Config.volume = event.value
                 pygame.mixer.music.set_volume(event.value/100)
             if event.ui_element == self.s_music_offset:
