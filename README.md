@@ -52,6 +52,7 @@ if you do not enjoy me using your assets, i can remove it from this project and 
 - i think there are sync issues idk
 - keystrokes icons for space, arrow keys before reactivating arrow keys and space
 - 4 key gamemode
+- window icon and title (easy)
 
 ### modifiers
 

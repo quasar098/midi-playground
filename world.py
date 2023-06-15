@@ -159,8 +159,8 @@ class World:
             )
         )
 
-        assert self.future_bounces is not False, "recurs function failed"
-        assert len(self.future_bounces) != 0, "no recurs list"
+        assert self.future_bounces is not False, "Recursive bounce generation algorithm failed"
+        assert len(self.future_bounces) != 0, "no recurs list???"
 
         # eliminate fully overlapping safe areas
         safe_areas: list[pygame.Rect]
