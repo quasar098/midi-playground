@@ -53,8 +53,8 @@ class World:
                     square.dir = [0, 0]
                     square.pos = current_bounce.square_pos
 
-    def handle_keypress(self, time_from_start):
-        self.scorekeeper.do_keypress(time_from_start)
+    def handle_keypress(self, time_from_start, misses):
+        return self.scorekeeper.do_keypress(time_from_start, misses)
 
     def gen_future_bounces(self, _start_notes: list[tuple[int, int, int]], percent_update_callback):
         """Recursive solution is necessary"""

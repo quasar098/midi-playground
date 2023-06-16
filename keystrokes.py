@@ -22,6 +22,7 @@ class Keystrokes:
             else:
                 if char in self.keys:
                     self.keys.remove(char)
+
         for key in self.keys:
             pygame.draw.rect(screen, (0, 0, 0), default_rect)
             pygame.draw.rect(screen, get_colors()["hallway"], default_rect.inflate(-2, -2))

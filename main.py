@@ -12,6 +12,7 @@ import pygame
 def main():
 
     # pygame and other boilerplate
+    n_frames = 0
     pygame.init()
     pygame.mixer.music.load("./assets/mainmenu.mp3")
     pygame.mixer.music.set_volume(Config.volume/100)
@@ -120,7 +121,8 @@ def main():
                 song_selector.active = True
 
         # draw stuff here
-        game.draw(screen)
+        n_frames += 1
+        game.draw(screen, n_frames)
         song_selector.draw(screen)
         config_page.draw(screen)
         menu.draw(screen)

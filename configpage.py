@@ -88,7 +88,7 @@ class ConfigPage:
         self.s_square_speed = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((300, 330, 300, 30)),
             start_value=Config.square_speed,
-            value_range=(600, 900),
+            value_range=(0, 9000),
             manager=self.ui_manager
         )
         self.s_square_speed_label = pgui.elements.UILabel(
@@ -124,7 +124,7 @@ class ConfigPage:
         self.s_hp_drain_rate = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((300, 510, 300, 30)),
             start_value=Config.hp_drain_rate,
-            value_range=(3, 20),
+            value_range=(-20, 20),
             manager=self.ui_manager
         )
         self.s_hp_drain_rate_label = pgui.elements.UILabel(
@@ -171,6 +171,19 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        # particle trail
+        self.s_particle_trail = pgui.elements.UIDropDownMenu(
+            ["Off", "On"],
+            relative_rect=pygame.Rect((930, 210, 300, 30)),
+            starting_option=["Off", "On"][int(Config.particle_trail)],
+            manager=self.ui_manager
+        )
+        self.s_particle_trail_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((630, 210, 240, 30)),
+            text="Particle trail:",
+            manager=self.ui_manager
+        )
+
     def handle_event(self, event: pygame.event.Event):
         if not self.active:
             return
@@ -195,6 +208,9 @@ class ConfigPage:
             if event.ui_element == self.s_theatre_mode:
                 play_sound("wood.wav")
                 Config.theatre_mode = bool("fn".index(event.text[1]))
+            if event.ui_element == self.s_particle_trail:
+                play_sound("wood.wav")
+                Config.particle_trail = bool("fn".index(event.text[1]))
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:
