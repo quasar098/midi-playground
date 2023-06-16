@@ -33,6 +33,7 @@ def main():
     # game loop
     running = True
     while running:
+        n_frames += 1
         # thanks to TheCodingCrafter for the implementation
         if Config.theme == "rainbow":
             to_set_as_rainbow = pygame.Color((0, 0, 0))
@@ -121,7 +122,6 @@ def main():
                 song_selector.active = True
 
         # draw stuff here
-        n_frames += 1
         game.draw(screen, n_frames)
         song_selector.draw(screen)
         config_page.draw(screen)

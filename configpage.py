@@ -88,7 +88,7 @@ class ConfigPage:
         self.s_square_speed = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((300, 330, 300, 30)),
             start_value=Config.square_speed,
-            value_range=(0, 9000),
+            value_range=(0, 2000),
             manager=self.ui_manager
         )
         self.s_square_speed_label = pgui.elements.UILabel(
