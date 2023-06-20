@@ -34,6 +34,7 @@ if you do not enjoy me using your assets, i can remove it from this project and 
 
 - [quasar098](https://github.com/quasar098)
 - [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes + QOL
+- [PurpleJuiceBox](https://github.com/PurpleJuiceBox) - Reset to Default Button
 
 ## todo
 
@@ -47,7 +48,6 @@ if you do not enjoy me using your assets, i can remove it from this project and 
 - map editor if time
 - rectangle duplicate overlap area remover for hallways
 - add monitor framerate finder for linux (not macos b/c i hate mac users) [link here](https://stackoverflow.com/questions/1225057/how-can-i-determine-the-monitor-refresh-rate)
-- reset to default button for config page
 - square bounce intensity, particle intensity (sorry, TheCodingCrafter! merge conflicts strike again)
 - i think there are sync issues idk
 - keystrokes icons for space, arrow keys before reactivating arrow keys and space
