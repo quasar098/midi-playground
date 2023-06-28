@@ -88,7 +88,7 @@ class ConfigPage:
         self.s_square_speed = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((300, 330, 300, 30)),
             start_value=Config.square_speed,
-            value_range=(0, 2000),
+            value_range=(100, 2000),
             manager=self.ui_manager
         )
         self.s_square_speed_label = pgui.elements.UILabel(
@@ -124,7 +124,7 @@ class ConfigPage:
         self.s_hp_drain_rate = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((300, 510, 300, 30)),
             start_value=Config.hp_drain_rate,
-            value_range=(-20, 20),
+            value_range=(-5, 20),
             manager=self.ui_manager
         )
         self.s_hp_drain_rate_label = pgui.elements.UILabel(
@@ -234,8 +234,9 @@ class ConfigPage:
                 self.s_bounce_min_spacing_label.set_text(f"Bounce min spacing ({event.value}ms):")
                 Config.bounce_min_spacing = event.value
             if event.ui_element == self.s_square_speed:
-                self.s_square_speed_label.set_text(f"Square speed ({event.value} pixels/s):")
-                Config.square_speed = event.value
+                rounded = round(event.value, -2)
+                self.s_square_speed_label.set_text(f"Square speed ({rounded} pixels/s):")
+                Config.square_speed = rounded
             if event.ui_element == self.s_game_volume:
                 self.s_game_volume_label.set_text(f"Music volume ({event.value}%):")
                 Config.volume = event.value

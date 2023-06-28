@@ -33,7 +33,7 @@ if you do not enjoy me using your assets, i can remove it from this project and 
 ## contributors
 
 - [quasar098](https://github.com/quasar098)
-- [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes + QOL
+- [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes, QOL, Accuracy
 
 ## todo
 
@@ -52,6 +52,9 @@ if you do not enjoy me using your assets, i can remove it from this project and 
 - i think there are sync issues idk
 - keystrokes icons for space, arrow keys before reactivating arrow keys and space
 - 4 key gamemode
+- toggle for bounce animation in config
+- square size slider in config
+- keystrokes in bottom left toggle inc onfig
 - window icon and title (easy)
 
 ### modifiers

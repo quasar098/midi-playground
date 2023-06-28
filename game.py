@@ -132,7 +132,7 @@ class Game:
         for remove_particle in [particle for particle in self.world.particles if particle.age()]:
             self.world.particles.remove(remove_particle)
 
-        # particle trail
+        # particle trail in game
         if Config.particle_trail:
             # every 2 frames add a particle
             if n_frames % 2 == 0:
@@ -144,7 +144,6 @@ class Game:
         time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
         if not Config.theatre_mode:
             self.misses = self.world.scorekeeper.draw(screen, time_from_start if len(self.world.future_bounces) else -1, self.misses)
-            
 
             # hit icons
             to_remove = []
@@ -191,6 +190,7 @@ class Game:
                 self.mouse_down = False
             
             # draw accuracy
+            # noinspection PyBroadException
             try:
                 n_bounces = len(self.world.past_bounces)
                 n_total_bounces = len(self.world.past_bounces)+len(self.world.future_bounces)
@@ -207,10 +207,8 @@ class Game:
                     screen.blit(acct_text, acct_text.get_rect(center=(220, 125)))
             except ZeroDivisionError:
                 pass
-            
             except Exception as e:
-                print(e)
-
+                pass
 
             # failure message
             if self.world.square.died:

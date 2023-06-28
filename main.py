@@ -125,7 +125,7 @@ def main():
         game.draw(screen, n_frames)
         song_selector.draw(screen)
         config_page.draw(screen)
-        menu.draw(screen)
+        menu.draw(screen, n_frames)
 
         pygame.display.flip()
         clock.tick(FRAMERATE)

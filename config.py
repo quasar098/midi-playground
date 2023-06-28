@@ -9,7 +9,7 @@ class Config:
     SCREEN_WIDTH = 1920
     SCREEN_HEIGHT = 1080
     CAMERA_SPEED = 500
-    SQUARE_SIZE = 20
+    SQUARE_SIZE = 50
     PARTICLE_SPEED = 10
 
     # colors
