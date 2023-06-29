@@ -18,7 +18,6 @@
 - reset to default button for config page
 - square bounce intensity, particle intensity settings
 - implement modifiers like osu (DT, HR, HD, EZ, etc)
-- add monitor framerate finder for linux (not macos b/c i hate mac users) [link here](https://stackoverflow.com/questions/1225057/how-can-i-determine-the-monitor-refresh-rate)
 
 ### low priority
 

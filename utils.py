@@ -13,12 +13,35 @@ setrecursionlimit(10000)  # increase if more notes
 
 
 # vsync framerate if on windows, else 60
-try:
-    import win32api
-    FRAMERATE = win32api.EnumDisplaySettings(win32api.EnumDisplayDevices().DeviceName, -1).DisplayFrequency
-except ModuleNotFoundError:
-    if platform == "win32":
+if platform == "win32":
+    try:
+        # noinspection PyPackageRequirements
+        import win32api
+        FRAMERATE = win32api.EnumDisplaySettings(win32api.EnumDisplayDevices().DeviceName, -1).DisplayFrequency
+    except ModuleNotFoundError:
         print("The win32api python module is not found! Install it with \"pip install pywin32\"")
+        FRAMERATE = 60
+elif "linux" in platform:
+    # noinspection PyPackageRequirements
+    from Xlib import display
+    # noinspection PyPackageRequirements
+    from Xlib.ext import randr
+    d = display.Display()
+    default_screen = d.get_default_screen()
+    info = d.screen(default_screen)
+
+    resources = randr.get_screen_resources(info.root)
+    active_modes = set()
+    for crtc in resources.crtcs:
+        crtc_info = randr.get_crtc_info(info.root, crtc, resources.config_timestamp)
+        if crtc_info.mode:
+            active_modes.add(crtc_info.mode)
+
+    for mode in resources.modes:
+        if mode.id in active_modes:
+            FRAMERATE = round(mode.dot_clock / (mode.h_total * mode.v_total))
+            break
+else:
     FRAMERATE = 60
 
 
