@@ -18,12 +18,20 @@ def main():
     pygame.mixer.music.load("./assets/mainmenu.mp3")
     pygame.mixer.music.set_volume(Config.volume/100)
     pygame.mixer.music.play(loops=-1, start=2)
+
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode(
         [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
         pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.SCALED,
         vsync=1
     )
+
+    # noinspection PyBroadException
+    try:
+        pygame.display.set_caption("Midi Playground")
+        pygame.display.set_icon(pygame.image.load("./assets/icon.png").convert_alpha())
+    except Exception as e:
+        print(e)
 
     # the big guns
     menu = Menu()
@@ -47,6 +55,8 @@ def main():
 
         screen.fill(get_colors()["background"])
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_F3:
                     debuginfo.print_debug_info()

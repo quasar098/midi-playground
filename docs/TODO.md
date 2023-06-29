@@ -25,7 +25,6 @@
 - see entire map at the end
 - investigate sync issues
 - toggle for bounce animation in config
-- window icon and title (easy)
 - square size slider in config
 
 ## modifiers
