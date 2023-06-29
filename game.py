@@ -30,7 +30,7 @@ class Game:
         # load song and notes
         with ZipFile(Config.current_song.fp) as zf:
             if Config.current_song.fp.lower().endswith(".osz"):
-                Config.music_offset = 0
+                # Config.music_offset = 0
                 notes = read_osu_file(filedata=zf.read(Config.current_song.song_file_name))
             else:
                 with zf.open(Config.current_song.song_file_name) as f:
