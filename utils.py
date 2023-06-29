@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Union, Optional, BinaryIO
 from errors import *
 from config import Config, get_colors
 from time import time as get_current_time
@@ -53,6 +53,25 @@ class CameraFollow(Enum):
     Predictive = 3  # smoothed camera, but you can see where the square will bounce better
 
 
+def read_osu_file(filedata: bytes):
+    filedata = filedata.decode("utf-8")
+    filelines = filedata.splitlines(False)
+    started_counting = False
+    timestamps = []
+    for line in filelines:
+        if not started_counting:
+            if "HitObjects" in line:
+                started_counting = True
+            continue
+        if len(line) < 3:
+            continue
+        args = line.split(",")
+        if (int(args[3]) & 3) == 0:
+            continue
+        timestamps.append(int(args[2])/1000)
+    return timestamps
+
+
 # noinspection PyUnresolvedReferences
 def read_midi_file(file):
     midi_file = mido.MidiFile(file=file)
@@ -64,7 +83,7 @@ def read_midi_file(file):
         if msg.type == 'note_on' and msg.velocity != 0:
             note = msg.note
             timestamp = current_time + msg.time
-            notes.append((note, round(timestamp*1000)/1000, msg.channel))
+            notes.append(round(timestamp*1000)/1000)
         current_time += msg.time
     return notes
 

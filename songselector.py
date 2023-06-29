@@ -4,12 +4,13 @@ from os import listdir
 from os.path import isfile, join
 from zipfile import ZipFile
 from typing import Any
+from io import BytesIO
 from json import loads
 
 
 class Song:
-    def __init__(self, name: str, song_artist: str, mapper: str, midi_file: str, audio_file: str, version: int = -1, filepath: Optional[str] = None):
-        self.song_file_name: str = midi_file
+    def __init__(self, name: str, song_artist: str, mapper: str, song_file: str, audio_file: str, version: int = -1, filepath: Optional[str] = None):
+        self.song_file_name: str = song_file
         self.audio_file_name: str = audio_file if audio_file is not None else self.song_file_name
         self.mapper = mapper
         self.fp = filepath
@@ -48,31 +49,60 @@ class Song:
         return f"<Song({self.song_file_name}, audio={self.audio_file_name})>"
 
 
+def song_from_osu_file(contents: str, songfilepath: str, zipfilepath: str) -> Song:
+    audio_name = ""
+    name = ""
+    artist = ""
+    mapper = ""
+
+    for line in contents.splitlines(False):
+        if line.startswith("AudioFilename: "):
+            audio_name = line.removeprefix("AudioFilename: ")
+        if line.startswith("Title:"):
+            name = line.removeprefix("Title:").lstrip()
+        if line.startswith("Artist:"):
+            artist = line.removeprefix("Artist:").lstrip()
+        if line.startswith("Creator:"):
+            mapper = line.removeprefix("Creator:").lstrip()
+        if line.startswith("Version:"):
+            # janky asf but whatever
+            mapper += f' | {line.removeprefix("Version:").lstrip()}'
+
+    return Song(name=name, song_artist=artist, mapper=mapper, song_file=songfilepath, audio_file=audio_name, version=-2, filepath=zipfilepath)
+
+
+def make_songs_from_osz(fpath: str) -> list[Song]:
+    songs = []
+    with ZipFile(fpath) as zf:
+        files = zf.filelist
+        for fileinfo in files:
+            if fileinfo.filename.endswith(".osu"):
+                songs.append(song_from_osu_file(zf.read(fileinfo.filename).decode('utf-8'), fileinfo.filename, fpath))
+    return songs
+
+
 def make_song_from_zip(fpath: str) -> Song:
     with ZipFile(fpath) as zf:
-        try:
-            metadata_info = zf.getinfo("metadata.json")
-            metadata: dict[str, Any] = loads(zf.read(metadata_info))
-            if "name" not in metadata:
-                raise InvalidSongError(f"No name in metadata of {fpath}")
-            if "mapper" not in metadata:
-                raise InvalidSongError(f"No mapper in metadata of {fpath}")
-            if "audio_file" not in metadata:
-                raise InvalidSongError(f"No audio_file in metadata of {fpath}")
-            if "song_file" not in metadata:
-                raise InvalidSongError(f"No song_file in metadata of {fpath}")
-            if "version" not in metadata:
-                raise InvalidSongError(f"No version in metadata of {fpath}")
-            name = metadata.get("name")
-            artist = metadata.get("artist", metadata.get("author", "Unknown Artist"))
-            mapper = metadata.get("mapper")
-            audio_file = metadata.get("audio_file")
-            song_file = metadata.get("song_file")
-            version = metadata.get("version", -1)
-            new_song = Song(name, audio_file=audio_file, midi_file=song_file, song_artist=artist, mapper=mapper, version=version, filepath=fpath)
-            return new_song
-        except KeyError:
-            return None
+        metadata_info = zf.getinfo("metadata.json")
+        metadata: dict[str, Any] = loads(zf.read(metadata_info))
+        if "name" not in metadata:
+            raise InvalidSongError(f"No name in metadata of {fpath}")
+        if "mapper" not in metadata:
+            raise InvalidSongError(f"No mapper in metadata of {fpath}")
+        if "audio_file" not in metadata:
+            raise InvalidSongError(f"No audio_file in metadata of {fpath}")
+        if "song_file" not in metadata:
+            raise InvalidSongError(f"No song_file in metadata of {fpath}")
+        if "version" not in metadata:
+            raise InvalidSongError(f"No version in metadata of {fpath}")
+        name = metadata.get("name")
+        artist = metadata.get("artist", metadata.get("author", "Unknown Artist"))
+        mapper = metadata.get("mapper")
+        audio_file = metadata.get("audio_file")
+        song_file = metadata.get("song_file")
+        version = metadata.get("version", -1)
+        new_song = Song(name, audio_file=audio_file, song_file=song_file, song_artist=artist, mapper=mapper, version=version, filepath=fpath)
+        return new_song
 
 
 class SongSelector:
@@ -99,9 +129,9 @@ class SongSelector:
             path = join("songs", song_name)
             if isfile(path):
                 if path.lower().endswith(".zip") or path.lower().endswith(".midiplayground"):
-                    _ = make_song_from_zip(path)
-                    if _ is not None:
-                        self.songs.append(_)
+                    self.songs.append(make_song_from_zip(path))
+                if path.lower().endswith(".osz"):
+                    self.songs.extend(make_songs_from_osz(path))
 
     def get_song_rect(self, index: int):
         rect = pygame.Rect(
@@ -128,8 +158,11 @@ class SongSelector:
                             continue
                         play_sound("select.mp3")
                         with ZipFile(song.fp) as zf:
-                            with zf.open(song.audio_file_name) as f:
-                                pygame.mixer.music.load(f)
+                            if song.audio_file_name.lower().endswith(".osu"):
+                                pygame.mixer.music.load(zf.read(song.audio_file_name))
+                            else:
+                                with zf.open(song.audio_file_name) as f:
+                                    pygame.mixer.music.load(BytesIO(f.read()))
                         pygame.mixer.music.set_volume(Config.volume/100)
                         pygame.mixer.music.play()
                         self.selected_index = index
@@ -191,11 +224,6 @@ class SongSelector:
 
         if self.scroll > 100:
             self.scroll_velocity -= self.scroll/2000
-
-        if rect is not None:
-            bottom = rect.bottom
-            if self.scroll < - bottom - 400:
-                self.scroll_velocity -= (self.scroll-bottom)/3000
 
         self.back_button_rect.x = Config.SCREEN_WIDTH - 500 * interpolate_fn(self.anim) + 200
         back_button_hovered = self.back_button_rect.collidepoint(pygame.mouse.get_pos())

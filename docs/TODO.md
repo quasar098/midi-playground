@@ -8,6 +8,7 @@
 - path line for easier prediction
 - rectangle duplicate overlap area remover for hallways
 - map editor
+- make osu song imports better rhythm (no FFT though)
 
 ### medium priority
 

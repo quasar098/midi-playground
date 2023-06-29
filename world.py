@@ -149,12 +149,12 @@ class World:
 
         _start_notes = _start_notes[:Config.max_notes] if Config.max_notes is not None else _start_notes
 
-        self.scorekeeper.unhit_notes = remove_too_close_values([_sn[1] for _sn in _start_notes], Config.bounce_min_spacing)
+        self.scorekeeper.unhit_notes = remove_too_close_values([_sn for _sn in _start_notes], Config.bounce_min_spacing)
 
         self.future_bounces = recurs(
             square=self.square.copy(),
             notes=remove_too_close_values(
-                [_sn[1] for _sn in _start_notes],
+                [_sn for _sn in _start_notes],
                 threshold=Config.bounce_min_spacing
             )
         )
