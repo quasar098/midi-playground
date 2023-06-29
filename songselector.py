@@ -1,14 +1,23 @@
 import pygame
 from utils import *
 from os import listdir
+from os.path import isfile, join
+from zipfile import ZipFile
+from typing import Any
+from json import loads
 
 
 class Song:
-    def __init__(self, midi_file: str, audio_file: Optional[str] = None):
-        self.midi_file_name: str = midi_file
+    def __init__(self, name: str, song_artist: str, mapper: str, midi_file: str, audio_file: str, version: int = -1, filepath: Optional[str] = None):
+        self.song_file_name: str = midi_file
+        self.audio_file_name: str = audio_file if audio_file is not None else self.song_file_name
+        self.mapper = mapper
+        self.fp = filepath
+        self.song_artist = song_artist
+        self.name = name
+        self.version = version  # metadata format version, not the map version
+
         self.anim = 0
-        self.audio_file_name: str = audio_file if audio_file is not None else self.midi_file_name
-        text_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 48).render(self.title, True, (0, 0, 6))
         col = pygame.Color(229, 97, 196)
         selected_col = pygame.Color(50, 203, 255)
 
@@ -17,22 +26,53 @@ class Song:
         self.surface: pygame.Surface = pygame.Surface((int(Config.SCREEN_WIDTH / 2), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
         self.selected_surface: pygame.Surface = pygame.Surface((int(Config.SCREEN_WIDTH / 2), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
 
+        overlay_surf = pygame.Surface((int(Config.SCREEN_WIDTH / 2), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
+
         pygame.draw.rect(self.surface, col.lerp((0, 0, 0), 0.4), reset_rect, border_radius=6)
         pygame.draw.rect(self.surface, col, reset_rect.inflate(-8, -8), border_radius=2)
         pygame.draw.rect(self.selected_surface, selected_col.lerp((0, 0, 0), 0.4), reset_rect, border_radius=6)
         pygame.draw.rect(self.selected_surface, selected_col, reset_rect.inflate(-8, -8), border_radius=2)
 
-        self.surface.blit(text_surface, text_surface.get_rect(midright=self.surface.get_rect().midright).move(-20, 0))
-        self.selected_surface.blit(text_surface, text_surface.get_rect(midright=self.surface.get_rect().midright).move(-20, 0))
+        title_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 36).render(self.name, True, (0, 0, 6))
+        overlay_surf.blit(title_surface, title_surface.get_rect(topright=overlay_surf.get_rect().topright).move(-20, 20))
+
+        details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"Song by {self.song_artist} | Mapped by {self.mapper}", True, (0, 0, 0))
+        overlay_surf.blit(details_surface, details_surface.get_rect(bottomright=overlay_surf.get_rect().bottomright).move(-20, -20))
+
+        self.surface.blit(overlay_surf, (0, 0))
+        self.selected_surface.blit(overlay_surf, (0, 0))
 
         self.before_hover = False
 
-    @property
-    def title(self):
-        return " ".join(_.capitalize() for _ in self.audio_file_name[:-4].replace(" ", '-').split("-"))
-
     def __repr__(self):
-        return f"<Song({self.midi_file_name}, audio={self.audio_file_name})>"
+        return f"<Song({self.song_file_name}, audio={self.audio_file_name})>"
+
+
+def make_song_from_zip(fpath: str) -> Song:
+    with ZipFile(fpath) as zf:
+        try:
+            metadata_info = zf.getinfo("metadata.json")
+            metadata: dict[str, Any] = loads(zf.read(metadata_info))
+            if "name" not in metadata:
+                raise InvalidSongError(f"No name in metadata of {fpath}")
+            if "mapper" not in metadata:
+                raise InvalidSongError(f"No mapper in metadata of {fpath}")
+            if "audio_file" not in metadata:
+                raise InvalidSongError(f"No audio_file in metadata of {fpath}")
+            if "song_file" not in metadata:
+                raise InvalidSongError(f"No song_file in metadata of {fpath}")
+            if "version" not in metadata:
+                raise InvalidSongError(f"No version in metadata of {fpath}")
+            name = metadata.get("name")
+            artist = metadata.get("artist", metadata.get("author", "Unknown Artist"))
+            mapper = metadata.get("mapper")
+            audio_file = metadata.get("audio_file")
+            song_file = metadata.get("song_file")
+            version = metadata.get("version", -1)
+            new_song = Song(name, audio_file=audio_file, midi_file=song_file, song_artist=artist, mapper=mapper, version=version, filepath=fpath)
+            return new_song
+        except KeyError:
+            return None
 
 
 class SongSelector:
@@ -56,12 +96,12 @@ class SongSelector:
     def reload_songs(self):
         self.songs = []
         for song_name in reversed(listdir("songs")):
-            if song_name.endswith("-mainlines.mid"):
-                for song in self.songs:
-                    if song.audio_file_name[:-4] == song_name[:-14]:
-                        song.midi_file_name = song_name
-                continue
-            self.songs.append(Song(song_name))
+            path = join("songs", song_name)
+            if isfile(path):
+                if path.lower().endswith(".zip") or path.lower().endswith(".midiplayground"):
+                    _ = make_song_from_zip(path)
+                    if _ is not None:
+                        self.songs.append(_)
 
     def get_song_rect(self, index: int):
         rect = pygame.Rect(
@@ -87,7 +127,9 @@ class SongSelector:
                         if self.selected_index == index:
                             continue
                         play_sound("select.mp3")
-                        pygame.mixer.music.load(join(".", "songs", song.audio_file_name))
+                        with ZipFile(song.fp) as zf:
+                            with zf.open(song.audio_file_name) as f:
+                                pygame.mixer.music.load(f)
                         pygame.mixer.music.set_volume(Config.volume/100)
                         pygame.mixer.music.play()
                         self.selected_index = index
@@ -152,8 +194,8 @@ class SongSelector:
 
         if rect is not None:
             bottom = rect.bottom
-            if self.scroll < - bottom - 200:
-                self.scroll_velocity -= (self.scroll-bottom)/2000
+            if self.scroll < - bottom - 400:
+                self.scroll_velocity -= (self.scroll-bottom)/3000
 
         self.back_button_rect.x = Config.SCREEN_WIDTH - 500 * interpolate_fn(self.anim) + 200
         back_button_hovered = self.back_button_rect.collidepoint(pygame.mouse.get_pos())

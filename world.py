@@ -81,7 +81,7 @@ class World:
             while gone_through_percent > max_percent:
                 max_percent += 1
                 if percent_update_callback(max_percent):
-                    raise UserCancelsLoading()
+                    raise UserCancelsLoadingError()
 
             all_bounce_rects = [_bounc.get_collision_rect() for _bounc in bounces_so_far]
             if len(notes) == 0:

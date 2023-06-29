@@ -63,7 +63,6 @@ class Scorekeeper:
                 self.hp -= 1
                 misses += 1
 
-
             elif offset > -0.06:  # 60ms early - 60ms late
                 self.hit_icons.append(HitIcon(HitLevel.perfect, self.world.square.pos.copy()))
                 self.hp += 3

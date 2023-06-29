@@ -123,8 +123,7 @@ class Config:
     particle_amount = 10
 
     # just global stuff
-    midi_file_name: Optional[str] = None
-    audio_file_name: Optional[str] = None
+    current_song = None
 
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",

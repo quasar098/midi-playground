@@ -1,19 +1,15 @@
 from typing import Union, Optional
+from errors import *
+from config import Config, get_colors
+from time import time as get_current_time
 import mido
 import pygame
 from sys import platform
 from enum import Enum
-from config import Config, get_colors
 from os.path import join
 from math import sin, pi
 from sys import setrecursionlimit
-from time import time as get_current_time
 setrecursionlimit(10000)  # increase if more notes
-
-
-class UserCancelsLoading(Exception):
-    """User cancels the loading screen"""
-    pass
 
 
 # vsync framerate if on windows, else 60
@@ -35,8 +31,8 @@ class CameraFollow(Enum):
 
 
 # noinspection PyUnresolvedReferences
-def read_midi_file(filename):
-    midi_file = mido.MidiFile(filename)
+def read_midi_file(file):
+    midi_file = mido.MidiFile(file=file)
 
     notes = []
     current_time = 0

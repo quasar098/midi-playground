@@ -5,6 +5,7 @@ from configpage import ConfigPage
 from songselector import SongSelector
 from os import startfile, getcwd
 from config import save_to_file
+import debuginfo
 import webbrowser
 import pygame
 
@@ -47,6 +48,8 @@ def main():
         screen.fill(get_colors()["background"])
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_F3:
+                    debuginfo.print_debug_info()
                 if event.key == pygame.K_ESCAPE:
                     if song_selector.active:
                         song_selector.active = False
@@ -85,6 +88,7 @@ def main():
                     config_page.active = True
                 if option_id == "play":
                     song_selector.active = True
+                    song_selector.reload_songs()
                 if option_id == "quit":
                     running = False
                 continue
@@ -101,8 +105,7 @@ def main():
                         song_selector.selected_index = -1
                     continue
                 # starting song now
-                Config.midi_file_name = song.midi_file_name
-                Config.audio_file_name = song.audio_file_name
+                Config.current_song = song
                 game.active = True
                 if game.start_song(screen):
                     game.active = False

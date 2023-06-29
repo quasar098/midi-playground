@@ -5,6 +5,7 @@ import random
 from camera import Camera
 from keystrokes import Keystrokes
 from particle import Particle
+from zipfile import ZipFile
 from hiticon import HitIcon, HitLevel
 
 
@@ -23,13 +24,13 @@ class Game:
         self.misses = 0
         self.mouse_down = False
 
-    def start_song(self, screen: pygame.Surface, song_path: str = None):
+    def start_song(self, screen: pygame.Surface):
         random.seed(Config.seed)
-        # load song and notes
-        if song_path is None:
-            song_path = join("songs", Config.midi_file_name)
 
-        notes = read_midi_file(song_path)
+        # load song and notes
+        with ZipFile(Config.current_song.fp) as zf:
+            with zf.open(Config.current_song.song_file_name) as f:
+                notes = read_midi_file(file=f)
         notes = [(note[0], note[1], note[2]) for note in notes]
         self.notes = notes
 
@@ -60,7 +61,7 @@ class Game:
 
         try:
             self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
-        except UserCancelsLoading:
+        except UserCancelsLoadingError:
             return True
         self.world.start_time = get_current_time()
         self.world.square.dir = [0, 0]
@@ -135,10 +136,11 @@ class Game:
         # particle trail in game
         if Config.particle_trail:
             # every 2 frames add a particle
-            if n_frames % 2 == 0:
-                new = Particle(self.world.square.pos, [0, 0], True)
-                new.delta = [random.randint(-10, 10)/20, random.randint(-10, 10)/20]
-                self.world.particles.append(new)
+            if not self.world.square.died:
+                if n_frames % 2 == 0:
+                    new = Particle(self.world.square.pos, [0, 0], True)
+                    new.delta = [random.randint(-10, 10)/20, random.randint(-10, 10)/20]
+                    self.world.particles.append(new)
                 
         # scorekeeper drawing
         time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
@@ -201,10 +203,11 @@ class Game:
                     # clamp to 0-100
                     acc = max(0, min(100, acc))
                     acct = max(0, min(100, acct))
-                    acc_text = get_font("./assets/poppins-regular.ttf", 36).render(f"Accuracy: {acc}%", True, (255, 255, 255))
-                    acct_text = get_font("./assets/poppins-regular.ttf", 36).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
-                    screen.blit(acc_text, acc_text.get_rect(center=(175, 75)))
-                    screen.blit(acct_text, acct_text.get_rect(center=(220, 125)))
+                    acc_text = get_font("./assets/poppins-regular.ttf", 24).render(f"Accuracy: {acc}%", True, (255, 255, 255))
+                    acct_text = get_font("./assets/poppins-regular.ttf", 24).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
+                    topleft1 = self.world.scorekeeper.life_bar_rect.move(0, 10).bottomleft
+                    screen.blit(acc_text, acc_text.get_rect(topleft=topleft1))
+                    screen.blit(acct_text, acct_text.get_rect(topleft=acc_text.get_rect(topleft=topleft1).move(0, 10).bottomleft))
             except ZeroDivisionError:
                 pass
             except Exception as e:
