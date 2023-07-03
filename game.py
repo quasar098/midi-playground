@@ -47,15 +47,8 @@ class Game:
         screen.fill(get_colors()["background"])
         pygame.display.flip()
 
-        def update_loading_screen(pdone: int):
+        def update_loading_screen(message: str):
             screen.fill(get_colors()["background"], pygame.Rect(0, 0, Config.SCREEN_WIDTH, 100))
-            message = f"{pdone}% done loading" if pdone != 100 else "Removing duplicate rectangles"
-            if pdone < 70:
-                if random.randint(1, 3) == 1:
-                    return
-            if pdone < 40:
-                if random.randint(1, 9) != 1:
-                    return
             screen.blit(get_font("./assets/poppins-regular.ttf", 60).render(message, True, get_colors()["hallway"]), (10, 10))
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -65,6 +58,9 @@ class Game:
 
         try:
             self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
+            self.safe_areas = fix_overlap(self.safe_areas, update_loading_screen)
+            for safe in self.safe_areas:
+                debug_rect(safe)
         except UserCancelsLoadingError:
             return True
         self.world.start_time = get_current_time()
@@ -249,9 +245,6 @@ class Game:
             return False
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_F1:
-                for rect in self.safe_areas:
-                    debug_rect(rect)
             if event.key == pygame.K_ESCAPE:
                 return True
             if event.key == pygame.K_TAB:
@@ -262,8 +255,6 @@ class Game:
                     if time_from_start < -0.2:
                         return
                     arrows_n_space = (pygame.K_SPACE, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN)
-
-                    
 
                     if 97+26 > event.key >= 97 or event.key in arrows_n_space:  # press a to z key or space or arrows
                         self.misses = self.world.handle_keypress(time_from_start, self.misses)

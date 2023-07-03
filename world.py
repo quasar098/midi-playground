@@ -80,7 +80,7 @@ class World:
             gone_through_percent = (total_notes-len(notes)) * 100 // total_notes
             while gone_through_percent > max_percent:
                 max_percent += 1
-                if percent_update_callback(max_percent):
+                if percent_update_callback(f"{max_percent}% done generating map"):
                     raise UserCancelsLoadingError()
 
             all_bounce_rects = [_bounc.get_collision_rect() for _bounc in bounces_so_far]
@@ -161,6 +161,8 @@ class World:
 
         assert self.future_bounces is not False, "Recursive bounce generation algorithm failed"
         assert len(self.future_bounces) != 0, "no recurs list???"
+
+        percent_update_callback("Removing overlapping safe areas")
 
         # eliminate fully overlapping safe areas
         safe_areas: list[pygame.Rect]

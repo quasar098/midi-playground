@@ -47,6 +47,7 @@ class Scorekeeper:
                 self.hp -= 6
                 self.hit_icons.append(HitIcon(HitLevel.miss, self.world.square.pos))
                 to_remove.append(timestamp)
+                misses = misses if misses is not None else 0
                 misses += 1
 
         for t_remove in to_remove:

@@ -110,6 +110,67 @@ def debug_rect(rect: pygame.Rect):
     print(f"\\operatorname\x7Bpolygon\x7D({rect.topleft}, {rect.topright}, {rect.bottomright}, {rect.bottomleft})")
 
 
+def fix_overlap(rects: list[pygame.Rect], callback=None):
+    if callback is None:
+        callback = lambda _: None
+    xvs = set()
+    yvs = set()
+    for rect in rects:
+        xvs.add(rect.right)
+        xvs.add(rect.left)
+        yvs.add(rect.top)
+        yvs.add(rect.bottom)
+    xvs = sorted(list(xvs))
+    yvs = sorted(list(yvs))
+
+    outputs = []
+    for xv1 in range(len(xvs)-1):
+        xv2 = xv1+1
+        for yv1 in range(len(yvs)-1):
+            yv2 = yv1+1
+            r = pygame.Rect(xvs[xv1], yvs[yv1], xvs[xv2]-xvs[xv1], yvs[yv2]-yvs[yv1])
+            if r.collidelist(rects)+1:
+                outputs.append(r)
+
+        callback(f"Checking minirectangles ({int(100*xv1*len(yvs)/(len(xvs)*len(yvs)))}% done)")
+
+    callback("Merging adjacent minirectangles")
+
+    for ai in range(len(outputs)-1):
+        a = outputs[ai+1]
+        b = outputs[ai]
+        if a.width == 0 or a.height == 0 or b.width == 0 or b.height == 0:
+            continue
+        if not (a.right == b.left or a.left == b.right or a.top == b.bottom or b.bottom == a.top):
+            continue
+        if a.x == b.x and a.width == b.width:
+            a.y = min(a.y, b.y)
+            a.height = a.height+b.height
+            b.height = 0
+            continue
+
+    outputs = [out for out in outputs if out.width > 0 and out.height > 0]
+
+    outputs.sort(key=lambda _: _.y*100000+_.x)
+
+    for ai in range(len(outputs)-1):
+        a = outputs[ai+1]
+        b = outputs[ai]
+        if a.width == 0 or a.height == 0 or b.width == 0 or b.height == 0:
+            continue
+        if not (a.right == b.left or a.left == b.right or a.top == b.bottom or b.bottom == a.top):
+            continue
+        if a.y == b.y and a.height == b.height:
+            a.x = min(a.x, b.x)
+            a.width = a.width+b.width
+            b.width = 0
+            continue
+
+    callback("Finished loading")
+
+    return [out for out in outputs if out.width > 0 and out.height > 0]
+
+
 _font_registry: dict[str, pygame.font.Font] = {}
 
 

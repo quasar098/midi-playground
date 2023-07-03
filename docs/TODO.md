@@ -8,7 +8,6 @@
 - use dt instead of 1/FRAMERATE
 - pyopengl shaders with in-memory screen surface to image and draw the image
 - path line for easier prediction
-- rectangle duplicate overlap area remover for hallways
 - map editor
 - make osu song imports better rhythm (no FFT though)
 
