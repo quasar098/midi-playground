@@ -256,7 +256,7 @@ class ConfigPage:
     def draw(self, screen: pygame.Surface):
         if not self.active:
             return
-        self.ui_manager.update(1/FRAMERATE)  # supposed to use dt but whatever
+        self.ui_manager.update(Config.dt)  # supposed to use dt but whatever
         self.ui_manager.draw_ui(screen)
 
         screen.blit(self.made_with_pgui_surf, self.made_with_pgui_rect)

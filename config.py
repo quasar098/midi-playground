@@ -124,6 +124,7 @@ class Config:
 
     # just global stuff
     current_song = None
+    dt = 0.01
 
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",

@@ -36,9 +36,9 @@ class Scorekeeper:
             chunk_rect.width = width
             screen.fill(fill_colors[_], chunk_rect)
         if current_time > 0:
-            self.hp -= Config.hp_drain_rate/FRAMERATE
+            self.hp -= Config.hp_drain_rate*Config.dt
         hp_show_damping = 10
-        self.shown_hp = self.shown_hp*(1-hp_show_damping/FRAMERATE)+self.hp*(hp_show_damping/FRAMERATE)
+        self.shown_hp = self.shown_hp*(1-hp_show_damping*Config.dt)+self.hp*(hp_show_damping*Config.dt)
 
         # remove unhit notes
         to_remove = []

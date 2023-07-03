@@ -91,7 +91,7 @@ class World:
             start_rect = square.rect.copy()
             while True:
                 t += 1/FRAMERATE
-                square.reg_move()
+                square.reg_move(False)
                 path.append(square.rect)
                 if t > notes[0]:
                     # no collision (we good)

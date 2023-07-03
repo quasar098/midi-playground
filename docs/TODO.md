@@ -5,7 +5,6 @@
 ### high priority
 
 - prevent spamming during scoring
-- use dt instead of 1/FRAMERATE
 - pyopengl shaders with in-memory screen surface to image and draw the image
 - path line for easier prediction
 - map editor
@@ -23,6 +22,7 @@
 
 ### low priority
 
+- fix square bouncing on main menu to go through the wall
 - see entire map at the end
 - investigate sync issues
 - toggle for bounce animation in config

@@ -58,6 +58,11 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
+                # artificial lag spike for debugging purposes
+                if event.key == pygame.K_F12:
+                    total = 0
+                    for _ in range(10_000_000):
+                        total += 1
                 if event.key == pygame.K_F3:
                     debuginfo.print_debug_info()
                 if event.key == pygame.K_ESCAPE:
@@ -141,7 +146,7 @@ def main():
         menu.draw(screen, n_frames)
 
         pygame.display.flip()
-        clock.tick(FRAMERATE)
+        Config.dt = clock.tick(FRAMERATE)/1000
     pygame.quit()
     save_to_file()
 

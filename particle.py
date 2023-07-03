@@ -20,11 +20,11 @@ class Particle:
         self.color = get_colors()["hallway"] if not invert_color else get_colors()["background"]
 
     def age(self):
-        self.size -= Particle.AGE_RATE/FRAMERATE
+        self.size -= Particle.AGE_RATE*Config.dt
         self.x += self.delta[0] * Config.PARTICLE_SPEED
         self.y += self.delta[1] * Config.PARTICLE_SPEED
-        self.delta[0] /= (Particle.SLOW_DOWN_RATE+FRAMERATE)/FRAMERATE
-        self.delta[1] /= (Particle.SLOW_DOWN_RATE+FRAMERATE)/FRAMERATE
+        self.delta[0] /= (Particle.SLOW_DOWN_RATE+FRAMERATE) * Config.dt
+        self.delta[1] /= (Particle.SLOW_DOWN_RATE+FRAMERATE) * Config.dt
         return self.size <= 0
 
     @property

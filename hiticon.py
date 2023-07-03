@@ -24,7 +24,7 @@ class HitIcon:
         self.surf = HitIcon.surfaces[lvl].copy()
 
     def draw(self, screen: pygame.Surface, camera):
-        self.age_left -= 500/FRAMERATE
+        self.age_left -= 500*Config.dt
         self.surf.set_alpha(int(max(min(self.age_left, 255), 0)))
         screen.blit(self.surf, camera.offset(self.surf.get_rect(center=self.pos)))
         return self.age_left <= 0
