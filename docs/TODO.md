@@ -5,10 +5,10 @@
 ### high priority
 
 - prevent spamming during scoring
-- pyopengl shaders with in-memory screen surface to image and draw the image
 - path line for easier prediction
 - map editor
 - make osu song imports better rhythm (no FFT though)
+- cool shaders like vignette, acid shaders, idk
 
 ### medium priority
 

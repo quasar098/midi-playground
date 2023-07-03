@@ -1,3 +1,4 @@
+import moderngl
 import pygame
 from typing import Optional, Any
 from json import load, dump
@@ -124,6 +125,10 @@ class Config:
 
     # just global stuff
     current_song = None
+    ctx: moderngl.Context = None
+    glsl_program: moderngl.Program = None
+    render_object: moderngl.VertexArray = None
+    screen: pygame.Surface = None
     dt = 0.01
 
     # keys to save and load

@@ -2,6 +2,7 @@ from typing import Union, Optional, BinaryIO
 from errors import *
 from config import Config, get_colors
 from time import time as get_current_time
+import moderngl
 import mido
 import pygame
 from sys import platform
@@ -70,6 +71,25 @@ def read_osu_file(filedata: bytes):
             continue
         timestamps.append(int(args[2])/1000)
     return timestamps
+
+
+def surf_to_texture(in_surface: pygame.Surface) -> moderngl.Texture:
+    tex = Config.ctx.texture(in_surface.get_size(), 4)
+    tex.filter = (moderngl.NEAREST, moderngl.NEAREST)
+    tex.swizzle = 'BGRA'
+    tex.write(in_surface.get_view('1'))
+    return tex
+
+
+def update_screen(screen: pygame.Surface, glsl_program: moderngl.Program, render_object: moderngl.VertexArray):
+    frame_tex = surf_to_texture(screen)
+    frame_tex.use(0)
+    glsl_program['tex'] = 0
+    render_object.render(mode=moderngl.TRIANGLE_STRIP)
+
+    pygame.display.flip()
+
+    frame_tex.release()
 
 
 # noinspection PyUnresolvedReferences

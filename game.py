@@ -54,13 +54,11 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         return True
-            pygame.display.flip()
+            update_screen(Config.screen, Config.glsl_program, Config.render_object)
 
         try:
             self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
             self.safe_areas = fix_overlap(self.safe_areas, update_loading_screen)
-            for safe in self.safe_areas:
-                debug_rect(safe)
         except UserCancelsLoadingError:
             return True
         self.world.start_time = get_current_time()

@@ -8,6 +8,7 @@ from config import save_to_file
 import debuginfo
 import webbrowser
 import pygame
+from array import array
 
 
 def main():
@@ -20,11 +21,13 @@ def main():
     pygame.mixer.music.play(loops=-1, start=2)
 
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode(
+    # noinspection PyUnusedLocal
+    real_screen = pygame.display.set_mode(
         [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
-        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.SCALED,
+        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF,
         vsync=1
     )
+    screen = pygame.Surface([Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT])
 
     # noinspection PyBroadException
     try:
@@ -32,6 +35,51 @@ def main():
         pygame.display.set_icon(pygame.image.load("./assets/icon.png").convert_alpha())
     except Exception as e:
         print(e)
+
+    # moderngl stuff
+    ctx = moderngl.create_context()
+    Config.ctx = ctx
+
+    quad_buffer = ctx.buffer(data=array('f', [
+        # position, uv coords
+        -1.0, 1.0, 0.0, 0.0,   # topleft
+        1.0, 1.0, 1.0, 0.0,    # topright
+        -1.0, -1.0, 0.0, 1.0,  # bottomleft
+        1.0, -1.0, 1.0, 1.0    # bottomright
+    ]))
+
+    vert_shader = '''
+    #version 330 core
+    
+    in vec2 vert;
+    in vec2 texcoord;
+    out vec2 uvs;
+    
+    void main() {
+        uvs = texcoord;
+        gl_Position = vec4(vert.x, vert.y, 0.0, 1.0);
+    }
+    '''
+
+    frag_shader = """
+    #version 330 core
+    
+    uniform sampler2D tex;
+    
+    in vec2 uvs;
+    out vec4 f_color;
+    
+    void main() {
+        f_color = vec4(texture(tex, uvs).rg, texture(tex, uvs).b, 1);
+    }
+    """
+
+    glsl_program = ctx.program(vertex_shader=vert_shader, fragment_shader=frag_shader)
+    render_object = ctx.vertex_array(glsl_program, [(quad_buffer, '2f 2f', 'vert', 'texcoord')])
+
+    Config.glsl_program = glsl_program
+    Config.render_object = render_object
+    Config.screen = screen
 
     # the big guns
     menu = Menu()
@@ -145,7 +193,8 @@ def main():
         config_page.draw(screen)
         menu.draw(screen, n_frames)
 
-        pygame.display.flip()
+        update_screen(screen, glsl_program, render_object)
+
         Config.dt = clock.tick(FRAMERATE)/1000
     pygame.quit()
     save_to_file()
