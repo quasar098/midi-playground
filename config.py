@@ -122,14 +122,18 @@ class Config:
     rainbow_speed: Optional[int] = 30
     square_swipe_anim_speed: Optional[int] = 4
     particle_amount = 10
+    shader_file_name = "none.glsl"
 
-    # just global stuff
+    # other random stuff
     current_song = None
     ctx: moderngl.Context = None
     glsl_program: moderngl.Program = None
     render_object: moderngl.VertexArray = None
     screen: pygame.Surface = None
     dt = 0.01
+
+    # ascii shader
+    ascii_tex: moderngl.Texture = None
 
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",

@@ -61,18 +61,8 @@ def main():
     }
     '''
 
-    frag_shader = """
-    #version 330 core
-    
-    uniform sampler2D tex;
-    
-    in vec2 uvs;
-    out vec4 f_color;
-    
-    void main() {
-        f_color = vec4(texture(tex, uvs).rg, texture(tex, uvs).b, 1);
-    }
-    """
+    with open(f"./assets/shaders/{Config.shader_file_name}") as shader_file:
+        frag_shader = shader_file.read()
 
     glsl_program = ctx.program(vertex_shader=vert_shader, fragment_shader=frag_shader)
     render_object = ctx.vertex_array(glsl_program, [(quad_buffer, '2f 2f', 'vert', 'texcoord')])
