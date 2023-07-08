@@ -124,7 +124,7 @@ class ConfigPage:
         self.s_hp_drain_rate = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((300, 510, 300, 30)),
             start_value=Config.hp_drain_rate,
-            value_range=(-5, 20),
+            value_range=(3, 20),
             manager=self.ui_manager
         )
         self.s_hp_drain_rate_label = pgui.elements.UILabel(
@@ -171,7 +171,6 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
-        # particle trail
         self.s_particle_trail = pgui.elements.UIDropDownMenu(
             ["Off", "On"],
             relative_rect=pygame.Rect((930, 210, 300, 30)),
@@ -181,6 +180,12 @@ class ConfigPage:
         self.s_particle_trail_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((630, 210, 240, 30)),
             text="Particle trail:",
+            manager=self.ui_manager
+        )
+
+        self.s_reset_button = pgui.elements.UIButton(
+            relative_rect=pygame.Rect((930, 210, 300, 30)),
+            text="Reset to default",
             manager=self.ui_manager
         )
 
@@ -197,6 +202,62 @@ class ConfigPage:
             if event.ui_element == self.back_button:
                 play_sound("wood.wav")
                 return True
+            if event.ui_element == self.s_reset_button:
+                Config.theme = "dark"
+                self.s_color_theme.selected_option = "dark"
+                self.s_color_theme.current_state.finish()
+                self.s_color_theme.current_state.selected_option = "dark"
+                self.s_color_theme.current_state.start()
+
+                Config.seed = None
+                self.s_seed.set_text("")
+
+                Config.camera_mode = 2
+                self.s_camera_mode.selected_option = "Smoothed (Default)"
+                self.s_camera_mode.current_state.finish()
+                self.s_camera_mode.current_state.selected_option = "Smoothed (Default)"
+                self.s_camera_mode.current_state.start()
+
+                Config.start_playing_delay = 3000
+                self.s_start_playing_delay.set_current_value(3000)
+                self.s_start_playing_delay_label.set_text(f"Starting time delay ({self.s_start_playing_delay.get_current_value()}ms):")
+
+                Config.max_notes = None
+                self.s_max_notes.set_text("")
+
+                Config.bounce_min_spacing = 30
+                self.s_bounce_min_spacing.set_current_value(30)
+                self.s_bounce_min_spacing_label.set_text(f"Bounce min spacing ({Config.bounce_min_spacing}ms):")
+
+                Config.square_speed = 600
+                self.s_square_speed.set_current_value(600)
+                self.s_square_speed_label.set_text(f"Square speed ({Config.square_speed} pixels/s):")
+
+                Config.volume = 70
+                pygame.mixer.music.set_volume(70/100)
+                self.s_game_volume.set_current_value(70)
+                self.s_game_volume_label.set_text(f"Music volume ({Config.volume}%):")
+
+                Config.music_offset = -300
+                self.s_music_offset.set_current_value(-300)
+                self.s_music_offset_label.set_text(f"Music offset ({Config.music_offset}ms):")
+
+                Config.direction_change_chance = 30
+                self.s_direction_change_chance.set_current_value(30)
+                self.s_direction_change_chance_label.set_text(f"Change dir chance ({Config.direction_change_chance}%):")
+
+                Config.hp_drain_rate = 10
+                self.s_hp_drain_rate.set_current_value(10)
+                self.s_hp_drain_rate_label.set_text(f"HP drain rate ({Config.hp_drain_rate}/s):")
+
+                Config.theatre_mode = False
+                self.s_theatre_mode.selected_option = "Off"
+                self.s_theatre_mode.current_state.finish()
+                self.s_theatre_mode.current_state.selected_option = "Off"
+                self.s_theatre_mode.current_state.start()
+
+                play_sound("wood.wav")
+
 
         if event.type == pgui.UI_DROP_DOWN_MENU_CHANGED:
             if event.ui_element == self.s_camera_mode:
@@ -256,7 +317,7 @@ class ConfigPage:
     def draw(self, screen: pygame.Surface):
         if not self.active:
             return
-        self.ui_manager.update(Config.dt)  # supposed to use dt but whatever
+        self.ui_manager.update(1/FRAMERATE)  # supposed to use dt but whatever
         self.ui_manager.draw_ui(screen)
 
         screen.blit(self.made_with_pgui_surf, self.made_with_pgui_rect)
