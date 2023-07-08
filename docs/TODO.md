@@ -16,7 +16,6 @@
 - more songs
 - 4 key gamemode
 - keystrokes toggle
-- reset to default button for config page
 - square bounce intensity, particle intensity settings
 - implement modifiers like osu (DT, HR, HD, EZ, etc)
 

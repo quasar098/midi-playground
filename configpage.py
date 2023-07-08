@@ -184,7 +184,7 @@ class ConfigPage:
         )
 
         self.s_reset_button = pgui.elements.UIButton(
-            relative_rect=pygame.Rect((930, 210, 300, 30)),
+            relative_rect=pygame.Rect((Config.SCREEN_WIDTH-330, Config.SCREEN_HEIGHT-60, 300, 30)),
             text="Reset to default",
             manager=self.ui_manager
         )
@@ -203,6 +203,8 @@ class ConfigPage:
                 play_sound("wood.wav")
                 return True
             if event.ui_element == self.s_reset_button:
+                # todo: rework this
+
                 Config.theme = "dark"
                 self.s_color_theme.selected_option = "dark"
                 self.s_color_theme.current_state.finish()
@@ -256,8 +258,13 @@ class ConfigPage:
                 self.s_theatre_mode.current_state.selected_option = "Off"
                 self.s_theatre_mode.current_state.start()
 
-                play_sound("wood.wav")
+                Config.particle_trail = True
+                self.s_particle_trail.selected_option = "On"
+                self.s_particle_trail.current_state.finish()
+                self.s_particle_trail.current_state.selected_option = "On"
+                self.s_particle_trail.current_state.start()
 
+                play_sound("wood.wav")
 
         if event.type == pgui.UI_DROP_DOWN_MENU_CHANGED:
             if event.ui_element == self.s_camera_mode:
