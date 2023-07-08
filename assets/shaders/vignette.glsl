@@ -10,5 +10,5 @@ void main() {
 
     float dist = distance(uv, vec2(0.5, 0.5));
 
-    f_color = vec4(texture(tex, uv).rgb * smoothstep(0.8, 0.1, dist * 0.8), 1);
+    f_color = vec4(texture(tex, uv).rgb * smoothstep(0.8, 0.2, dist * 0.8), 1);
 }

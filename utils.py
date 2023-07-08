@@ -90,7 +90,10 @@ def update_screen(screen: pygame.Surface, glsl_program: moderngl.Program, render
         if Config.ascii_tex is None:
             Config.ascii_tex = surf_to_texture(pygame.image.load('./assets/shaders/ascii.png').convert_alpha())
             Config.ascii_tex.use(1)
-        glsl_program['asciipng'] = 1
+        try:
+            glsl_program['asciipng'] = 1
+        except KeyError:
+            pass
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
 
     pygame.display.flip()

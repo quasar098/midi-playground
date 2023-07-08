@@ -1,6 +1,7 @@
 from utils import *
 import pygame
 import pygame_gui as pgui
+from os import listdir
 import webbrowser
 
 
@@ -183,6 +184,20 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        self.s_shader = pgui.elements.UIDropDownMenu(
+            [_ for _ in listdir("./assets/shaders/") if _.endswith(".glsl")],
+            relative_rect=pygame.Rect((930, 270, 300, 30)),
+            starting_option=Config.shader_file_name,
+            manager=self.ui_manager
+        )
+        self.s_shader_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect(630, 270, 240, 30),
+            text="Shader (requires restart):",
+            manager=self.ui_manager
+        )
+
+        # reset button
+
         self.s_reset_button = pgui.elements.UIButton(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH-330, Config.SCREEN_HEIGHT-60, 300, 30)),
             text="Reset to default",
@@ -210,6 +225,12 @@ class ConfigPage:
                 self.s_color_theme.current_state.finish()
                 self.s_color_theme.current_state.selected_option = "dark"
                 self.s_color_theme.current_state.start()
+
+                Config.shader_file_name = "none.glsl"
+                self.s_shader.selected_option = "none.glsl"
+                self.s_shader.current_state.finish()
+                self.s_shader.current_state.selected_option = "none.glsl"
+                self.s_shader.current_state.start()
 
                 Config.seed = None
                 self.s_seed.set_text("")
@@ -267,18 +288,17 @@ class ConfigPage:
                 play_sound("wood.wav")
 
         if event.type == pgui.UI_DROP_DOWN_MENU_CHANGED:
+            play_sound("wood.wav")
             if event.ui_element == self.s_camera_mode:
-                play_sound("wood.wav")
                 Config.camera_mode = "CLSP".index(event.text[0])
             if event.ui_element == self.s_color_theme:
-                play_sound("wood.wav")
                 Config.theme = event.text
             if event.ui_element == self.s_theatre_mode:
-                play_sound("wood.wav")
                 Config.theatre_mode = bool("fn".index(event.text[1]))
             if event.ui_element == self.s_particle_trail:
-                play_sound("wood.wav")
                 Config.particle_trail = bool("fn".index(event.text[1]))
+            if event.ui_element == self.s_shader:
+                Config.shader_file_name = event.text
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:
