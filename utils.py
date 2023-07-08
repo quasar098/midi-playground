@@ -6,6 +6,7 @@ import moderngl
 import mido
 import pygame
 from sys import platform
+import subprocess
 from enum import Enum
 from os.path import join
 from math import sin, pi
@@ -95,6 +96,15 @@ def update_screen(screen: pygame.Surface, glsl_program: moderngl.Program, render
     pygame.display.flip()
 
     frame_tex.release()
+
+
+def open_file(filename):
+    if platform == "win32":
+        from os import startfile
+        startfile(filename)
+    else:
+        opener = "open" if platform == "darwin" else "xdg-open"
+        subprocess.call([opener, filename])
 
 
 # noinspection PyUnresolvedReferences

@@ -3,7 +3,7 @@ from menu import Menu
 from game import Game
 from configpage import ConfigPage
 from songselector import SongSelector
-from os import startfile, getcwd
+from os import getcwd
 from config import save_to_file
 import debuginfo
 import webbrowser
@@ -131,7 +131,7 @@ def main():
             option_id = menu.handle_event(event)
             if option_id:
                 if option_id == "open-songs-folder":
-                    startfile(join(getcwd(), "songs"))
+                    open_file(join(getcwd(), "songs"))
                     continue
                 if option_id == "contribute":
                     webbrowser.open("https://github.com/quasar098/midi-playground")
