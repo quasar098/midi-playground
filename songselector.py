@@ -17,6 +17,7 @@ class Song:
         self.song_artist = song_artist
         self.name = name
         self.version = version  # metadata format version, not the map version
+        self.music_offset = 0  # put integer that represents milliseconds, negative is music is before
 
         self.anim = 0
         col = pygame.Color(229, 97, 196)
@@ -102,6 +103,8 @@ def make_song_from_zip(fpath: str) -> Song:
         song_file = metadata.get("song_file")
         version = metadata.get("version", -1)
         new_song = Song(name, audio_file=audio_file, song_file=song_file, song_artist=artist, mapper=mapper, version=version, filepath=fpath)
+        if metadata.get("version") >= 2:
+            new_song.music_offset = metadata.get("music_offset", 0)
         return new_song
 
 

@@ -75,7 +75,7 @@ class Game:
                 for bnc_change in self.world.future_bounces:
                     bnc_change.time += Config.start_playing_delay / 1000
             self.offset_happened = True
-            if self.world.time > Config.start_playing_delay/1000:
+            if self.world.time-Config.current_song.music_offset/1000 > Config.start_playing_delay/1000:
                 self.music_has_played = True
                 song_load_before = get_current_time()
                 pygame.mixer.music.play()
