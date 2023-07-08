@@ -1,3 +1,4 @@
+import moderngl
 import pygame
 from typing import Optional, Any
 from json import load, dump
@@ -113,6 +114,7 @@ class Config:
     direction_change_chance: Optional[int] = 30
     hp_drain_rate = 10
     theatre_mode = False
+    particle_trail = True
 
     # settings that are not configurable (yet)
     backtrack_chance: Optional[float] = 0.01
@@ -120,14 +122,22 @@ class Config:
     rainbow_speed: Optional[int] = 30
     square_swipe_anim_speed: Optional[int] = 4
     particle_amount = 10
+    shader_file_name = "none.glsl"
 
-    # just global stuff
-    midi_file_name: Optional[str] = None
-    audio_file_name: Optional[str] = None
+    # other random stuff
+    current_song = None
+    ctx: moderngl.Context = None
+    glsl_program: moderngl.Program = None
+    render_object: moderngl.VertexArray = None
+    screen: pygame.Surface = None
+    dt = 0.01
+
+    # ascii shader
+    ascii_tex: moderngl.Texture = None
 
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
-                  "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode"]
+                  "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode", "particle_trail"]
 
 
 def get_colors():

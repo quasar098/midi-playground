@@ -5,23 +5,71 @@ from configpage import ConfigPage
 from songselector import SongSelector
 from os import startfile, getcwd
 from config import save_to_file
+import debuginfo
 import webbrowser
 import pygame
+from array import array
 
 
 def main():
 
     # pygame and other boilerplate
+    n_frames = 0
     pygame.init()
     pygame.mixer.music.load("./assets/mainmenu.mp3")
     pygame.mixer.music.set_volume(Config.volume/100)
     pygame.mixer.music.play(loops=-1, start=2)
+
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode(
+    # noinspection PyUnusedLocal
+    real_screen = pygame.display.set_mode(
         [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
-        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.SCALED,
+        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF,
         vsync=1
     )
+    screen = pygame.Surface([Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT])
+
+    # noinspection PyBroadException
+    try:
+        pygame.display.set_caption("Midi Playground")
+        pygame.display.set_icon(pygame.image.load("./assets/icon.png").convert_alpha())
+    except Exception as e:
+        print(e)
+
+    # moderngl stuff
+    ctx = moderngl.create_context()
+    Config.ctx = ctx
+
+    quad_buffer = ctx.buffer(data=array('f', [
+        # position, uv coords
+        -1.0, 1.0, 0.0, 0.0,   # topleft
+        1.0, 1.0, 1.0, 0.0,    # topright
+        -1.0, -1.0, 0.0, 1.0,  # bottomleft
+        1.0, -1.0, 1.0, 1.0    # bottomright
+    ]))
+
+    vert_shader = '''
+    #version 330 core
+    
+    in vec2 vert;
+    in vec2 texcoord;
+    out vec2 uvs;
+    
+    void main() {
+        uvs = texcoord;
+        gl_Position = vec4(vert.x, vert.y, 0.0, 1.0);
+    }
+    '''
+
+    with open(f"./assets/shaders/{Config.shader_file_name}") as shader_file:
+        frag_shader = shader_file.read()
+
+    glsl_program = ctx.program(vertex_shader=vert_shader, fragment_shader=frag_shader)
+    render_object = ctx.vertex_array(glsl_program, [(quad_buffer, '2f 2f', 'vert', 'texcoord')])
+
+    Config.glsl_program = glsl_program
+    Config.render_object = render_object
+    Config.screen = screen
 
     # the big guns
     menu = Menu()
@@ -32,6 +80,7 @@ def main():
     # game loop
     running = True
     while running:
+        n_frames += 1
         # thanks to TheCodingCrafter for the implementation
         if Config.theme == "rainbow":
             to_set_as_rainbow = pygame.Color((0, 0, 0))
@@ -44,7 +93,16 @@ def main():
 
         screen.fill(get_colors()["background"])
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
             if event.type == pygame.KEYDOWN:
+                # artificial lag spike for debugging purposes
+                if event.key == pygame.K_F12:
+                    total = 0
+                    for _ in range(10_000_000):
+                        total += 1
+                if event.key == pygame.K_F3:
+                    debuginfo.print_debug_info()
                 if event.key == pygame.K_ESCAPE:
                     if song_selector.active:
                         song_selector.active = False
@@ -83,6 +141,7 @@ def main():
                     config_page.active = True
                 if option_id == "play":
                     song_selector.active = True
+                    song_selector.reload_songs()
                 if option_id == "quit":
                     running = False
                 continue
@@ -99,8 +158,7 @@ def main():
                         song_selector.selected_index = -1
                     continue
                 # starting song now
-                Config.midi_file_name = song.midi_file_name
-                Config.audio_file_name = song.audio_file_name
+                Config.current_song = song
                 game.active = True
                 if game.start_song(screen):
                     game.active = False
@@ -120,13 +178,14 @@ def main():
                 song_selector.active = True
 
         # draw stuff here
-        game.draw(screen)
+        game.draw(screen, n_frames)
         song_selector.draw(screen)
         config_page.draw(screen)
-        menu.draw(screen)
+        menu.draw(screen, n_frames)
 
-        pygame.display.flip()
-        clock.tick(FRAMERATE)
+        update_screen(screen, glsl_program, render_object)
+
+        Config.dt = clock.tick(FRAMERATE)/1000
     pygame.quit()
     save_to_file()
 

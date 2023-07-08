@@ -88,7 +88,7 @@ class ConfigPage:
         self.s_square_speed = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((300, 330, 300, 30)),
             start_value=Config.square_speed,
-            value_range=(600, 900),
+            value_range=(100, 2000),
             manager=self.ui_manager
         )
         self.s_square_speed_label = pgui.elements.UILabel(
@@ -168,6 +168,18 @@ class ConfigPage:
         self.s_theatre_mode_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((630, 150, 240, 30)),
             text="Theatre mode:",
+            manager=self.ui_manager
+        )
+
+        self.s_particle_trail = pgui.elements.UIDropDownMenu(
+            ["Off", "On"],
+            relative_rect=pygame.Rect((930, 210, 300, 30)),
+            starting_option=["Off", "On"][int(Config.particle_trail)],
+            manager=self.ui_manager
+        )
+        self.s_particle_trail_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((630, 210, 240, 30)),
+            text="Particle trail:",
             manager=self.ui_manager
         )
 
@@ -257,6 +269,9 @@ class ConfigPage:
             if event.ui_element == self.s_theatre_mode:
                 play_sound("wood.wav")
                 Config.theatre_mode = bool("fn".index(event.text[1]))
+            if event.ui_element == self.s_particle_trail:
+                play_sound("wood.wav")
+                Config.particle_trail = bool("fn".index(event.text[1]))
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:
@@ -280,8 +295,9 @@ class ConfigPage:
                 self.s_bounce_min_spacing_label.set_text(f"Bounce min spacing ({event.value}ms):")
                 Config.bounce_min_spacing = event.value
             if event.ui_element == self.s_square_speed:
-                self.s_square_speed_label.set_text(f"Square speed ({event.value} pixels/s):")
-                Config.square_speed = event.value
+                rounded = round(event.value, -2)
+                self.s_square_speed_label.set_text(f"Square speed ({rounded} pixels/s):")
+                Config.square_speed = rounded
             if event.ui_element == self.s_game_volume:
                 self.s_game_volume_label.set_text(f"Music volume ({event.value}%):")
                 Config.volume = event.value

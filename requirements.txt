@@ -1,4 +1,8 @@
 mido>=1.2.10
 pygame>=2.0.1
-pywin32>=301
+pywin32>=301; sys_platform == 'win32'
+xlib>=0.21; sys_platform == 'linux'
 pygame_gui>=0.6.9
+pywin32>=301
+xlib>=0.21
+moderngl>=5.8.2
