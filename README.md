@@ -23,7 +23,8 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 ## contributors
 
 - [quasar098](https://github.com/quasar098)
-- [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes, QOL, Accuracy
+- [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes + QOL
+- [PurpleJuiceBox](https://github.com/PurpleJuiceBox) - Reset to Default Button
 
 ## todo
 
