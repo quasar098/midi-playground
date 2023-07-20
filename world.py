@@ -53,8 +53,8 @@ class World:
                     square.dir = [0, 0]
                     square.pos = current_bounce.square_pos
 
-    def handle_keypress(self, time_from_start):
-        self.scorekeeper.do_keypress(time_from_start)
+    def handle_keypress(self, time_from_start, misses):
+        return self.scorekeeper.do_keypress(time_from_start, misses)
 
     def gen_future_bounces(self, _start_notes: list[tuple[int, int, int]], percent_update_callback):
         """Recursive solution is necessary"""
@@ -80,8 +80,8 @@ class World:
             gone_through_percent = (total_notes-len(notes)) * 100 // total_notes
             while gone_through_percent > max_percent:
                 max_percent += 1
-                if percent_update_callback(max_percent):
-                    raise UserCancelsLoading()
+                if percent_update_callback(f"{max_percent}% done generating map"):
+                    raise UserCancelsLoadingError()
 
             all_bounce_rects = [_bounc.get_collision_rect() for _bounc in bounces_so_far]
             if len(notes) == 0:
@@ -91,7 +91,7 @@ class World:
             start_rect = square.rect.copy()
             while True:
                 t += 1/FRAMERATE
-                square.reg_move()
+                square.reg_move(False)
                 path.append(square.rect)
                 if t > notes[0]:
                     # no collision (we good)
@@ -149,18 +149,20 @@ class World:
 
         _start_notes = _start_notes[:Config.max_notes] if Config.max_notes is not None else _start_notes
 
-        self.scorekeeper.unhit_notes = remove_too_close_values([_sn[1] for _sn in _start_notes], Config.bounce_min_spacing)
+        self.scorekeeper.unhit_notes = remove_too_close_values([_sn for _sn in _start_notes], Config.bounce_min_spacing)
 
         self.future_bounces = recurs(
             square=self.square.copy(),
             notes=remove_too_close_values(
-                [_sn[1] for _sn in _start_notes],
+                [_sn for _sn in _start_notes],
                 threshold=Config.bounce_min_spacing
             )
         )
 
         assert self.future_bounces is not False, "Recursive bounce generation algorithm failed"
         assert len(self.future_bounces) != 0, "no recurs list???"
+
+        percent_update_callback("Removing overlapping safe areas")
 
         # eliminate fully overlapping safe areas
         safe_areas: list[pygame.Rect]

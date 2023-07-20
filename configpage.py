@@ -1,6 +1,7 @@
 from utils import *
 import pygame
 import pygame_gui as pgui
+from os import listdir
 import webbrowser
 
 
@@ -88,7 +89,7 @@ class ConfigPage:
         self.s_square_speed = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((300, 330, 300, 30)),
             start_value=Config.square_speed,
-            value_range=(600, 900),
+            value_range=(100, 2000),
             manager=self.ui_manager
         )
         self.s_square_speed_label = pgui.elements.UILabel(
@@ -171,6 +172,38 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        self.s_particle_trail = pgui.elements.UIDropDownMenu(
+            ["Off", "On"],
+            relative_rect=pygame.Rect((930, 210, 300, 30)),
+            starting_option=["Off", "On"][int(Config.particle_trail)],
+            manager=self.ui_manager
+        )
+        self.s_particle_trail_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((630, 210, 240, 30)),
+            text="Particle trail:",
+            manager=self.ui_manager
+        )
+
+        self.s_shader = pgui.elements.UIDropDownMenu(
+            [_ for _ in listdir("./assets/shaders/") if _.endswith(".glsl")],
+            relative_rect=pygame.Rect((930, 270, 300, 30)),
+            starting_option=Config.shader_file_name,
+            manager=self.ui_manager
+        )
+        self.s_shader_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect(630, 270, 240, 30),
+            text="Shader (requires restart):",
+            manager=self.ui_manager
+        )
+
+        # reset button
+
+        self.s_reset_button = pgui.elements.UIButton(
+            relative_rect=pygame.Rect((Config.SCREEN_WIDTH-330, Config.SCREEN_HEIGHT-60, 300, 30)),
+            text="Reset to default",
+            manager=self.ui_manager
+        )
+
     def handle_event(self, event: pygame.event.Event):
         if not self.active:
             return
@@ -184,17 +217,88 @@ class ConfigPage:
             if event.ui_element == self.back_button:
                 play_sound("wood.wav")
                 return True
+            if event.ui_element == self.s_reset_button:
+                # todo: rework this
+
+                Config.theme = "dark"
+                self.s_color_theme.selected_option = "dark"
+                self.s_color_theme.current_state.finish()
+                self.s_color_theme.current_state.selected_option = "dark"
+                self.s_color_theme.current_state.start()
+
+                Config.shader_file_name = "none.glsl"
+                self.s_shader.selected_option = "none.glsl"
+                self.s_shader.current_state.finish()
+                self.s_shader.current_state.selected_option = "none.glsl"
+                self.s_shader.current_state.start()
+
+                Config.seed = None
+                self.s_seed.set_text("")
+
+                Config.camera_mode = 2
+                self.s_camera_mode.selected_option = "Smoothed (Default)"
+                self.s_camera_mode.current_state.finish()
+                self.s_camera_mode.current_state.selected_option = "Smoothed (Default)"
+                self.s_camera_mode.current_state.start()
+
+                Config.start_playing_delay = 3000
+                self.s_start_playing_delay.set_current_value(3000)
+                self.s_start_playing_delay_label.set_text(f"Starting time delay ({self.s_start_playing_delay.get_current_value()}ms):")
+
+                Config.max_notes = None
+                self.s_max_notes.set_text("")
+
+                Config.bounce_min_spacing = 30
+                self.s_bounce_min_spacing.set_current_value(30)
+                self.s_bounce_min_spacing_label.set_text(f"Bounce min spacing ({Config.bounce_min_spacing}ms):")
+
+                Config.square_speed = 600
+                self.s_square_speed.set_current_value(600)
+                self.s_square_speed_label.set_text(f"Square speed ({Config.square_speed} pixels/s):")
+
+                Config.volume = 70
+                pygame.mixer.music.set_volume(70/100)
+                self.s_game_volume.set_current_value(70)
+                self.s_game_volume_label.set_text(f"Music volume ({Config.volume}%):")
+
+                Config.music_offset = -300
+                self.s_music_offset.set_current_value(-300)
+                self.s_music_offset_label.set_text(f"Music offset ({Config.music_offset}ms):")
+
+                Config.direction_change_chance = 30
+                self.s_direction_change_chance.set_current_value(30)
+                self.s_direction_change_chance_label.set_text(f"Change dir chance ({Config.direction_change_chance}%):")
+
+                Config.hp_drain_rate = 10
+                self.s_hp_drain_rate.set_current_value(10)
+                self.s_hp_drain_rate_label.set_text(f"HP drain rate ({Config.hp_drain_rate}/s):")
+
+                Config.theatre_mode = False
+                self.s_theatre_mode.selected_option = "Off"
+                self.s_theatre_mode.current_state.finish()
+                self.s_theatre_mode.current_state.selected_option = "Off"
+                self.s_theatre_mode.current_state.start()
+
+                Config.particle_trail = True
+                self.s_particle_trail.selected_option = "On"
+                self.s_particle_trail.current_state.finish()
+                self.s_particle_trail.current_state.selected_option = "On"
+                self.s_particle_trail.current_state.start()
+
+                play_sound("wood.wav")
 
         if event.type == pgui.UI_DROP_DOWN_MENU_CHANGED:
+            play_sound("wood.wav")
             if event.ui_element == self.s_camera_mode:
-                play_sound("wood.wav")
                 Config.camera_mode = "CLSP".index(event.text[0])
             if event.ui_element == self.s_color_theme:
-                play_sound("wood.wav")
                 Config.theme = event.text
             if event.ui_element == self.s_theatre_mode:
-                play_sound("wood.wav")
                 Config.theatre_mode = bool("fn".index(event.text[1]))
+            if event.ui_element == self.s_particle_trail:
+                Config.particle_trail = bool("fn".index(event.text[1]))
+            if event.ui_element == self.s_shader:
+                Config.shader_file_name = event.text
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:
@@ -218,8 +322,9 @@ class ConfigPage:
                 self.s_bounce_min_spacing_label.set_text(f"Bounce min spacing ({event.value}ms):")
                 Config.bounce_min_spacing = event.value
             if event.ui_element == self.s_square_speed:
-                self.s_square_speed_label.set_text(f"Square speed ({event.value} pixels/s):")
-                Config.square_speed = event.value
+                rounded = round(event.value, -2)
+                self.s_square_speed_label.set_text(f"Square speed ({rounded} pixels/s):")
+                Config.square_speed = rounded
             if event.ui_element == self.s_game_volume:
                 self.s_game_volume_label.set_text(f"Music volume ({event.value}%):")
                 Config.volume = event.value

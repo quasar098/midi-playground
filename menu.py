@@ -69,7 +69,7 @@ class Menu:
     def screensaver_rect(self):
         return pygame.Rect(0, 0, int(Config.SCREEN_WIDTH/2-100), Config.SCREEN_HEIGHT).inflate(-100, -100)
 
-    def draw(self, screen: pygame.Surface):
+    def draw(self, screen: pygame.Surface, n_frames: int):
         if self.active:
             if self.anim == 0:
                 self.anim = 0.3
@@ -96,9 +96,18 @@ class Menu:
 
             pygame.draw.rect(screen, get_colors()["hallway"], self.screensaver_rect.move(-x_offset, 0))
 
+            # particle trail
+            if Config.particle_trail:
+                # every 2 frames add a particle
+                if n_frames % 2 == 0:
+                    new = Particle(self.square.pos, [0, 0], True)
+                    new.color = get_colors()["background"]
+                    new.delta = [randint(-10, 10)/20, randint(-10, 10)/20]
+                    self.particles.append(new)
+
             # particles
             for particle in self.particles:
-                pygame.draw.rect(screen, get_colors()["hallway"], particle.rect)
+                pygame.draw.rect(screen, particle.color, particle.rect)
             for remove_particle in [particle for particle in self.particles if particle.age()]:
                 self.particles.remove(remove_particle)
 

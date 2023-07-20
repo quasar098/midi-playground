@@ -5,6 +5,8 @@ import random
 from camera import Camera
 from keystrokes import Keystrokes
 from particle import Particle
+from zipfile import ZipFile
+from hiticon import HitIcon, HitLevel
 
 
 class Game:
@@ -18,17 +20,22 @@ class Game:
         self.music_has_played = False
         self.offset_happened = False
         self.loading_text = get_font("./assets/poppins-regular.ttf", 24).render("Loading...", True, (255, 255, 255))
-        self.try_again_text = get_font("./assets/poppins-regular.ttf", 36).render("Press escape to go back", True, (255, 255, 255))
         self.keystrokes = Keystrokes()
+        self.misses = 0
+        self.mouse_down = False
 
-    def start_song(self, screen: pygame.Surface, song_path: str = None):
+    def start_song(self, screen: pygame.Surface):
         random.seed(Config.seed)
-        # load song and notes
-        if song_path is None:
-            song_path = join("songs", Config.midi_file_name)
 
-        notes = read_midi_file(song_path)
-        notes = [(note[0], note[1], note[2]) for note in notes]
+        # load song and notes
+        with ZipFile(Config.current_song.fp) as zf:
+            if Config.current_song.fp.lower().endswith(".osz"):
+                # Config.music_offset = 0
+                notes = read_osu_file(filedata=zf.read(Config.current_song.song_file_name))
+            else:
+                with zf.open(Config.current_song.song_file_name) as f:
+                    notes = read_midi_file(file=f)
+        notes = [note for note in notes]
         self.notes = notes
 
         # other settings
@@ -40,31 +47,25 @@ class Game:
         screen.fill(get_colors()["background"])
         pygame.display.flip()
 
-        def update_loading_screen(pdone: int):
+        def update_loading_screen(message: str):
             screen.fill(get_colors()["background"], pygame.Rect(0, 0, Config.SCREEN_WIDTH, 100))
-            message = f"{pdone}% done loading" if pdone != 100 else "Removing duplicate rectangles"
-            if pdone < 70:
-                if random.randint(1, 3) == 1:
-                    return
-            if pdone < 40:
-                if random.randint(1, 9) != 1:
-                    return
             screen.blit(get_font("./assets/poppins-regular.ttf", 60).render(message, True, get_colors()["hallway"]), (10, 10))
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         return True
-            pygame.display.flip()
+            update_screen(Config.screen, Config.glsl_program, Config.render_object)
 
         try:
             self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
-        except UserCancelsLoading:
+            self.safe_areas = fix_overlap(self.safe_areas, update_loading_screen)
+        except UserCancelsLoadingError:
             return True
         self.world.start_time = get_current_time()
         self.world.square.dir = [0, 0]
         self.world.square.pos = self.world.future_bounces[0].square_pos
 
-    def draw(self, screen: pygame.Surface):
+    def draw(self, screen: pygame.Surface, n_frames: int):
 
         if not self.active:
             return
@@ -74,7 +75,7 @@ class Game:
                 for bnc_change in self.world.future_bounces:
                     bnc_change.time += Config.start_playing_delay / 1000
             self.offset_happened = True
-            if self.world.time > Config.start_playing_delay/1000:
+            if self.world.time-Config.current_song.music_offset/1000 > Config.start_playing_delay/1000:
                 self.music_has_played = True
                 song_load_before = get_current_time()
                 pygame.mixer.music.play()
@@ -126,14 +127,23 @@ class Game:
 
         # particles
         for particle in self.world.particles:
-            pygame.draw.rect(screen, get_colors()["hallway"], self.camera.offset(particle.rect))
+            pygame.draw.rect(screen, particle.color, self.camera.offset(particle.rect))
         for remove_particle in [particle for particle in self.world.particles if particle.age()]:
             self.world.particles.remove(remove_particle)
 
+        # particle trail in game
+        if Config.particle_trail:
+            # every 2 frames add a particle
+            if not self.world.square.died:
+                if n_frames % 2 == 0:
+                    new = Particle(self.world.square.pos, [0, 0], True)
+                    new.delta = [random.randint(-10, 10)/20, random.randint(-10, 10)/20]
+                    self.world.particles.append(new)
+                
         # scorekeeper drawing
         time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
         if not Config.theatre_mode:
-            self.world.scorekeeper.draw(screen, time_from_start if len(self.world.future_bounces) else -1)
+            self.misses = self.world.scorekeeper.draw(screen, time_from_start if len(self.world.future_bounces) else -1, self.misses)
 
             # hit icons
             to_remove = []
@@ -172,9 +182,59 @@ class Game:
                 countdown_surface.set_alpha((0.5-time_from_start)*2*255)
                 screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
 
+            # handle mouse clicks because self.handle_event doesn't get called for mouse clicks
+            if pygame.mouse.get_pressed()[0] and not self.mouse_down:
+                self.misses = self.world.handle_keypress(time_from_start, self.misses)
+                self.mouse_down = True
+            elif not pygame.mouse.get_pressed()[0]:
+                self.mouse_down = False
+            
+            # draw accuracy
+            # noinspection PyBroadException
+            try:
+                n_bounces = len(self.world.past_bounces)
+                n_total_bounces = len(self.world.past_bounces)+len(self.world.future_bounces)
+                if n_bounces > 0:
+                    n_misses = self.misses
+                    acc = round((n_bounces-n_misses)/n_bounces*100, 2)
+                    acct = round((n_total_bounces-n_misses)/n_total_bounces*100, 2)
+                    # clamp to 0-100
+                    acc = max(0, min(100, acc))
+                    acct = max(0, min(100, acct))
+                    acc_text = get_font("./assets/poppins-regular.ttf", 24).render(f"Accuracy: {acc}%", True, (255, 255, 255))
+                    acct_text = get_font("./assets/poppins-regular.ttf", 24).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
+                    topleft1 = self.world.scorekeeper.life_bar_rect.move(0, 10).bottomleft
+                    screen.blit(acc_text, acc_text.get_rect(topleft=topleft1))
+                    screen.blit(acct_text, acct_text.get_rect(topleft=acc_text.get_rect(topleft=topleft1).move(0, 10).bottomleft))
+            except ZeroDivisionError:
+                pass
+            except Exception as e:
+                pass
+
             # failure message
             if self.world.square.died:
-                screen.blit(self.try_again_text, self.try_again_text.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
+                # calculate accuracy
+                n_bounces = len(self.world.past_bounces)
+                n_total_bounces = len(self.world.past_bounces)+len(self.world.future_bounces)
+                # clamp bounces to 1-infinity
+                n_bounces = max(1, n_bounces)
+                n_total_bounces = max(1, n_total_bounces)
+                n_misses = self.misses
+
+                acc = round((n_bounces-n_misses)/n_bounces*100, 2)
+                acct = round((n_total_bounces-n_misses)/n_total_bounces*100, 2)
+
+                # clamp to 0-100
+                acc = max(0, min(100, acc))
+                acct = max(0, min(100, acct))
+
+                try_again_text = get_font("./assets/poppins-regular.ttf", 36).render("Press escape to go back.", True, (255, 255, 255))
+                acc_text = get_font("./assets/poppins-regular.ttf", 36).render(f"Accuracy: {acc}%", True, (255, 255, 255))
+                acct_text = get_font("./assets/poppins-regular.ttf", 36).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
+                screen.blit(try_again_text, try_again_text.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
+                screen.blit(acc_text, acc_text.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4+50)))
+                screen.blit(acct_text, acct_text.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4+100)))
+
         if not self.camera.locked_on_square:
             screen.blit(self.camera_ctrl_text, (10, 10))
 
@@ -183,9 +243,6 @@ class Game:
             return False
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_F1:
-                for rect in self.safe_areas:
-                    debug_rect(rect)
             if event.key == pygame.K_ESCAPE:
                 return True
             if event.key == pygame.K_TAB:
@@ -195,7 +252,8 @@ class Game:
                     time_from_start = self.world.time-Config.start_playing_delay/1000+Config.music_offset/1000
                     if time_from_start < -0.2:
                         return
-                    # arrows_n_space = pygame.K_SPACE, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN
-                    arrows_n_space = ()
+                    arrows_n_space = (pygame.K_SPACE, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN)
+
                     if 97+26 > event.key >= 97 or event.key in arrows_n_space:  # press a to z key or space or arrows
-                        self.world.handle_keypress(time_from_start)
+                        self.misses = self.world.handle_keypress(time_from_start, self.misses)
+                   
