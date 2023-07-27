@@ -113,7 +113,7 @@ class World:
                             notes=notes[1:],
                             bounces_so_far=[_b.copy() for _b in bounces_so_far],
                             t=t,
-                            prev_index_priority=bounce_indexes.copy().copy(),
+                            prev_index_priority=bounce_indexes.copy(),
                             depth=depth+1
                         )
 
@@ -123,7 +123,7 @@ class World:
                             bounces_so_far = bounces_so_far[:-1]
                             square.dir[direction_to_bounce] *= -1
 
-                            # instead of trying other path, just exit a bit back to try another
+                            # instead of trying other path from here, just exit a bit back to try another from previous
                             if force_return:
                                 force_return -= 1
                                 while len(path) != path_segment_start:
@@ -134,9 +134,11 @@ class World:
                     while len(path) != path_segment_start:
                         path.pop()
                     return False
+
                 othercheck = False
                 if len(bounces_so_far):
                     othercheck = bounces_so_far[-1].get_collision_rect().collidelist(path[:-10])+1
+
                 if square.rect.collidelist(all_bounce_rects) != -1 or othercheck:
                     if depth > 300:
                         if random.random() < Config.backtrack_chance:
@@ -159,8 +161,11 @@ class World:
             )
         )
 
-        assert self.future_bounces is not False, "Recursive bounce generation algorithm failed"
-        assert len(self.future_bounces) != 0, "no recurs list???"
+        if self.future_bounces is False:
+            raise MapLoadingFailureError("The map failed to load")
+
+        if len(self.future_bounces) == 0:
+            raise MapLoadingFailureError("Map safearea list empty")
 
         percent_update_callback("Removing overlapping safe areas")
 

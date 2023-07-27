@@ -1,3 +1,4 @@
+import debuginfo
 from utils import *
 import pygame
 from world import World
@@ -60,6 +61,8 @@ class Game:
             self.safe_areas = self.world.gen_future_bounces(self.notes, update_loading_screen)
             self.safe_areas = fix_overlap(self.safe_areas, update_loading_screen)
         except UserCancelsLoadingError:
+            return True
+        except MapLoadingFailureError:
             return True
         self.world.start_time = get_current_time()
         self.world.square.dir = [0, 0]

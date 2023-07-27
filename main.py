@@ -102,7 +102,11 @@ def main():
                     for _ in range(10_000_000):
                         total += 1
                 if event.key == pygame.K_F3:
+                    print("Debug information copied to clipboard")
                     debuginfo.print_debug_info()
+                if event.key == pygame.K_F2:
+                    if game.active:
+                        debuginfo.debug_rectangles(game.safe_areas)
                 if event.key == pygame.K_ESCAPE:
                     if song_selector.active:
                         song_selector.active = False

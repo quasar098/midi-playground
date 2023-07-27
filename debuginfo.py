@@ -1,4 +1,6 @@
 import pygame
+import pyperclip
+
 from utils import *
 import sys
 from platform import system
@@ -6,14 +8,15 @@ from platform import system
 
 # noinspection PyBroadException
 def print_debug_info():
-    print(f"Debug information:")
-    print(f"os = {system()}")
+    debug_info = ""
+    debug_info += f"Debug information:\n"
+    debug_info += f"os = {system()}\n"
     try:
-        print(f"version: {'Static' if getattr(sys, 'frozen', False) else 'Source'}")
+        debug_info += f"version: {'Binary File' if getattr(sys, 'frozen', False) else 'Source Code'}\n"
     except Exception:
         pass
-    print(f"sys.version = {sys.version}")
-    print(f"framerate = {FRAMERATE}")
+    debug_info += f"sys.version = {sys.version}\n"
+    debug_info += f"framerate = {FRAMERATE}\n"
 
     for key in Config.__dict__:
         key: str
@@ -24,4 +27,18 @@ def print_debug_info():
             continue
         if key == "save_attrs":
             v = ", ".join(v)
-        print(f"{key} = {v}")
+        debug_info += f"{key} = {v}\n"
+    debug_info = debug_info.rstrip("\n")
+    print(debug_info)
+    pyperclip.copy(debug_info)
+
+
+def debug_rect(rect: pygame.Rect):
+    """Print a copy-pastable equation for debugging in desmos graphing calculator"""
+    print(f"\\operatorname\x7Bpolygon\x7D({rect.topleft}, {rect.topright}, {rect.bottomright}, {rect.bottomleft})")
+
+
+def debug_rectangles(rects: list[pygame.Rect]):
+    """Debug rects but multiple"""
+    for rect in rects:
+        debug_rect(rect)
