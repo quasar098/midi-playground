@@ -12,7 +12,9 @@ install requirements with `python3 -m pip install -r requirements.txt`
 
 start program with `python3 main.py`
 
-if you are going to contribute, it would be really cool if you completed items on the todo list (see below for link) 
+if you are going to contribute, it would be really cool if you completed items on the todo list (see below for link)
+
+build command: `pyinstaller main.py --noconsole --onefile --clean --hidden-import glcontext`
 
 ## how to do custom songs now?
 
