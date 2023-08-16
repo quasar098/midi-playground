@@ -5,3 +5,6 @@ xlib>=0.21; sys_platform == 'linux'
 pygame_gui>=0.6.9
 moderngl>=5.8.2
 pyperclip>=1.8.1
+PyMsgBox>=1.0.9
+pywin32>=301
+xlib>=0.21

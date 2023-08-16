@@ -167,7 +167,8 @@ def fix_overlap(rects: list[pygame.Rect], callback=None):
             if r.collidelist(rects)+1:
                 outputs.append(r)
 
-        callback(f"Checking minirectangles ({int(100*xv1*len(yvs)/(len(xvs)*len(yvs)))}% done)")
+        if callback(f"Checking minirectangles ({int(100*xv1*len(yvs)/(len(xvs)*len(yvs)))}% done)"):
+            raise UserCancelsLoadingError()
 
     callback("Merging adjacent minirectangles")
 

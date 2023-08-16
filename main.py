@@ -3,6 +3,7 @@ from menu import Menu
 from game import Game
 from configpage import ConfigPage
 from songselector import SongSelector
+from errorscreen import ErrorScreen
 from os import getcwd
 from config import save_to_file
 import debuginfo
@@ -75,6 +76,7 @@ def main():
     menu = Menu()
     song_selector = SongSelector()
     config_page = ConfigPage()
+    error_screen = ErrorScreen()
     game = Game()
 
     # game loop
@@ -129,6 +131,10 @@ def main():
                         config_page.active = False
                         menu.active = True
                         continue
+                    if error_screen.active:
+                        error_screen.active = False
+                        song_selector.active = True
+                        continue
                     running = False
 
             # handle menu events
@@ -164,9 +170,14 @@ def main():
                 # starting song now
                 Config.current_song = song
                 game.active = True
-                if game.start_song(screen):
-                    game.active = False
-                    song_selector.active = True
+                if msg := game.start_song(screen):
+                    if isinstance(msg, str):
+                        game.active = False
+                        error_screen.active = True
+                        error_screen.msg = msg
+                    else:
+                        game.active = False
+                        song_selector.active = True
                     pygame.mixer.music.load("./assets/mainmenu.mp3")
                     pygame.mixer.music.set_volume(Config.volume/100)
                     pygame.mixer.music.play(loops=-1, start=2)
@@ -186,6 +197,7 @@ def main():
         song_selector.draw(screen)
         config_page.draw(screen)
         menu.draw(screen, n_frames)
+        error_screen.draw(screen)
 
         update_screen(screen, glsl_program, render_object)
 

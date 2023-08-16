@@ -1,3 +1,5 @@
+import pymsgbox
+
 import debuginfo
 from utils import *
 import pygame
@@ -46,6 +48,13 @@ class Game:
         self.offset_happened = False
         self.camera.lock_type = CameraFollow(Config.camera_mode)
         screen.fill(get_colors()["background"])
+        information_texts = [
+            "Map loading stuck at some percentage? Try changing the square speed!",
+            "Too large maps will crash the program, so try with some smaller ones first",
+        ]
+        for index, info_text in enumerate(information_texts):
+            rendered_text = get_font("./assets/poppins-regular.ttf", 24).render(info_text, True, (0, 0, 0))
+            screen.blit(rendered_text, (50, Config.SCREEN_HEIGHT/2+30*index))
         pygame.display.flip()
 
         def update_loading_screen(message: str):
@@ -54,7 +63,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        return True
+                        return 1
             update_screen(Config.screen, Config.glsl_program, Config.render_object)
 
         try:
@@ -62,8 +71,8 @@ class Game:
             self.safe_areas = fix_overlap(self.safe_areas, update_loading_screen)
         except UserCancelsLoadingError:
             return True
-        except MapLoadingFailureError:
-            return True
+        except MapLoadingFailureError as e:
+            return e.args[0] if len(e.args) else "Big error... can't load map :("
         self.world.start_time = get_current_time()
         self.world.square.dir = [0, 0]
         self.world.square.pos = self.world.future_bounces[0].square_pos
@@ -211,7 +220,7 @@ class Game:
                     screen.blit(acct_text, acct_text.get_rect(topleft=acc_text.get_rect(topleft=topleft1).move(0, 10).bottomleft))
             except ZeroDivisionError:
                 pass
-            except Exception as e:
+            except Exception:
                 pass
 
             # failure message

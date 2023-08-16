@@ -98,6 +98,26 @@ class Config:
                 pygame.Color(100, 100, 100),
                 pygame.Color(200, 200, 200)
             ]
+        },
+        "green-screen-hallway": {
+            "hallway": pygame.Color(0, 255, 0),
+            "background": pygame.Color(60, 63, 65),
+            "square": [
+                pygame.Color(224, 26, 79),
+                pygame.Color(173, 247, 182),
+                pygame.Color(249, 194, 46),
+                pygame.Color(83, 179, 203)
+            ]
+        },
+        "green-screen-background": {
+            "hallway": pygame.Color(60, 63, 65),
+            "background": pygame.Color(0, 255, 0),
+            "square": [
+                pygame.Color(224, 26, 79),
+                pygame.Color(173, 247, 182),
+                pygame.Color(249, 194, 46),
+                pygame.Color(83, 179, 203)
+            ]
         }
     }
 
@@ -118,7 +138,7 @@ class Config:
     shader_file_name = "none.glsl"
 
     # settings that are not configurable (yet)
-    backtrack_chance: Optional[float] = 0.01
+    backtrack_chance: Optional[float] = 0.02
     backtrack_amount: Optional[int] = 40
     rainbow_speed: Optional[int] = 30
     square_swipe_anim_speed: Optional[int] = 4

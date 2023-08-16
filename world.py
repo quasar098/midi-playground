@@ -140,7 +140,7 @@ class World:
                     othercheck = bounces_so_far[-1].get_collision_rect().collidelist(path[:-10])+1
 
                 if square.rect.collidelist(all_bounce_rects) != -1 or othercheck:
-                    if depth > 300:
+                    if depth > 200:
                         if random.random() < Config.backtrack_chance:
                             max_percent -= (Config.backtrack_amount * 100 // total_notes) + 1
                             force_return = Config.backtrack_amount
@@ -162,10 +162,11 @@ class World:
         )
 
         if self.future_bounces is False:
-            raise MapLoadingFailureError("The map failed to load")
+            raise MapLoadingFailureError("The map failed to generate because of the recursion function. " +
+                                         "If the midi has too many notes too close, it may not generate. Maybe try changing the square speed?")
 
         if len(self.future_bounces) == 0:
-            raise MapLoadingFailureError("Map safearea list empty")
+            raise MapLoadingFailureError("Map safearea list empty. Please report to the github under the issues tab")
 
         percent_update_callback("Removing overlapping safe areas")
 
@@ -187,11 +188,6 @@ class World:
             if after_safe_count == before_safe_count:
                 break
         safe_areas = safe_areas
-
-        # todo: shrink rectangles so double-drawing is no longer
-        # uncomment and put print output in desmos to see the problem
-        # for safe_area in safe_areas:
-        #     debug_rect(safe_area)
 
         self.rectangles = [_fb.get_collision_rect() for _fb in self.future_bounces]
         return safe_areas
