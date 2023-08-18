@@ -17,9 +17,9 @@ def main():
     # pygame and other boilerplate
     n_frames = 0
     pygame.init()
-    pygame.mixer.music.load("./assets/mainmenu.mp3")
-    pygame.mixer.music.set_volume(Config.volume/100)
-    pygame.mixer.music.play(loops=-1, start=2)
+    # pygame.mixer.music.load("./assets/mainmenu.mp3")
+    # pygame.mixer.music.set_volume(Config.volume/100)
+    # pygame.mixer.music.play(loops=-1, start=2)
 
     clock = pygame.time.Clock()
     # noinspection PyUnusedLocal

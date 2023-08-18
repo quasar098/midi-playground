@@ -56,7 +56,6 @@ class Menu:
         self.menu_options: list[MenuOption] = [
             MenuOption("Play", pygame.Color(214, 247, 163)),
             MenuOption("Config", pygame.Color(196, 255, 178)),
-            MenuOption("Contribute", pygame.Color(183, 227, 204)),
             MenuOption("Open Songs Folder", pygame.Color(125, 130, 184)),
             MenuOption("Quit", pygame.Color(226, 109, 92))
         ]
