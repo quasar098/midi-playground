@@ -135,6 +135,7 @@ class Config:
     hp_drain_rate = 10
     theatre_mode = False
     particle_trail = True
+    botplay = False
     shader_file_name = "none.glsl"
 
     # settings that are not configurable (yet)
@@ -171,7 +172,8 @@ def save_to_file(dat: Optional[dict[str, Any]] = None):
     with open("./assets/settings.json", "w") as f:
         dump(dat, f)
 
-
+def is_botplay():
+    return Config.botplay
 def load_from_file():
     try:
         if isfile("./assets/settings.json"):

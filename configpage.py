@@ -196,6 +196,44 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        self.s_botplay = pgui.elements.UIDropDownMenu(
+            ["Off", "On"],
+            relative_rect=pygame.Rect((930, 330, 300, 30)),
+            starting_option=["Off", "On"][int(Config.botplay)],
+            manager=self.ui_manager
+        )
+        self.s_botplay_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect(630, 330, 240, 30),
+            text="Botplay:",
+            manager=self.ui_manager
+        )
+        shit = [
+            {
+                "text":     "Sample thing!",
+                "dropdown": [["off", "on"], ["off", "on"][int(Config.botplay)]],
+                "event": 
+                """
+                Config.botplay = event.value
+                """
+            }
+        ]
+        self.s_customsettings = []
+        for thing in shit:
+            text = thing["text"]
+            dropdown = thing["dropdown"]
+            self.s_customsettings.append(
+                [
+                pgui.elements.UIDropDownMenu(
+                    dropdown[0],
+                    relative_rect=pygame.Rect((930, 390+(shit.index(thing)*60), 300, 30)),
+                    starting_option=dropdown[1],
+                    manager=self.ui_manager
+                ),
+                thing
+                ]
+            )
+
+
         # reset button
 
         self.s_reset_button = pgui.elements.UIButton(
@@ -299,6 +337,11 @@ class ConfigPage:
                 Config.particle_trail = bool("fn".index(event.text[1]))
             if event.ui_element == self.s_shader:
                 Config.shader_file_name = event.text
+            if event.ui_element in self.s_customsettings:
+                # find what it is and start the event from there
+                customset = self.s_customsettings.index(event.ui_element)
+                # run the code in "event"
+                eval(self.s_customsettings[customset][1]["event"])
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:
@@ -348,3 +391,4 @@ class ConfigPage:
         self.ui_manager.draw_ui(screen)
 
         screen.blit(self.made_with_pgui_surf, self.made_with_pgui_rect)
+

@@ -1,0 +1,8 @@
+{
+    "text":     "Sample thing!",
+    "dropdown": [["off", "on"], ["off", "on"][int(Config.botplay)]],
+    "event": 
+    """
+    Config.botplay = event.value
+    """
+}

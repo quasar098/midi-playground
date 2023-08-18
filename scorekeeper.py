@@ -4,7 +4,8 @@ from hiticon import HitIcon, HitLevel
 
 
 class Scorekeeper:
-    def __init__(self, world):
+    def __init__(self, world, botplay):
+        self.botplay = botplay
         self.world = world
         self.unhit_notes: list[float] = []
         self.hit_icons: list[HitIcon] = []
@@ -35,7 +36,7 @@ class Scorekeeper:
             leftover -= bar_hp_repr
             chunk_rect.width = width
             screen.fill(fill_colors[_], chunk_rect)
-        if current_time > 0:
+        if current_time > 0 and not self.botplay:
             self.hp -= Config.hp_drain_rate*Config.dt
         hp_show_damping = 10
         self.shown_hp = self.shown_hp*(1-hp_show_damping*Config.dt)+self.hp*(hp_show_damping*Config.dt)
@@ -43,13 +44,14 @@ class Scorekeeper:
         # remove unhit notes
         to_remove = []
         for timestamp in self.unhit_notes:
-            if timestamp+0.12 < current_time:  # 120ms late is missed note
+            if timestamp+0.12 < current_time and not self.botplay:  # 120ms late is missed note
                 self.hp -= 6
                 self.hit_icons.append(HitIcon(HitLevel.miss, self.world.square.pos))
                 to_remove.append(timestamp)
                 misses = misses if misses is not None else 0
                 misses += 1
-
+        if self.botplay:
+            self.should_hit(current_time, [])
         for t_remove in to_remove:
             self.unhit_notes.remove(t_remove)
 
@@ -92,6 +94,8 @@ class Scorekeeper:
 
             elif offset > -0.06:  # 60ms early - 60ms late
                 blacklist.append(timestamp)
+                if self.botplay:
+                    self.do_keypress(current_time, 0)
                 return True, blacklist
 
             elif offset > -0.09:  # 60ms early - 90ms early

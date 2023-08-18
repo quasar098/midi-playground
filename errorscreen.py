@@ -3,8 +3,8 @@ from utils import *
 
 
 class ErrorScreen:
-    def __init__(self):
-        self.msg = "Unspecified error!!!"
+    def __init__(self, msg="Error: Unknown"):
+        self.msg = msg
         self.active = False
 
     def draw(self, screen: pygame.Surface):

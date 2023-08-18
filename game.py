@@ -78,7 +78,7 @@ class Game:
         self.world.square.pos = self.world.future_bounces[0].square_pos
 
     def draw(self, screen: pygame.Surface, n_frames: int):
-
+        
         if not self.active:
             return
 

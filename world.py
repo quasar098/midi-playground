@@ -4,6 +4,7 @@ from particle import Particle
 from square import Square
 from time import time as get_current_time
 from scorekeeper import Scorekeeper
+import config
 import random
 import pygame
 
@@ -20,7 +21,8 @@ class World:
         self.particles: list[Particle] = []
         self.timestamps = []
         self.square = Square()
-        self.scorekeeper = Scorekeeper(self)
+        
+        self.scorekeeper = Scorekeeper(self, config.is_botplay())
 
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time

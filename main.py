@@ -25,7 +25,7 @@ def main():
     # noinspection PyUnusedLocal
     real_screen = pygame.display.set_mode(
         [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
-        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF,
+        pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF,
         vsync=1
     )
     screen = pygame.Surface([Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT])
