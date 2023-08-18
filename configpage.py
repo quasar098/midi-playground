@@ -209,35 +209,6 @@ class ConfigPage:
         )
 
 
-        # man yknow what
-        # modding options may be simple but i aint making it easier
-        # not like its ez to import a dictionary from a file
-        # so no-source mods no exist on dis shizzle
-        shit = [
-            {
-                "text":        "On Off Dropdown!",
-                "type":        pgui.elements.UIDropDownMenu,
-                "dropdown":    [["off", "on"], ["off", "on"][int(Config.botplay)]],
-                "event":       ['print("Sample thing! Changed to " + str(bool("fn".index(event.text[1]))))']
-            }
-        ]
-        self.s_customsettings = []
-        for thing in shit:
-            text = thing["text"]
-            if thing["type"] == pgui.elements.UIDropDownMenu:
-                dropdown = thing["dropdown"]
-                self.s_customsettings.append(
-                    [
-                    pgui.elements.UIDropDownMenu(
-                        dropdown[0],
-                        relative_rect=pygame.Rect((930, 390+(shit.index(thing)*60), 300, 30)),
-                        starting_option=dropdown[1],
-                        manager=self.ui_manager
-                    ),
-                    thing
-                    ]
-                )
-
 
         # reset button
 
@@ -342,17 +313,8 @@ class ConfigPage:
                 Config.particle_trail = bool("fn".index(event.text[1]))
             if event.ui_element == self.s_shader:
                 Config.shader_file_name = event.text
-            print(event.ui_element)
-            for thingy in self.s_customsettings:
-                if event.ui_element in thingy:
-                    print("ues")
-                    # find what it is and start the event from there
-                    customset = thingy
-                    # run the code in "event"
-                    print(thingy[1]["event"])
-                    for code in thingy[1]["event"]:
-                        print(code)
-                        eval(code, {"event":event})
+            if event.ui_element == self.s_botplay:
+                Config.botplay = bool("fn".index(event.text[1]))
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:
