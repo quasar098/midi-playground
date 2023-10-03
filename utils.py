@@ -1,6 +1,9 @@
+# noinspection PyUnresolvedReferences
 from typing import Union, Optional, BinaryIO
+# noinspection PyUnresolvedReferences
 from errors import *
 from config import Config, get_colors
+# noinspection PyUnresolvedReferences
 from time import time as get_current_time
 import moderngl
 import mido
@@ -119,7 +122,6 @@ def read_midi_file(file):
 
     for msg in midi_file:
         if msg.type == 'note_on' and msg.velocity != 0:
-            note = msg.note
             timestamp = current_time + msg.time
             notes.append(round(timestamp*1000)/1000)
         current_time += msg.time
@@ -141,11 +143,6 @@ def remove_too_close_values(lst: list[float], threshold=30) -> list[float]:
         before = _
         new.append(_)
     return new
-
-
-def debug_rect(rect: pygame.Rect):
-    """Print a copy-pastable equation for debugging in desmos graphing calculator"""
-    print(f"\\operatorname\x7Bpolygon\x7D({rect.topleft}, {rect.topright}, {rect.bottomright}, {rect.bottomleft})")
 
 
 def fix_overlap(rects: list[pygame.Rect], callback=None):
@@ -170,7 +167,8 @@ def fix_overlap(rects: list[pygame.Rect], callback=None):
             if r.collidelist(rects)+1:
                 outputs.append(r)
 
-        callback(f"Checking minirectangles ({int(100*xv1*len(yvs)/(len(xvs)*len(yvs)))}% done)")
+        if callback(f"Checking minirectangles ({int(100*xv1*len(yvs)/(len(xvs)*len(yvs)))}% done)"):
+            raise UserCancelsLoadingError()
 
     callback("Merging adjacent minirectangles")
 

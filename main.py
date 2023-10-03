@@ -3,16 +3,18 @@ from menu import Menu
 from game import Game
 from configpage import ConfigPage
 from songselector import SongSelector
+from errorscreen import ErrorScreen
 from os import getcwd
 from config import save_to_file
 import debuginfo
 import webbrowser
 import pygame
 from array import array
-
+from ctypes import windll
 
 def main():
-
+    # patch to fix mouse on high dpi displays
+    windll.user32.SetProcessDPIAware()
     # pygame and other boilerplate
     n_frames = 0
     pygame.init()
@@ -75,6 +77,7 @@ def main():
     menu = Menu()
     song_selector = SongSelector()
     config_page = ConfigPage()
+    error_screen = ErrorScreen()
     game = Game()
 
     # game loop
@@ -102,7 +105,11 @@ def main():
                     for _ in range(10_000_000):
                         total += 1
                 if event.key == pygame.K_F3:
+                    print("Debug information copied to clipboard")
                     debuginfo.print_debug_info()
+                if event.key == pygame.K_F2:
+                    if game.active:
+                        debuginfo.debug_rectangles(game.safe_areas)
                 if event.key == pygame.K_ESCAPE:
                     if song_selector.active:
                         song_selector.active = False
@@ -124,6 +131,10 @@ def main():
                     if config_page.active:
                         config_page.active = False
                         menu.active = True
+                        continue
+                    if error_screen.active:
+                        error_screen.active = False
+                        song_selector.active = True
                         continue
                     running = False
 
@@ -160,9 +171,14 @@ def main():
                 # starting song now
                 Config.current_song = song
                 game.active = True
-                if game.start_song(screen):
-                    game.active = False
-                    song_selector.active = True
+                if msg := game.start_song(screen):
+                    if isinstance(msg, str):
+                        game.active = False
+                        error_screen.active = True
+                        error_screen.msg = msg
+                    else:
+                        game.active = False
+                        song_selector.active = True
                     pygame.mixer.music.load("./assets/mainmenu.mp3")
                     pygame.mixer.music.set_volume(Config.volume/100)
                     pygame.mixer.music.play(loops=-1, start=2)
@@ -182,6 +198,7 @@ def main():
         song_selector.draw(screen)
         config_page.draw(screen)
         menu.draw(screen, n_frames)
+        error_screen.draw(screen)
 
         update_screen(screen, glsl_program, render_object)
 

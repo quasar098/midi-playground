@@ -16,7 +16,7 @@ class Bounce:
             if self.square_dir[0] == -1:
                 # right wall
                 return pygame.Rect(
-                    sx+Config.SQUARE_SIZE/2,
+                    sx+Config.SQUARE_SIZE/2+1,
                     sy-10,
                     10,
                     20
@@ -24,7 +24,7 @@ class Bounce:
             elif self.square_dir[0] == 1:
                 # left wall
                 return pygame.Rect(
-                    sx-10-Config.SQUARE_SIZE/2,
+                    sx-10-Config.SQUARE_SIZE/2-1,
                     sy-10,
                     10,
                     20
@@ -35,7 +35,7 @@ class Bounce:
                 # bottom wall
                 return pygame.Rect(
                     sx-10,
-                    sy+Config.SQUARE_SIZE/2,
+                    sy+Config.SQUARE_SIZE/2+1,
                     20,
                     10
                 )
@@ -43,7 +43,7 @@ class Bounce:
                 # top wall
                 return pygame.Rect(
                     sx-10,
-                    sy-10-Config.SQUARE_SIZE/2,
+                    sy-10-Config.SQUARE_SIZE/2-1,
                     20,
                     10
                 )

@@ -17,6 +17,8 @@
 - 4 key gamemode
 - keystrokes toggle
 - square bounce intensity, particle intensity settings
+- `song_file -> map_file` in the metadata.json (new version required)
+- add a `midi_author` key to metadata.json (new version required)
 - implement modifiers like osu (DT, HR, HD, EZ, etc)
 
 ### low priority

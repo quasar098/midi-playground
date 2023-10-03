@@ -9,7 +9,10 @@ from json import loads
 
 
 class Song:
-    def __init__(self, name: str, song_artist: str, mapper: str, song_file: str, audio_file: str, version: int = -1, filepath: Optional[str] = None):
+    def __init__(self, name: str, song_artist: str, mapper: str,
+                 song_file: str, audio_file: str, version: int = -1, filepath: Optional[str] = None,
+                 is_from_osu_file: bool = False):
+        self.is_from_osu_file = is_from_osu_file
         self.song_file_name: str = song_file
         self.audio_file_name: str = audio_file if audio_file is not None else self.song_file_name
         self.mapper = mapper
@@ -38,7 +41,10 @@ class Song:
         title_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 36).render(self.name, True, (0, 0, 6))
         overlay_surf.blit(title_surface, title_surface.get_rect(topright=overlay_surf.get_rect().topright).move(-20, 20))
 
-        details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"Song by {self.song_artist} | Mapped by {self.mapper}", True, (0, 0, 0))
+        if not is_from_osu_file:
+            details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"Song by {self.song_artist} | Mapped by {self.mapper}", True, (0, 0, 0))
+        else:
+            details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"WARNING: EXPERIMENTAL!!!", True, (0, 0, 0))
         overlay_surf.blit(details_surface, details_surface.get_rect(bottomright=overlay_surf.get_rect().bottomright).move(-20, -20))
 
         self.surface.blit(overlay_surf, (0, 0))
@@ -69,7 +75,11 @@ def song_from_osu_file(contents: str, songfilepath: str, zipfilepath: str) -> So
             # janky asf but whatever
             mapper += f' | {line.removeprefix("Version:").lstrip()}'
 
-    return Song(name=name, song_artist=artist, mapper=mapper, song_file=songfilepath, audio_file=audio_name, version=-2, filepath=zipfilepath)
+    return Song(
+        name=name, song_artist=artist, mapper=mapper,
+        song_file=songfilepath, audio_file=audio_name,
+        version=-2, filepath=zipfilepath, is_from_osu_file=True
+    )
 
 
 def make_songs_from_osz(fpath: str) -> list[Song]:
@@ -190,8 +200,6 @@ class SongSelector:
         self.anim = max(min(self.anim, 1), 0)
         if self.anim == 0:
             return
-
-        rect = None
 
         self.scroll_velocity = min(max(self.scroll_velocity, -1), 1) * (1 - 8 / FRAMERATE)
         keys = pygame.key.get_pressed()
