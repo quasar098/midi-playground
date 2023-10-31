@@ -3,6 +3,7 @@ from particle import Particle
 from square import Square
 from utils import *
 from random import randint
+import random
 
 
 def draw_beveled_rectangle(surf: pygame.Surface, color: pygame.Color, rect: pygame.Rect) -> None:
@@ -53,17 +54,48 @@ class MenuOption:
 
 class Menu:
     def __init__(self):
+        self.possible_title_colors = [
+            pygame.Color(0x55, 0x48, 0xf4),
+            pygame.Color(0x6b, 0xf2, 0xa5),
+            pygame.Color(0xa7, 0x7c, 0xf0),
+            pygame.Color(0x3c, 0x4a, 0xf8),
+            pygame.Color(0xf7, 0xb1, 0x63),
+            pygame.Color(0xf3, 0x5f, 0x52)
+        ]
+
         self.menu_options: list[MenuOption] = [
             MenuOption("Play", pygame.Color(214, 247, 163)),
             MenuOption("Config", pygame.Color(196, 255, 178)),
             MenuOption("Contribute", pygame.Color(183, 227, 204)),
-            MenuOption("Open Songs Folder", pygame.Color(125, 130, 184)),
+            #MenuOption("Open Songs Folder", pygame.Color(125, 130, 184)),
+            MenuOption("Restart", pygame.Color(120, 120, 120)),
             MenuOption("Quit", pygame.Color(226, 109, 92))
         ]
         self.anim = 1
         self.active = True
         self.square = Square(100, 320)
         self.particles: list[Particle] = []
+
+        # open song folder text
+        font = pygame.font.Font("./assets/poppins-regular.ttf", 40)
+        self.open_song_folder_text = font.render("Open Songs Folder", True, pygame.Color(200, 200, 255))
+        self.open_song_folder_text_rect = self.open_song_folder_text.get_rect()
+        # set position (bottom left)
+        self.open_song_folder_text_rect.bottomleft = (2, Config.SCREEN_HEIGHT)
+
+
+        # Title
+        color = random.choice(self.possible_title_colors)
+        font = pygame.font.Font("./assets/poppins-regular.ttf", 120)
+        self.title_text = font.render("BOUNCING \n   SQUARE", True, color)
+        del color
+
+        # set position (top - right)
+        self.title_text_rect = self.title_text.get_rect()
+        self.title_text_rect.topright = (Config.SCREEN_WIDTH - 140, 2)
+
+
+    
 
     @property
     def screensaver_rect(self):
@@ -105,6 +137,14 @@ class Menu:
                     new.delta = [randint(-10, 10)/20, randint(-10, 10)/20]
                     self.particles.append(new)
 
+            # draw open song folder text
+            screen.blit(self.open_song_folder_text, self.open_song_folder_text_rect.move(-x_offset, 0))
+
+            # draw title
+            screen.blit(self.title_text, self.title_text_rect.move(-x_offset, 0))
+            
+    
+
             # particles
             for particle in self.particles:
                 pygame.draw.rect(screen, particle.color, particle.rect)
@@ -124,7 +164,7 @@ class Menu:
                     self.particles.append(new)
 
         for index, option in enumerate(self.menu_options):
-            y_value = index * (option.HEIGHT + option.SPACING) + 250
+            y_value = index * (option.HEIGHT + option.SPACING) + 350
             # update the hover if completely active
             if self.anim == 1:
                 option.update_hover(y_value)
@@ -146,7 +186,7 @@ class Menu:
         if not self.active:
             return
         for index, option in enumerate(self.menu_options):
-            rect = option.get_rect(index * (option.HEIGHT + option.SPACING) + 250)
+            rect = option.get_rect(index * (option.HEIGHT + option.SPACING) + 350)
             if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and rect.collidepoint(
                     pygame.mouse.get_pos())) \
                     or (event.type == pygame.KEYDOWN and event.key == 49 + index):

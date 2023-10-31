@@ -4,13 +4,14 @@ from game import Game
 from configpage import ConfigPage
 from songselector import SongSelector
 from errorscreen import ErrorScreen
-from os import getcwd
+from os import getcwd, system
 from config import save_to_file
 import debuginfo
 import webbrowser
 import pygame
 from array import array
 from ctypes import windll
+
 
 def main():
     # patch to fix mouse on high dpi displays
@@ -37,6 +38,8 @@ def main():
         pygame.display.set_icon(pygame.image.load("./assets/icon.png").convert_alpha())
     except Exception as e:
         print(e)
+
+
 
     # moderngl stuff
     ctx = moderngl.create_context()
@@ -80,6 +83,9 @@ def main():
     error_screen = ErrorScreen()
     game = Game()
 
+    
+
+
     # game loop
     running = True
     while running:
@@ -98,6 +104,14 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # check if colliding with open song folder text
+                if menu.active:
+                    if menu.open_song_folder_text_rect.collidepoint(event.pos):
+                        open_file(join(getcwd(), "songs"))
+                        continue
+
             if event.type == pygame.KEYDOWN:
                 # artificial lag spike for debugging purposes
                 if event.key == pygame.K_F12:
@@ -153,6 +167,10 @@ def main():
                 if option_id == "play":
                     song_selector.active = True
                     song_selector.reload_songs()
+                if option_id == "restart":
+                    system('start python restart.pyw')
+                    running = False
+
                 if option_id == "quit":
                     running = False
                 continue

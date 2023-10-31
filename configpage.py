@@ -1,7 +1,7 @@
 from utils import *
 import pygame
 import pygame_gui as pgui
-from os import listdir
+from os import listdir, system
 import webbrowser
 
 
@@ -203,6 +203,8 @@ class ConfigPage:
             text="Reset to default",
             manager=self.ui_manager
         )
+
+
 
     def handle_event(self, event: pygame.event.Event):
         if not self.active:
