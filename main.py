@@ -10,10 +10,11 @@ import debuginfo
 import webbrowser
 import pygame
 from array import array
-
+from ctypes import windll
 
 def main():
-
+    # patch to fix mouse on high dpi displays
+    windll.user32.SetProcessDPIAware()
     # pygame and other boilerplate
     n_frames = 0
     pygame.init()
