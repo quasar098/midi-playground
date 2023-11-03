@@ -29,6 +29,7 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [quasar098](https://github.com/quasar098)
 - [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes + QOL
 - [PurpleJuiceBox](https://github.com/PurpleJuiceBox) - Reset to Default Button
+- [sled45](https://github.com/sled45) - Mouse fix for high DPI displays
 
 ## todo
 
