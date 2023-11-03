@@ -136,6 +136,7 @@ class Config:
     theatre_mode = False
     particle_trail = True
     botplay = False
+    fullscreen = True
     shader_file_name = "none.glsl"
 
     # settings that are not configurable (yet)
@@ -159,7 +160,7 @@ class Config:
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
                   "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode",
-                  "particle_trail", "shader_file_name"]
+                  "particle_trail", "shader_file_name", "botplay", "fullscreen"]
 
 
 def get_colors():

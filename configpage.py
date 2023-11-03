@@ -1,7 +1,7 @@
 from utils import *
 import pygame
 import pygame_gui as pgui
-from os import listdir
+from os import listdir, system
 import webbrowser
 
 
@@ -208,6 +208,24 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        self.s_fullscreen = pgui.elements.UIDropDownMenu(
+            ["Off", "On"],
+            relative_rect=pygame.Rect((930, 380, 300, 30)),
+            starting_option=["Off", "On"][int(Config.fullscreen)],
+            manager=self.ui_manager
+        )
+        self.s_fullscreen_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect(630, 380, 240, 30),
+            text="Fullscreen:",
+            manager=self.ui_manager
+        )
+
+        self.s_songsfolder = pgui.elements.UIButton(
+            relative_rect=pygame.Rect(630, 440, 240, 30),
+            text="Open songs folder",
+            manager=self.ui_manager
+        )
+
 
 
         # reset button
@@ -231,6 +249,9 @@ class ConfigPage:
             if event.ui_element == self.back_button:
                 play_sound("wood.wav")
                 return True
+            if event.ui_element == self.s_songsfolder:
+                # Open the song folder
+                system("explorer songs")
             if event.ui_element == self.s_reset_button:
                 # todo: rework this
 
@@ -315,6 +336,8 @@ class ConfigPage:
                 Config.shader_file_name = event.text
             if event.ui_element == self.s_botplay:
                 Config.botplay = bool("fn".index(event.text[1]))
+            if event.ui_element == self.s_fullscreen:
+                Config.fullscreen = bool("fn".index(event.text[1]))
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:

@@ -26,25 +26,25 @@ class Song:
         col = pygame.Color(229, 97, 196)
         selected_col = pygame.Color(50, 203, 255)
 
-        reset_rect = pygame.Rect((0, 0, int(Config.SCREEN_WIDTH / 2), SongSelector.ITEM_HEIGHT))
+        reset_rect = pygame.Rect((0, 0, int(Config.SCREEN_WIDTH / 1.5), SongSelector.ITEM_HEIGHT))
 
-        self.surface: pygame.Surface = pygame.Surface((int(Config.SCREEN_WIDTH / 2), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
-        self.selected_surface: pygame.Surface = pygame.Surface((int(Config.SCREEN_WIDTH / 2), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
+        self.surface: pygame.Surface = pygame.Surface((int(Config.SCREEN_WIDTH / 1.5), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
+        self.selected_surface: pygame.Surface = pygame.Surface((int(Config.SCREEN_WIDTH / 1.5), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
 
-        overlay_surf = pygame.Surface((int(Config.SCREEN_WIDTH / 2), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
+        overlay_surf = pygame.Surface((int(Config.SCREEN_WIDTH / 1.5), SongSelector.ITEM_HEIGHT), pygame.SRCALPHA)
 
         pygame.draw.rect(self.surface, col.lerp((0, 0, 0), 0.4), reset_rect, border_radius=6)
         pygame.draw.rect(self.surface, col, reset_rect.inflate(-8, -8), border_radius=2)
         pygame.draw.rect(self.selected_surface, selected_col.lerp((0, 0, 0), 0.4), reset_rect, border_radius=6)
         pygame.draw.rect(self.selected_surface, selected_col, reset_rect.inflate(-8, -8), border_radius=2)
 
-        title_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 36).render(self.name, True, (0, 0, 6))
+        title_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 36).render(f"{self.name} | {self.song_artist}", True, (0, 0, 6))
         overlay_surf.blit(title_surface, title_surface.get_rect(topright=overlay_surf.get_rect().topright).move(-20, 20))
 
         if not is_from_osu_file:
-            details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"Song by {self.song_artist} | Mapped by {self.mapper}", True, (0, 0, 0))
+            details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"Mapped by {self.mapper}", True, (0, 0, 0))
         else:
-            details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"WARNING: EXPERIMENTAL!!!", True, (0, 0, 0))
+            details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"Mapped by {self.mapper} | WARNING: EXPERIMENTAL!", True, (0, 0, 0))
         overlay_surf.blit(details_surface, details_surface.get_rect(bottomright=overlay_surf.get_rect().bottomright).move(-20, -20))
 
         self.surface.blit(overlay_surf, (0, 0))
@@ -150,10 +150,10 @@ class SongSelector:
         rect = pygame.Rect(
             -200,
             index * (SongSelector.ITEM_HEIGHT + SongSelector.ITEM_SPACING) + 100 + self.scroll,
-            int(Config.SCREEN_WIDTH / 2),
+            int(Config.SCREEN_WIDTH / 1.5),
             SongSelector.ITEM_HEIGHT
         )
-        rect.move_ip(-int(abs(Config.SCREEN_HEIGHT / 2 - rect.centery)) / 10, 0)
+        rect.move_ip(-int(abs(Config.SCREEN_HEIGHT / 1.5 - rect.centery)) / 10, 0)
         rect.move_ip(interpolate_fn(self.songs[index].anim) * 60, 0)
         return rect
 

@@ -5,7 +5,7 @@ from configpage import ConfigPage
 from songselector import SongSelector
 from errorscreen import ErrorScreen
 from os import getcwd
-from config import save_to_file
+from config import save_to_file, load_from_file
 import debuginfo
 import webbrowser
 import pygame
@@ -24,9 +24,14 @@ def main():
 
     clock = pygame.time.Clock()
     # noinspection PyUnusedLocal
+    options = None
+    if not Config.fullscreen:
+        options = pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF
+    else:
+        options = pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF
     real_screen = pygame.display.set_mode(
         [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
-        pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF,
+        options,
         vsync=1
     )
     screen = pygame.Surface([Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT])
