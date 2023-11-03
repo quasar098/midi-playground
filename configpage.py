@@ -1,7 +1,7 @@
 from utils import *
 import pygame
 import pygame_gui as pgui
-from os import listdir, system
+from os import listdir
 import webbrowser
 
 
@@ -220,11 +220,6 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
-        self.s_songsfolder = pgui.elements.UIButton(
-            relative_rect=pygame.Rect(630, 440, 240, 30),
-            text="Open songs folder",
-            manager=self.ui_manager
-        )
 
 
 
@@ -249,9 +244,6 @@ class ConfigPage:
             if event.ui_element == self.back_button:
                 play_sound("wood.wav")
                 return True
-            if event.ui_element == self.s_songsfolder:
-                # Open the song folder
-                system("explorer songs")
             if event.ui_element == self.s_reset_button:
                 # todo: rework this
 
