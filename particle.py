@@ -7,7 +7,7 @@ class Particle:
     SPEED_VARIATION = 4
     SIZE_MIN = 7
     SIZE_MAX = 14
-    AGE_RATE = 10
+    AGE_RATE = 20
     SLOW_DOWN_RATE = 1.2
 
     def __init__(self, pos: list[float], delta: list[float], invert_color: bool = False):
@@ -17,7 +17,7 @@ class Particle:
         self.delta[0] += random.randint(-Particle.SPEED_VARIATION, Particle.SPEED_VARIATION)/8
         self.delta[1] += random.randint(-Particle.SPEED_VARIATION, Particle.SPEED_VARIATION)/8
         # color is hallway color if invert_color is false, else it's background color
-        self.color = get_colors()["hallway"] if not invert_color else get_colors()["background"]
+        self.color = (114, 113, 157) if not invert_color else get_colors()["background"]
 
     def age(self):
         self.size -= Particle.AGE_RATE*Config.dt

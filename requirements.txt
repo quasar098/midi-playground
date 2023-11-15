@@ -8,3 +8,5 @@ pyperclip>=1.8.1
 PyMsgBox>=1.0.9
 pywin32>=301
 xlib>=0.21
+opencv-python~=4.8.1.78
+numpy~=1.26.1

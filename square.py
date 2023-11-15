@@ -1,4 +1,7 @@
 import pygame
+from pygame import Color
+
+from glowing import make_glowy2
 from utils import *
 from bounce import Bounce
 
@@ -12,17 +15,20 @@ class Square:
         self.past_colors = []
         self.died = False
 
+        self.time_since_glow_start = 0
+        self.glowy_surfaces = {}
+
     def register_past_color(self, col: tuple[int, int, int]):
         for _ in range(max(Config.square_swipe_anim_speed, 1)):
             self.past_colors.insert(0, col)
-        while len(self.past_colors) > Config.SQUARE_SIZE*4/5:
+        while len(self.past_colors) > Config.SQUARE_SIZE * 4 / 5:
             self.past_colors.pop()
 
     def get_surface(self, size: tuple[int, int]):
-        ss = int(Config.SQUARE_SIZE*4/5)
+        ss = int(Config.SQUARE_SIZE * 4 / 5)
         surf = pygame.Surface((ss, ss))
         for index, col in enumerate(self.past_colors):
-            y = index if self.dir_y != 1 else ss-1-index
+            y = index if self.dir_y != 1 else ss - 1 - index
             pygame.draw.line(surf, col, (0, y), (ss, y))
         return pygame.transform.scale(surf, size)
 
@@ -57,17 +63,45 @@ class Square:
             self.latest_bounce_direction = 1
         else:
             return False
+        self.start_bounce()
         self.last_bounce_time = get_current_time()
         return True
+
+    def compute_glowy_surface(self, rect, val):
+        print(f"Computing glowy surface for {val}")
+        glowy_borders = make_glowy2((rect.size[0] + 40, rect.size[1] + 40), Color(Config.glow_color), val)
+        surface = pygame.Surface(rect.inflate(100, 100).size, pygame.SRCALPHA)
+        surface.blit(glowy_borders, (20, 20), special_flags=pygame.BLEND_RGBA_ADD)
+        return surface
+
+    def draw_glowing3(self, win, rect):
+        if self.died:
+            return
+
+        if Config.square_glow:
+            if pygame.time.get_ticks() - self.time_since_glow_start < Config.square_glow_duration * 1000:
+                progress = 1 - (pygame.time.get_ticks() - self.time_since_glow_start) / (
+                        Config.square_glow_duration * 1000)
+                val = int(progress * Config.glow_intensity)
+            else:
+                val = 1
+            surf = self.compute_glowy_surface(rect, val)
+
+            win.blit(surf, rect.move(-40, -40).topleft, special_flags=pygame.BLEND_RGBA_ADD)
 
     def draw(self, screen: pygame.Surface, sqrect: pygame.Rect):
         if self.died:
             return
-        pygame.draw.rect(screen, (0, 0, 0), sqrect)
-        square_color_index = round((self.dir_x + 1)/2 + self.dir_y + 1)
+        square_color_index = round((self.dir_x + 1) / 2 + self.dir_y + 1)
         self.register_past_color(get_colors()["square"][square_color_index % len(get_colors()["square"])])
-        sq_surf = self.get_surface(tuple(sqrect.inflate(-int(Config.SQUARE_SIZE/5), -int(Config.SQUARE_SIZE/5))[2:]))
-        screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
+
+        if Config.theme == "dark_modern":
+            self.draw_glowing3(screen, sqrect)
+        else:
+            pygame.draw.rect(screen, (0, 0, 0), sqrect)
+            sq_surf = self.get_surface(
+                tuple(sqrect.inflate(-int(Config.SQUARE_SIZE / 5), -int(Config.SQUARE_SIZE / 5))[2:]))
+            screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
 
     @x.setter
     def x(self, val: int):
@@ -87,10 +121,15 @@ class Square:
 
     @property
     def rect(self):
-        return pygame.Rect(self.x-Config.SQUARE_SIZE/2, self.y-Config.SQUARE_SIZE/2, *([Config.SQUARE_SIZE]*2))
+        return pygame.Rect(self.x - Config.SQUARE_SIZE / 2, self.y - Config.SQUARE_SIZE / 2,
+                           *([Config.SQUARE_SIZE] * 2))
+
+    def start_bounce(self):
+        self.time_since_glow_start = pygame.time.get_ticks()
 
     def obey_bounce(self, bounce: Bounce):
         # planned bounces
+        self.start_bounce()
         self.pos = bounce.square_pos
         self.dir = bounce.square_dir
         self.latest_bounce_direction = bounce.bounce_dir
@@ -98,5 +137,5 @@ class Square:
         return
 
     def reg_move(self, use_dt: bool = True):
-        self.x += self.dir_x*Config.square_speed*(Config.dt if use_dt else 1/FRAMERATE)
-        self.y += self.dir_y*Config.square_speed*(Config.dt if use_dt else 1/FRAMERATE)
+        self.x += self.dir_x * Config.square_speed * (Config.dt if use_dt else 1 / FRAMERATE)
+        self.y += self.dir_y * Config.square_speed * (Config.dt if use_dt else 1 / FRAMERATE)

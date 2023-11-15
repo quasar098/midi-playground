@@ -21,6 +21,14 @@ class Config:
     # of hp_bar_fill colors (default (156, 198, 155), (189, 228, 168), (215, 242, 186))
     #
     color_themes = {
+        "dark_modern": {
+            "hallway": pygame.Color(40, 44, 52),
+            "background": pygame.Color(24, 26, 30),
+            "square": [
+                pygame.Color(0, 0, 0),  # not used
+            ]
+        },
+
         "dark": {
             "hallway": pygame.Color(214, 209, 205),
             "background": pygame.Color(60, 63, 65),
@@ -159,6 +167,13 @@ class Config:
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
                   "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode",
                   "particle_trail", "shader_file_name"]
+
+    # glow effect
+    square_glow = True
+    square_glow_duration = 0.8
+    glow_intensity = 15  # 1-40
+    border_color = pygame.Color(255, 255, 255)
+    glow_color = pygame.Color(255, 255, 255)
 
 
 def get_colors():

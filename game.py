@@ -135,7 +135,7 @@ class Game:
             offsetted = self.camera.offset(bounce)
             if offsetted.colliderect(screen_rect):
                 total_rects += 1
-                pygame.draw.rect(screen, get_colors()["background"], offsetted)
+                pygame.draw.rect(screen, (67, 68, 72), offsetted)
 
         # particles
         for particle in self.world.particles:
