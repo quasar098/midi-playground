@@ -68,7 +68,6 @@ class Square:
         return True
 
     def compute_glowy_surface(self, rect, val):
-        print(f"Computing glowy surface for {val}")
         glowy_borders = make_glowy2((rect.size[0] + 40, rect.size[1] + 40), Color(Config.glow_color), val)
         surface = pygame.Surface(rect.inflate(100, 100).size, pygame.SRCALPHA)
         surface.blit(glowy_borders, (20, 20), special_flags=pygame.BLEND_RGBA_ADD)

@@ -26,6 +26,7 @@ class Game:
         self.keystrokes = Keystrokes()
         self.misses = 0
         self.mouse_down = False
+        self.hitted_rectangles = []                           
 
     def start_song(self, screen: pygame.Surface):
         random.seed(Config.seed)
@@ -131,11 +132,18 @@ class Game:
                 pygame.draw.rect(screen, get_colors()["hallway"], offsetted)
 
         # draw pegs
-        for bounce in self.world.rectangles:
+        for i, bounce in enumerate(self.world.rectangles):
             offsetted = self.camera.offset(bounce)
+            tmp_rect = pygame.Rect(self.world.square.rect.x-5, self.world.square.rect.y-5, self.world.square.rect.width+10, self.world.square.rect.height+10)
+            if tmp_rect.colliderect(bounce) and bounce not in self.hitted_rectangles:
+                self.hitted_rectangles.append(bounce)
+                
             if offsetted.colliderect(screen_rect):
                 total_rects += 1
-                pygame.draw.rect(screen, (67, 68, 72), offsetted)
+                if bounce not in self.hitted_rectangles:
+                    pygame.draw.rect(screen, (67, 68, 72), offsetted)
+                else:
+                    pygame.draw.rect(screen, self.world.colors[i], offsetted)
 
         # particles
         for particle in self.world.particles:
