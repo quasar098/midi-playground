@@ -21,6 +21,7 @@ class World:
         self.timestamps = []
         self.square = Square()
         self.scorekeeper = Scorekeeper(self)
+        self.colors = []           
 
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time
@@ -190,4 +191,7 @@ class World:
         safe_areas = safe_areas
 
         self.rectangles = [_fb.get_collision_rect() for _fb in self.future_bounces]
+        
+        # Setting random colors for the generated pegs
+        self.colors = [random.choice([(224, 50, 50), (80, 210, 100), (230, 220, 50), (174, 170, 210), (245, 77, 247)]) for _ in self.future_bounces]
         return safe_areas
