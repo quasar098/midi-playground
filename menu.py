@@ -61,6 +61,7 @@ class Menu:
             MenuOption("Quit", pygame.Color(226, 109, 92))
         ]
         self.anim = 1
+        self.title_surf = get_font("./assets/poppins-regular.ttf", 60).render("midi-playground", True, get_colors()["hallway"])
         self.active = True
         self.square = Square(100, 320)
         self.particles: list[Particle] = []
@@ -123,6 +124,10 @@ class Menu:
                     new = Particle([sp[0]+randint(-10, 10), sp[1]+randint(-10, 10)], sd)
                     self.particles.append(new)
 
+        # title text
+        screen.blit(self.title_surf, self.title_surf.get_rect(midtop=(Config.SCREEN_WIDTH*3/4, 60)))
+
+        # options
         for index, option in enumerate(self.menu_options):
             y_value = index * (option.HEIGHT + option.SPACING) + 250
             # update the hover if completely active

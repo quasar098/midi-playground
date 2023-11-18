@@ -50,7 +50,7 @@ class Game:
             "Too large maps will crash the program, so try with some smaller ones first",
         ]
         for index, info_text in enumerate(information_texts):
-            rendered_text = get_font("./assets/poppins-regular.ttf", 24).render(info_text, True, (0, 0, 0))
+            rendered_text = get_font("./assets/poppins-regular.ttf", 24).render(info_text, True, get_colors()["hallway"])
             screen.blit(rendered_text, (50, Config.SCREEN_HEIGHT / 2 + 30 * index))
         pygame.display.flip()
 
