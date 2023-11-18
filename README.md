@@ -1,5 +1,3 @@
-## Fork : added dark modern to make the game more more pleasant
-https://github.com/Times0/midi-playground/assets/45049767/1efe9720-d88d-4337-a588-0d35554d4a36
 # midi playground
 bouncing square video, FOSS edition (and gamified)
 
