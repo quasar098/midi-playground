@@ -33,3 +33,7 @@
 
 - light switch that turns on and off at each bounce ? (flashlight)
 - precise mode (no 100s, only 300s or misses)
+
+## if you are planning on contributing
+
+you do not have to do anything in this todo list if you don't want to, but if you don't know where to start but want to help then you can use the above list
