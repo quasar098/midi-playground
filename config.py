@@ -138,12 +138,13 @@ class Config:
     bounce_min_spacing: Optional[float] = 30
     square_speed: Optional[int] = 600
     volume: Optional[int] = 70
-    music_offset: Optional[int] = -300
+    music_offset: Optional[int] = 0
     direction_change_chance: Optional[int] = 30
     hp_drain_rate = 10
     theatre_mode = False
     particle_trail = True
     shader_file_name = "none.glsl"
+    do_color_bounce_pegs = False
 
     # settings that are not configurable (yet)
     backtrack_chance: Optional[float] = 0.02
@@ -166,7 +167,7 @@ class Config:
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
                   "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode",
-                  "particle_trail", "shader_file_name"]
+                  "particle_trail", "shader_file_name", "do_color_bounce_pegs"]
 
     # glow effect
     square_glow = True

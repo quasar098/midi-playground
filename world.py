@@ -17,6 +17,7 @@ class World:
         self.start_time = 0
         self.time = 0
         self.rectangles: list[pygame.Rect] = []
+        self.collision_times: list[float] = []
         self.particles: list[Particle] = []
         self.timestamps = []
         self.square = Square()
@@ -26,7 +27,8 @@ class World:
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time
 
-    def next_bounce(self) -> Bounce:
+    def get_next_bounce(self) -> Bounce:
+        """Also pops the bounce from the future_bounces list"""
         self.past_bounces.append(self.future_bounces.pop(0))
         return self.past_bounces[-1]
 
@@ -38,7 +40,7 @@ class World:
     def handle_bouncing(self, square: Square):
         if len(self.future_bounces):
             if (self.time * 1000 + Config.music_offset)/1000 > self.future_bounces[0].time:
-                current_bounce = self.next_bounce()
+                current_bounce = self.get_next_bounce()
                 before = square.dir.copy()
                 square.obey_bounce(current_bounce)
                 changed = square.dir.copy()
@@ -58,7 +60,7 @@ class World:
         return self.scorekeeper.do_keypress(time_from_start, misses)
 
     def gen_future_bounces(self, _start_notes: list[tuple[int, int, int]], percent_update_callback):
-        """Recursive solution is necessary"""
+        """Recursive solution may be necessary"""
         total_notes = len(_start_notes)
         max_percent = 0
         path = []
@@ -191,7 +193,8 @@ class World:
         safe_areas = safe_areas
 
         self.rectangles = [_fb.get_collision_rect() for _fb in self.future_bounces]
+        self.collision_times = [_fb.time for _fb in self.future_bounces]
         
         # Setting random colors for the generated pegs
-        self.colors = [random.choice([(224, 50, 50), (80, 210, 100), (230, 220, 50), (174, 170, 210), (245, 77, 247)]) for _ in self.future_bounces]
+        self.colors = [random.choice([(224, 50, 50), (80, 210, 100), (230, 220, 50), (174, 170, 210), (245, 77, 247), (255, 153, 0)]) for _ in self.future_bounces]
         return safe_areas
