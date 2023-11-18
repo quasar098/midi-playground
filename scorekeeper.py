@@ -13,7 +13,7 @@ class Scorekeeper:
 
     @property
     def life_bar_rect(self):
-        return pygame.Rect((10, 10, int(Config.SCREEN_WIDTH/2-30), 30))
+        return pygame.Rect((10, 10, int(Config.SCREEN_WIDTH / 2 - 30), 30))
 
     def draw(self, screen: pygame.Surface, current_time: float, misses: int):
         self.hp = max(0, min(self.hp, 100))

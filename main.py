@@ -5,30 +5,37 @@ from configpage import ConfigPage
 from songselector import SongSelector
 from errorscreen import ErrorScreen
 from os import getcwd
+from platform import system as get_os
 from config import save_to_file
 import debuginfo
 import webbrowser
 import pygame
 from array import array
-from ctypes import windll
 
 
 def main():
     # patch to fix mouse on high dpi displays
-    windll.user32.SetProcessDPIAware()
+    if "Windows" in get_os():
+        from ctypes import windll
+        windll.user32.SetProcessDPIAware()
     # pygame and other boilerplate
     n_frames = 0
-    pygame.init()
     pygame.mixer.music.load("./assets/mainmenu.mp3")
     pygame.mixer.music.set_volume(Config.volume / 100)
     pygame.mixer.music.play(loops=-1, start=2)
 
     clock = pygame.time.Clock()
+
+    flags = pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF
+    flags |= pygame.FULLSCREEN
+    do_vsync = 1
+    if "Linux" in get_os():
+        do_vsync = 0  # otherwise error of "regular vsync for OpenGL not available" at least that's what i got under wsl
     # noinspection PyUnusedLocal
     real_screen = pygame.display.set_mode(
         [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
-        pygame.FULLSCREEN | pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF,
-        vsync=1
+        flags,
+        vsync=do_vsync
     )
     screen = pygame.Surface([Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT])
 
@@ -90,8 +97,7 @@ def main():
             to_set_as_rainbow = pygame.Color((0, 0, 0))
             to_set_as_rainbow2 = pygame.Color((0, 0, 0))
             to_set_as_rainbow.hsva = (((pygame.time.get_ticks() / 1000) * Config.rainbow_speed) % 360, 100, 75, 100)
-            to_set_as_rainbow2.hsva = (
-            (((pygame.time.get_ticks() / 1000) * Config.rainbow_speed) + 180) % 360, 100, 75, 100)
+            to_set_as_rainbow2.hsva = ((((pygame.time.get_ticks() / 1000) * Config.rainbow_speed) + 180) % 360, 100, 75, 100)
             get_colors()["background"] = to_set_as_rainbow
             get_colors()["hallway"] = to_set_as_rainbow2
             get_colors()["square"][0] = to_set_as_rainbow

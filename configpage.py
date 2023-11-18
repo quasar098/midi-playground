@@ -8,7 +8,7 @@ import webbrowser
 class ConfigPage:
     @property
     def made_with_pgui_rect(self):
-        return self.made_with_pgui_surf.get_rect(bottomleft=(30, Config.SCREEN_HEIGHT-30))
+        return self.made_with_pgui_surf.get_rect(bottomleft=(30, Config.SCREEN_HEIGHT - 30))
 
     def __init__(self):
         self.active = False
@@ -17,7 +17,7 @@ class ConfigPage:
         # pygame_gui stuff
         self.ui_manager = pgui.UIManager((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
         self.back_button = pgui.elements.UIButton(
-            relative_rect=pygame.Rect((Config.SCREEN_WIDTH-120, 30, 90, 30)),
+            relative_rect=pygame.Rect((Config.SCREEN_WIDTH - 120, 30, 90, 30)),
             text="Back",
             manager=self.ui_manager
         )
@@ -211,7 +211,7 @@ class ConfigPage:
         # reset button
 
         self.s_reset_button = pgui.elements.UIButton(
-            relative_rect=pygame.Rect((Config.SCREEN_WIDTH-330, Config.SCREEN_HEIGHT-60, 300, 30)),
+            relative_rect=pygame.Rect((Config.SCREEN_WIDTH - 330, Config.SCREEN_HEIGHT - 60, 300, 30)),
             text="Reset to default",
             manager=self.ui_manager
         )

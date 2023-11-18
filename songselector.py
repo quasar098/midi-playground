@@ -1,4 +1,3 @@
-import pygame
 from utils import *
 from os import listdir
 from os.path import isfile, join
@@ -6,6 +5,7 @@ from zipfile import ZipFile
 from typing import Any
 from io import BytesIO
 from json import loads
+import pygame
 
 
 class Song:
@@ -133,7 +133,7 @@ class SongSelector:
         self.anim = 0
         self.play_button_rect = pygame.Rect(Config.SCREEN_WIDTH - 300, 150, 250, 100)
         self.play_button_text = get_font("./assets/poppins-regular.ttf", 48).render("Play", True, (0, 0, 0))
-        self.back_button_rect = pygame.Rect(Config.SCREEN_WIDTH - 300, 20, 250, 150-40)
+        self.back_button_rect = pygame.Rect(Config.SCREEN_WIDTH - 300, 20, 250, 150 - 40)
         self.back_button_text = get_font("./assets/poppins-regular.ttf", 48).render("Back", True, (0, 0, 0))
 
     def reload_songs(self):

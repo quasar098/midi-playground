@@ -8,7 +8,7 @@
 - path line for easier prediction
 - map editor
 - make osu song imports better rhythm (no FFT though)
-- cool shaders like vignette, acid shaders, idk
+- fix screen improper size issues
 
 ### medium priority
 
@@ -26,13 +26,13 @@
 - fix square bouncing on main menu to go through the wall
 - see entire map at the end
 - investigate sync issues
-- toggle for bounce animation in config
+- toggle for bounce animation in config (clean mode)
 - square size slider in config
 
 ## modifiers
 
 - light switch that turns on and off at each bounce ? (flashlight)
-- precise mode (no 100s, only 300s or misses)
+- precise mode (no 100s, only 300s or misses possible)
 
 ## if you are planning on contributing
 

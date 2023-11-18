@@ -4,6 +4,8 @@ from typing import Optional, Any
 from json import load, dump
 from os.path import isfile
 
+pygame.init()
+
 
 class Config:
     # constants
@@ -167,12 +169,13 @@ class Config:
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
                   "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode",
-                  "particle_trail", "shader_file_name", "do_color_bounce_pegs"]
+                  "particle_trail", "shader_file_name", "do_color_bounce_pegs", "screen_width", "screen_height"]
 
-    # glow effect
+    # glow effect, for dark_modern only for now
     square_glow = True
     square_glow_duration = 0.8
     glow_intensity = 15  # 1-40
+    square_min_glow = 7
     border_color = pygame.Color(255, 255, 255)
     glow_color = pygame.Color(255, 255, 255)
 
@@ -185,7 +188,7 @@ def save_to_file(dat: Optional[dict[str, Any]] = None):
     if dat is None:
         dat = {k: getattr(Config, k) for k in Config.save_attrs}
     with open("./assets/settings.json", "w") as f:
-        dump(dat, f)
+        dump(dat, f, indent=4)
 
 
 def load_from_file():
@@ -197,7 +200,7 @@ def load_from_file():
                     setattr(Config, setting, data[setting])
         else:
             with open("./assets/settings.json", "w") as f:
-                f.write("{}")
+                f.write('{}')
     except Exception as e:
         print(f"Error: {e}")
 

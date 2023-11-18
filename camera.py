@@ -39,7 +39,7 @@ class Camera:
 
         # square in center
         if self.lock_type == CameraFollow.Center:
-            self.pos = [square.x - Config.SCREEN_WIDTH/2, square.y - Config.SCREEN_HEIGHT/2]
+            self.pos = [square.x - Config.SCREEN_WIDTH / 2, square.y - Config.SCREEN_HEIGHT / 2]
 
         # camera only follows if necessary
         if self.lock_type == CameraFollow.Lazy:
@@ -55,15 +55,15 @@ class Camera:
 
         # smooth camera
         if self.lock_type == CameraFollow.Smoothed:
-            self.x = (square.x - Config.SCREEN_WIDTH/2)*3*Config.dt + self.x-3*self.x*Config.dt
-            self.y = (square.y - Config.SCREEN_HEIGHT/2)*3*Config.dt + self.y-3*self.y*Config.dt
+            self.x = (square.x - Config.SCREEN_WIDTH / 2) * 3 * Config.dt + self.x - 3 * self.x * Config.dt
+            self.y = (square.y - Config.SCREEN_HEIGHT / 2) * 3 * Config.dt + self.y - 3 * self.y * Config.dt
 
         # camera in front of square
         if self.lock_type == CameraFollow.Predictive:
-            self.ax = (square.x - Config.SCREEN_WIDTH/2)*3*Config.dt + self.ax-3*self.ax*Config.dt
-            self.ay = (square.y - Config.SCREEN_HEIGHT/2)*3*Config.dt + self.ay-3*self.ay*Config.dt
+            self.ax = (square.x - Config.SCREEN_WIDTH / 2) * 3 * Config.dt + self.ax - 3 * self.ax * Config.dt
+            self.ay = (square.y - Config.SCREEN_HEIGHT / 2) * 3 * Config.dt + self.ay - 3 * self.ay * Config.dt
             damping = 1
-            self.bx = square.x - damping*(self.ax - square.x) - Config.SCREEN_WIDTH/2 - Config.SCREEN_WIDTH/2*damping
-            self.by = square.y - damping*(self.ay - square.y) - Config.SCREEN_HEIGHT/2 - Config.SCREEN_HEIGHT/2*damping
+            self.bx = square.x - damping * (self.ax - square.x) - Config.SCREEN_WIDTH / 2 - Config.SCREEN_WIDTH / 2 * damping
+            self.by = square.y - damping * (self.ay - square.y) - Config.SCREEN_HEIGHT / 2 - Config.SCREEN_HEIGHT / 2 * damping
             self.x = self.x*(1-3*Config.dt)+self.bx*3*Config.dt
             self.y = self.y*(1-3*Config.dt)+self.by*3*Config.dt

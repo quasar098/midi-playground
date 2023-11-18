@@ -1,8 +1,7 @@
-import pygame
-from pygame import Color
-
 from glowing import make_glowy2
 from utils import *
+import pygame
+from pygame import Color
 from bounce import Bounce
 
 
@@ -84,6 +83,7 @@ class Square:
                 val = int(progress * Config.glow_intensity)
             else:
                 val = 1
+            val = max(val, Config.square_min_glow)
             surf = self.compute_glowy_surface(rect, val)
 
             win.blit(surf, rect.move(-40, -40).topleft, special_flags=pygame.BLEND_RGBA_ADD)

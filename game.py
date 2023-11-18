@@ -51,7 +51,7 @@ class Game:
         ]
         for index, info_text in enumerate(information_texts):
             rendered_text = get_font("./assets/poppins-regular.ttf", 24).render(info_text, True, (0, 0, 0))
-            screen.blit(rendered_text, (50, Config.SCREEN_HEIGHT/2+30*index))
+            screen.blit(rendered_text, (50, Config.SCREEN_HEIGHT / 2 + 30 * index))
         pygame.display.flip()
 
         def update_loading_screen(message: str):
@@ -188,12 +188,12 @@ class Game:
             if time_from_start < 0:
                 repr_time = f"{abs(int((time_from_start+0.065)*10)/10)}s"
                 countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_time, True, (255, 255, 255))
-                screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
+                screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4)))
             elif time_from_start < 0.5:
                 repr_zero = f"0.0s"
                 countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_zero, True, (255, 255, 255))
                 countdown_surface.set_alpha((0.5-time_from_start)*2*255)
-                screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
+                screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4)))
 
             # handle mouse clicks because self.handle_event doesn't get called for mouse clicks
             if pygame.mouse.get_pressed()[0] and not self.mouse_down:
@@ -244,9 +244,9 @@ class Game:
                 try_again_text = get_font("./assets/poppins-regular.ttf", 36).render("Press escape to go back.", True, (255, 255, 255))
                 acc_text = get_font("./assets/poppins-regular.ttf", 36).render(f"Accuracy: {acc}%", True, (255, 255, 255))
                 acct_text = get_font("./assets/poppins-regular.ttf", 36).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
-                screen.blit(try_again_text, try_again_text.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4)))
-                screen.blit(acc_text, acc_text.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4+50)))
-                screen.blit(acct_text, acct_text.get_rect(center=(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/4+100)))
+                screen.blit(try_again_text, try_again_text.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4)))
+                screen.blit(acc_text, acc_text.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4 + 50)))
+                screen.blit(acct_text, acct_text.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4 + 100)))
 
         if not self.camera.locked_on_square:
             screen.blit(self.camera_ctrl_text, (10, 10))

@@ -1,8 +1,8 @@
-import pygame
 from particle import Particle
 from square import Square
 from utils import *
 from random import randint
+import pygame
 
 
 def draw_beveled_rectangle(surf: pygame.Surface, color: pygame.Color, rect: pygame.Rect) -> None:
@@ -30,7 +30,7 @@ class MenuOption:
             chopped = pygame.transform.chop(brighter_title_surface, pygame.Rect(0, 109 - _, 0, 600))
             shadow_surface.blit(chopped, (_, _))
 
-        self.surface = pygame.Surface((int(Config.SCREEN_WIDTH/2+300), self.HEIGHT+8), pygame.SRCALPHA)
+        self.surface = pygame.Surface((int(Config.SCREEN_WIDTH / 2 + 300), self.HEIGHT + 8), pygame.SRCALPHA)
         draw_beveled_rectangle(self.surface, self.color, pygame.Rect(4, 4, Config.SCREEN_WIDTH, MenuOption.HEIGHT))
         title_rect = title_surface.get_rect(midleft=self.surface.get_rect().midleft).move(50, 0)
         self.surface.blit(shadow_surface, shadow_surface.get_rect(midleft=title_rect.midleft).move(0, 9))
@@ -67,7 +67,7 @@ class Menu:
 
     @property
     def screensaver_rect(self):
-        return pygame.Rect(0, 0, int(Config.SCREEN_WIDTH/2-100), Config.SCREEN_HEIGHT).inflate(-100, -100)
+        return pygame.Rect(0, 0, int(Config.SCREEN_WIDTH / 2 - 100), Config.SCREEN_HEIGHT).inflate(-100, -100)
 
     def draw(self, screen: pygame.Surface, n_frames: int):
         if self.active:

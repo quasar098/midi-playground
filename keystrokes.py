@@ -18,7 +18,7 @@ class Keystrokes:
         self.key_surfaces["click"] = pygame.image.load("./assets/keystrokeicons/click.png").convert_alpha()
 
     def draw(self, screen: pygame.Surface):
-        default_rect = pygame.Rect(10, Config.SCREEN_HEIGHT-60, 50, 50)
+        default_rect = pygame.Rect(10, Config.SCREEN_HEIGHT - 60, 50, 50)
         for keycode in self.keycodes:
             if pygame.key.get_pressed()[keycode]:
                 if keycode not in self.keys:

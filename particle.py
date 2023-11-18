@@ -17,7 +17,7 @@ class Particle:
         self.delta[0] += random.randint(-Particle.SPEED_VARIATION, Particle.SPEED_VARIATION)/8
         self.delta[1] += random.randint(-Particle.SPEED_VARIATION, Particle.SPEED_VARIATION)/8
         # color is hallway color if invert_color is false, else it's background color
-        self.color = (114, 113, 157) if not invert_color else get_colors()["background"]
+        self.color = get_colors()["hallway"] if not invert_color else get_colors()["background"]
 
     def age(self):
         self.size -= Particle.AGE_RATE*Config.dt
