@@ -61,7 +61,12 @@ class Menu:
             MenuOption("Quit", pygame.Color(226, 109, 92))
         ]
         self.anim = 1
-        self.title_surf = get_font("./assets/poppins-regular.ttf", 60).render("midi-playground", True, get_colors()["hallway"])
+        # note that there are spaces after each line of code in the marquee text
+        marquee_text = """Contributors: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0. Just want to 
+watch the square and don't want to play the game? Turn on theatre mode in the config if that is the case. Interested in playing your 
+own song but don't know how? Check out docs/SONGS.md in the source code to learn how to add your own songs.""".replace("\n", '')
+        self.title_surf = get_font("./assets/poppins-regular.ttf", 72).render("midi-playground", True, get_colors()["hallway"])
+        self.marquee_surf = get_font("./assets/poppins-regular.ttf", 24).render(marquee_text, True, get_colors()["hallway"])
         self.active = True
         self.square = Square(100, 320)
         self.particles: list[Particle] = []
@@ -125,7 +130,19 @@ class Menu:
                     self.particles.append(new)
 
         # title text
-        screen.blit(self.title_surf, self.title_surf.get_rect(midtop=(Config.SCREEN_WIDTH*3/4, 60)))
+        title_surf_loc_rect = self.title_surf.get_rect(midtop=(Config.SCREEN_WIDTH*3/4, 60))
+        self.title_surf.set_alpha(max(int(interpolate_fn(self.anim)*400-145), 0))
+        screen.blit(self.title_surf, title_surf_loc_rect)
+
+        # marquee text
+        time = pygame.time.get_ticks()
+        cropped_marquee = pygame.Surface((self.title_surf.get_width(), self.marquee_surf.get_height()), pygame.SRCALPHA)
+        draw_marquee_position = [self.title_surf.get_width()-time/5, 0]
+        while draw_marquee_position[0] < -self.marquee_surf.get_width():
+            draw_marquee_position[0] += self.marquee_surf.get_width()+self.title_surf.get_width()+10
+        cropped_marquee.blit(self.marquee_surf, draw_marquee_position)
+        cropped_marquee.set_alpha(max(int(interpolate_fn(self.anim)*400-145), 0))
+        screen.blit(cropped_marquee, cropped_marquee.get_rect(topleft=title_surf_loc_rect.bottomleft))
 
         # options
         for index, option in enumerate(self.menu_options):

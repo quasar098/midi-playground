@@ -166,7 +166,8 @@ class World:
 
         if self.future_bounces is False:
             raise MapLoadingFailureError("The map failed to generate because of the recursion function. " +
-                                         "If the midi has too many notes too close, it may not generate. Maybe try changing the square speed?")
+                                         "If the midi has too many notes too close, it may not generate. " +
+                                         "Maybe try changing the \"square speed\" or \"change dir chance\" in the config")
 
         if len(self.future_bounces) == 0:
             raise MapLoadingFailureError("Map safearea list empty. Please report to the github under the issues tab")
