@@ -147,6 +147,7 @@ class Config:
     particle_trail = True
     shader_file_name = "none.glsl"
     do_color_bounce_pegs = False
+    do_particles_on_bounce = True
 
     # settings that are not configurable (yet)
     backtrack_chance: Optional[float] = 0.02

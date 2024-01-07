@@ -208,6 +208,18 @@ class ConfigPage:
             manager=self.ui_manager
         )
 
+        self.s_do_particles_on_bounce = pgui.elements.UIDropDownMenu(
+            ["Off", "On"],
+            relative_rect=pygame.Rect((930, 390, 300, 30)),
+            starting_option=["Off", "On"][int(Config.do_color_bounce_pegs)],
+            manager=self.ui_manager
+        )
+        self.s_do_particles_on_bounce_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((630, 390, 240, 30)),
+            text="Particles on Bounce:",
+            manager=self.ui_manager
+        )
+
         # reset button
 
         self.s_reset_button = pgui.elements.UIButton(
@@ -319,6 +331,8 @@ class ConfigPage:
                 Config.shader_file_name = event.text
             if event.ui_element == self.s_do_bounce_color_pegs:
                 Config.do_color_bounce_pegs = bool(["Off", "On"].index(event.text))
+            if event.ui_element == self.s_do_particles_on_bounce:
+                Config.do_particles_on_bounce = bool(["Off", "On"].index(event.text))
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:

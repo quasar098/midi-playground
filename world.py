@@ -32,7 +32,7 @@ class World:
         self.past_bounces.append(self.future_bounces.pop(0))
         return self.past_bounces[-1]
 
-    def add_particles(self, sp: list[float], sd: list[float]):
+    def add_bounce_particles(self, sp: list[float], sd: list[float]):
         for _ in range(Config.particle_amount):
             new = Particle([sp[0]+random.randint(-10, 10), sp[1]+random.randint(-10, 10)], sd)
             self.particles.append(new)
@@ -49,7 +49,8 @@ class World:
                         changed[_] = 0
                     else:
                         changed[_] = -changed[_]
-                self.add_particles(square.pos, changed)
+                if Config.do_particles_on_bounce:
+                    self.add_bounce_particles(square.pos, changed)
 
                 # stop square at end
                 if len(self.future_bounces) == 0:
