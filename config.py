@@ -187,7 +187,9 @@ def get_colors():
 
 def save_to_file(dat: Optional[dict[str, Any]] = None):
     if dat is None:
-        dat = {k: getattr(Config, k) for k in Config.save_attrs}
+        dat = {}
+        for attr in Config.save_attrs:
+            dat[attr] = getattr(Config,attr)
     with open("./assets/settings.json", "w") as f:
         dump(dat, f, indent=4)
 
