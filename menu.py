@@ -12,7 +12,7 @@ def draw_beveled_rectangle(surf: pygame.Surface, color: pygame.Color, rect: pyga
 
 
 class MenuOption:
-    HEIGHT = 118
+    HEIGHT = (Config.SCREEN_HEIGHT//9)-2
     SPACING = 16
 
     def __init__(self, title: str, color: pygame.Color):
@@ -21,13 +21,13 @@ class MenuOption:
         self.before_hover = False
         self.hover_anim: float = 0
 
-        # graphics programming is hands down the most boring thing
-        font = get_font("./assets/poppins-regular.ttf", 72)
+        # this type of graphics programming is hands down the most boring thing i've ever done
+        font = get_font("./assets/poppins-regular.ttf", Config.SCREEN_HEIGHT//15)
         title_surface = font.render(title, True, color.lerp((0, 0, 0), 0.7))
         brighter_title_surface = font.render(title, True, color.lerp((0, 0, 0), 0.2))
         shadow_surface = pygame.Surface((brighter_title_surface.get_rect().width + 100, MenuOption.HEIGHT), pygame.SRCALPHA)
         for _ in range(100):
-            chopped = pygame.transform.chop(brighter_title_surface, pygame.Rect(0, 109 - _, 0, 600))
+            chopped = pygame.transform.chop(brighter_title_surface, pygame.Rect(0, MenuOption.HEIGHT-9 - _, 0, 600))
             shadow_surface.blit(chopped, (_, _))
 
         self.surface = pygame.Surface((int(Config.SCREEN_WIDTH / 2 + 300), self.HEIGHT + 8), pygame.SRCALPHA)
