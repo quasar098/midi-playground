@@ -1,4 +1,7 @@
-from glowing import make_glowy2
+try:
+    from glowing import make_glowy2
+except ImportError:
+    make_glowy2 = None
 from utils import *
 import pygame
 from pygame import Color
@@ -94,7 +97,7 @@ class Square:
         square_color_index = round((self.dir_x + 1) / 2 + self.dir_y + 1)
         self.register_past_color(get_colors()["square"][square_color_index % len(get_colors()["square"])])
 
-        if Config.theme == "dark_modern":
+        if Config.theme == "dark_modern" and make_glowy2 is not None:
             self.draw_glowing3(screen, sqrect)
         else:
             pygame.draw.rect(screen, (0, 0, 0), sqrect)
