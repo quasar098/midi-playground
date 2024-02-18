@@ -40,6 +40,7 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [PurpleJuiceBox](https://github.com/PurpleJuiceBox) - Reset to Default Button
 - [sled45](https://github.com/sled45) - Mouse fix for high DPI displays
 - [Times0](https://github.com/Times0) - `dark-modern` theme, Glowing, Colored pegs on bounce
+- [Spring-Forever-with-me](https://github.com/Spring-Forever-with-me) - fix incorrect key name for screen resolution in the config
 
 ## (old) todo list
 
