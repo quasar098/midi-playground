@@ -9,8 +9,8 @@ pygame.init()
 
 class Config:
     # constants
-    SCREEN_WIDTH = 1920
-    SCREEN_HEIGHT = 1080
+    SCREEN_WIDTH = pygame.display.Info().current_w if pygame.display.Info().current_w else 1920
+    SCREEN_HEIGHT = pygame.display.Info().current_h if pygame.display.Info().current_h else 1080
     CAMERA_SPEED = 500
     SQUARE_SIZE = 50
     PARTICLE_SPEED = 10
