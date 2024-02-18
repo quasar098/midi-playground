@@ -46,12 +46,18 @@ class Game:
         self.camera.lock_type = CameraFollow(Config.camera_mode)
         screen.fill(get_colors()["background"])
         information_texts = [
-            "Map loading stuck at some percentage? Try changing the square speed!",
+            "Map loading stuck at some percentage? Try changing the \"Square speed\" in the config",
+            "Also try changing the \"Change dir chance\" and the \"Bounce min spacing\"",
+            "",
             "Too large maps will crash the program, so try with some smaller ones first",
+            "",
+            "Don't want to play the game? Turn on \"Theatre mode\" in the config",
+            "",
+            "Music off-sync? Change the \"Music offset\" in the settings"
         ]
         for index, info_text in enumerate(information_texts):
             rendered_text = get_font("./assets/poppins-regular.ttf", 24).render(info_text, True, get_colors()["hallway"])
-            screen.blit(rendered_text, (50, Config.SCREEN_HEIGHT / 2 + 30 * index))
+            screen.blit(rendered_text, (50, 200 + 30 * index))
         pygame.display.flip()
 
         def update_loading_screen(message: str):
