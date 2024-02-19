@@ -27,11 +27,13 @@ def main():
     clock = pygame.time.Clock()
 
     flags = pygame.HWACCEL | pygame.HWSURFACE | pygame.OPENGL | pygame.DOUBLEBUF
-    flags |= pygame.FULLSCREEN
     do_vsync = 1
     if "Linux" in get_os():
         do_vsync = 0  # otherwise error of "regular vsync for OpenGL not available" at least that's what i got under wsl
     # noinspection PyUnusedLocal
+    if [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT] == [pygame.display.Info().current_w,pygame.display.Info().current_h]:
+        flags |= pygame.FULLSCREEN
+    
     real_screen = pygame.display.set_mode(
         [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT],
         flags,
