@@ -18,6 +18,13 @@ def main():
     if "Windows" in get_os():
         from ctypes import windll
         windll.user32.SetProcessDPIAware()
+    # patch to fix opengl error on mac
+    elif "Darwin" in get_os():
+        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MAJOR_VERSION, 3)
+        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MINOR_VERSION, 3)
+        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE)
+        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_FORWARD_COMPATIBLE_FLAG, True)
+
     # pygame and other boilerplate
     n_frames = 0
     pygame.mixer.music.load("./assets/mainmenu.mp3")
