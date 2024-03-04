@@ -277,7 +277,7 @@ class ConfigPage:
                 self.s_camera_mode.current_state.start()
 
                 Config.start_playing_delay = 3000
-                self.s_start_playing_delay.set_current_value(Config.SCREEN_WIDTH//100)
+                self.s_start_playing_delay.set_current_value(3000)
                 self.s_start_playing_delay_label.set_text(f"Starting time delay ({self.s_start_playing_delay.get_current_value()}ms):")
 
                 Config.max_notes = None
