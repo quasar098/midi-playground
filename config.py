@@ -9,8 +9,10 @@ pygame.init()
 
 class Config:
     # constants
-    SCREEN_WIDTH = pygame.display.Info().current_w if pygame.display.Info().current_w else 1920
-    SCREEN_HEIGHT = pygame.display.Info().current_h if pygame.display.Info().current_h else 1080
+    rSCREEN_WIDTH = pygame.display.Info().current_w if pygame.display.Info().current_w else 1920
+    rSCREEN_HEIGHT = pygame.display.Info().current_h if pygame.display.Info().current_h else 1080
+    # SCREEN_WIDTH = pygame.display.Info().current_w if pygame.display.Info().current_w else 1920
+    # SCREEN_HEIGHT = pygame.display.Info().current_h if pygame.display.Info().current_h else 1080
     CAMERA_SPEED = 500
     SQUARE_SIZE = 50
     PARTICLE_SPEED = 10
@@ -135,6 +137,8 @@ class Config:
     }
 
     # intended configurable settings
+    SCREEN_WIDTH = pygame.display.Info().current_w if pygame.display.Info().current_w else 1920
+    SCREEN_HEIGHT = pygame.display.Info().current_h if pygame.display.Info().current_h else 1080
     theme: Optional[str] = "dark"
     seed: Optional[int] = None
     camera_mode: Optional[int] = 2
@@ -173,7 +177,9 @@ class Config:
     # keys to save and load
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
                   "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode",
-                  "particle_trail", "shader_file_name", "do_color_bounce_pegs", "SCREEN_WIDTH", "SCREEN_HEIGHT"]
+                  "particle_trail", "shader_file_name", "do_color_bounce_pegs", 
+                  "do_particles_on_bounce",
+                  "SCREEN_WIDTH", "SCREEN_HEIGHT"]
 
     # glow effect, for dark_modern only for now
     square_glow = True
