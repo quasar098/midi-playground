@@ -62,7 +62,7 @@ class Menu:
         ]
         self.anim = 1
         # note that there are spaces after each line of code in the marquee text
-        self.marquee_text = """Contributors: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0. Just want to 
+        self.marquee_text = """Contributors: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me. Just want to 
 watch the square and don't want to play the game? Turn on theatre mode in the config if that is the case. Interested in playing your 
 own song but don't know how? Check out docs/SONGS.md in the source code to learn how to add your own songs.""".replace("\n", '')
         self.title_surf = get_font("./assets/poppins-regular.ttf", 72).render("midi-playground", True, get_colors()["hallway"])
