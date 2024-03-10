@@ -22,7 +22,7 @@ class MenuOption:
         self.hover_anim: float = 0
 
         # this type of graphics programming is hands down the most boring thing i've ever done
-        font = get_font("./assets/poppins-regular.ttf", Config.SCREEN_HEIGHT//15)
+        font = get_font("./assets/fonts/poppins-regular.ttf", Config.SCREEN_HEIGHT//15)
         title_surface = font.render(title, True, color.lerp((0, 0, 0), 0.7))
         brighter_title_surface = font.render(title, True, color.lerp((0, 0, 0), 0.2))
         shadow_surface = pygame.Surface((brighter_title_surface.get_rect().width + 100, MenuOption.HEIGHT), pygame.SRCALPHA)
@@ -65,8 +65,8 @@ class Menu:
         self.marquee_text = """Contributors: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me. Just want to 
 watch the square and don't want to play the game? Turn on theatre mode in the config if that is the case. Interested in playing your 
 own song but don't know how? Check out docs/SONGS.md in the source code to learn how to add your own songs.""".replace("\n", '')
-        self.title_surf = get_font("./assets/poppins-regular.ttf", 72).render("midi-playground", True, get_colors()["hallway"])
-        self.marquee_surf = get_font("./assets/poppins-regular.ttf", 24).render(self.marquee_text, True, get_colors()["hallway"])
+        self.title_surf = get_font("./assets/fonts/poppins-regular.ttf", 72).render("midi-playground", True, get_colors()["hallway"])
+        self.marquee_surf = get_font("./assets/fonts/poppins-regular.ttf", 24).render(self.marquee_text, True, get_colors()["hallway"])
         self.prev_active = True
         self.active = True
         self.square = Square(100, 320)
@@ -88,8 +88,8 @@ own song but don't know how? Check out docs/SONGS.md in the source code to learn
             return
 
         if self.active and not self.prev_active:
-            self.title_surf = get_font("./assets/poppins-regular.ttf", 72).render("midi-playground", True, get_colors()["hallway"])
-            self.marquee_surf = get_font("./assets/poppins-regular.ttf", 24).render(self.marquee_text, True, get_colors()["hallway"])
+            self.title_surf = get_font("./assets/fonts/poppins-regular.ttf", 72).render("midi-playground", True, get_colors()["hallway"])
+            self.marquee_surf = get_font("./assets/fonts/poppins-regular.ttf", 24).render(self.marquee_text, True, get_colors()["hallway"])
         self.prev_active = self.active
 
         # interesting here

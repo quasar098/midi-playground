@@ -38,13 +38,13 @@ class Song:
         pygame.draw.rect(self.selected_surface, selected_col.lerp((0, 0, 0), 0.4), reset_rect, border_radius=6)
         pygame.draw.rect(self.selected_surface, selected_col, reset_rect.inflate(-8, -8), border_radius=2)
 
-        title_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 36).render(self.name, True, (0, 0, 6))
+        title_surface: pygame.Surface = get_font("./assets/fonts/poppins-regular.ttf", 36).render(self.name, True, (0, 0, 6))
         overlay_surf.blit(title_surface, title_surface.get_rect(topright=overlay_surf.get_rect().topright).move(-20, 20))
 
         if not is_from_osu_file:
-            details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"Song by {self.song_artist} | Mapped by {self.mapper}", True, (0, 0, 0))
+            details_surface: pygame.Surface = get_font("./assets/fonts/poppins-regular.ttf", 24).render(f"Song by {self.song_artist} | Mapped by {self.mapper}", True, (0, 0, 0))
         else:
-            details_surface: pygame.Surface = get_font("./assets/poppins-regular.ttf", 24).render(f"WARNING: EXPERIMENTAL!!!", True, (0, 0, 0))
+            details_surface: pygame.Surface = get_font("./assets/fonts/poppins-regular.ttf", 24).render(f"WARNING: EXPERIMENTAL!!!", True, (0, 0, 0))
         overlay_surf.blit(details_surface, details_surface.get_rect(bottomright=overlay_surf.get_rect().bottomright).move(-20, -20))
 
         self.surface.blit(overlay_surf, (0, 0))
@@ -132,9 +132,9 @@ class SongSelector:
         self.selected_index = -1
         self.anim = 0
         self.play_button_rect = pygame.Rect(Config.SCREEN_WIDTH - 300, 150, 250, 100)
-        self.play_button_text = get_font("./assets/poppins-regular.ttf", 48).render("Play", True, (0, 0, 0))
+        self.play_button_text = get_font("./assets/fonts/poppins-regular.ttf", 48).render("Play", True, (0, 0, 0))
         self.back_button_rect = pygame.Rect(Config.SCREEN_WIDTH - 300, 20, 250, 150 - 40)
-        self.back_button_text = get_font("./assets/poppins-regular.ttf", 48).render("Back", True, (0, 0, 0))
+        self.back_button_text = get_font("./assets/fonts/poppins-regular.ttf", 48).render("Back", True, (0, 0, 0))
 
     def reload_songs(self):
         self.songs = []

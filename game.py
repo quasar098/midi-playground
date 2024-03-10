@@ -15,10 +15,10 @@ class Game:
         self.camera = Camera()
         self.world = World()
         self.safe_areas: list[pygame.Rect] = []
-        self.camera_ctrl_text = get_font("./assets/poppins-regular.ttf", 24).render("Manual Camera Control Activated", True, (0, 255, 0))
+        self.camera_ctrl_text = get_font("./assets/fonts/poppins-regular.ttf", 24).render("Manual Camera Control Activated", True, (0, 255, 0))
         self.music_has_played = False
         self.offset_happened = False
-        self.loading_text = get_font("./assets/poppins-regular.ttf", 24).render("Loading...", True, (255, 255, 255))
+        self.loading_text = get_font("./assets/fonts/poppins-regular.ttf", 24).render("Loading...", True, (255, 255, 255))
         self.keystrokes = Keystrokes()
         self.misses = 0
         self.mouse_down = False
@@ -56,13 +56,13 @@ class Game:
             "Music off-sync? Change the \"Music offset\" in the settings"
         ]
         for index, info_text in enumerate(information_texts):
-            rendered_text = get_font("./assets/poppins-regular.ttf", 24).render(info_text, True, get_colors()["hallway"])
+            rendered_text = get_font("./assets/fonts/poppins-regular.ttf", 24).render(info_text, True, get_colors()["hallway"])
             screen.blit(rendered_text, (50, 200 + 30 * index))
         pygame.display.flip()
 
         def update_loading_screen(message: str):
             screen.fill(get_colors()["background"], pygame.Rect(0, 0, Config.SCREEN_WIDTH, 100))
-            screen.blit(get_font("./assets/poppins-regular.ttf", 60).render(message, True, get_colors()["hallway"]), (10, 10))
+            screen.blit(get_font("./assets/fonts/poppins-regular.ttf", 60).render(message, True, get_colors()["hallway"]), (10, 10))
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -193,11 +193,11 @@ class Game:
             # countdown to start
             if time_from_start < 0:
                 repr_time = f"{abs(int((time_from_start+0.065)*10)/10)}s"
-                countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_time, True, (255, 255, 255))
+                countdown_surface = get_font("./assets/fonts/poppins-regular.ttf", 36).render(repr_time, True, (255, 255, 255))
                 screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4)))
             elif time_from_start < 0.5:
                 repr_zero = f"0.0s"
-                countdown_surface = get_font("./assets/poppins-regular.ttf", 36).render(repr_zero, True, (255, 255, 255))
+                countdown_surface = get_font("./assets/fonts/poppins-regular.ttf", 36).render(repr_zero, True, (255, 255, 255))
                 countdown_surface.set_alpha((0.5-time_from_start)*2*255)
                 screen.blit(countdown_surface, countdown_surface.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4)))
 
@@ -220,8 +220,8 @@ class Game:
                     # clamp to 0-100
                     acc = max(0, min(100, acc))
                     acct = max(0, min(100, acct))
-                    acc_text = get_font("./assets/poppins-regular.ttf", 24).render(f"Accuracy: {acc}%", True, (255, 255, 255))
-                    acct_text = get_font("./assets/poppins-regular.ttf", 24).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
+                    acc_text = get_font("./assets/fonts/poppins-regular.ttf", 24).render(f"Accuracy: {acc}%", True, (255, 255, 255))
+                    acct_text = get_font("./assets/fonts/poppins-regular.ttf", 24).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
                     topleft1 = self.world.scorekeeper.life_bar_rect.move(0, 10).bottomleft
                     screen.blit(acc_text, acc_text.get_rect(topleft=topleft1))
                     screen.blit(acct_text, acct_text.get_rect(topleft=acc_text.get_rect(topleft=topleft1).move(0, 10).bottomleft))
@@ -247,9 +247,9 @@ class Game:
                 acc = max(0, min(100, acc))
                 acct = max(0, min(100, acct))
 
-                try_again_text = get_font("./assets/poppins-regular.ttf", 36).render("Press escape to go back.", True, (255, 255, 255))
-                acc_text = get_font("./assets/poppins-regular.ttf", 36).render(f"Accuracy: {acc}%", True, (255, 255, 255))
-                acct_text = get_font("./assets/poppins-regular.ttf", 36).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
+                try_again_text = get_font("./assets/fonts/poppins-regular.ttf", 36).render("Press escape to go back.", True, (255, 255, 255))
+                acc_text = get_font("./assets/fonts/poppins-regular.ttf", 36).render(f"Accuracy: {acc}%", True, (255, 255, 255))
+                acct_text = get_font("./assets/fonts/poppins-regular.ttf", 36).render(f"Total Accuracy: {acct}%", True, (255, 255, 255))
                 screen.blit(try_again_text, try_again_text.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4)))
                 screen.blit(acc_text, acc_text.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4 + 50)))
                 screen.blit(acct_text, acct_text.get_rect(center=(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 4 + 100)))
