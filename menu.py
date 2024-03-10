@@ -15,8 +15,9 @@ class MenuOption:
     HEIGHT = (Config.SCREEN_HEIGHT//9)-2
     SPACING = 16
 
-    def __init__(self, title: str, color: pygame.Color):
-        self.id = title.replace(" ", '-').lower()
+    def __init__(self, id_: str, color: pygame.Color):
+        self.id = id_
+        title = lang_key(id_)  # translate the actual title
         self.color = color
         self.before_hover = False
         self.hover_anim: float = 0
@@ -54,11 +55,11 @@ class MenuOption:
 class Menu:
     def __init__(self):
         self.menu_options: list[MenuOption] = [
-            MenuOption("Play", pygame.Color(214, 247, 163)),
-            MenuOption("Config", pygame.Color(196, 255, 178)),
-            MenuOption("Contribute", pygame.Color(183, 227, 204)),
-            MenuOption("Open Songs Folder", pygame.Color(125, 130, 184)),
-            MenuOption("Quit", pygame.Color(226, 109, 92))
+            MenuOption("play", pygame.Color(214, 247, 163)),
+            MenuOption("config", pygame.Color(196, 255, 178)),
+            MenuOption("contribute", pygame.Color(183, 227, 204)),
+            MenuOption("open-songs-folder", pygame.Color(125, 130, 184)),
+            MenuOption("quit", pygame.Color(226, 109, 92))
         ]
         self.anim = 1
         # note that there are spaces after each line of code in the marquee text

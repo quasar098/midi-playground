@@ -162,6 +162,7 @@ class Config:
     rainbow_speed: Optional[int] = 30
     square_swipe_anim_speed: Optional[int] = 4
     particle_amount = 10
+    language = "english"
 
     # other random stuff
     current_song = None

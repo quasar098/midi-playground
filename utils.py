@@ -3,6 +3,7 @@ from typing import Union, Optional, BinaryIO
 # noinspection PyUnresolvedReferences
 from errors import *
 from config import Config, get_colors
+from translations import TRANSLATIONS
 # noinspection PyUnresolvedReferences
 from time import time as get_current_time
 import moderngl
@@ -208,6 +209,16 @@ def fix_overlap(rects: list[pygame.Rect], callback=None):
 
 
 _font_registry: dict[str, pygame.font.Font] = {}
+
+
+def lang_key(key: str):
+    """
+    useful for different languages, so everyone can be able to read the text.
+    translations are found in translations.py btw
+    """
+    english_language = TRANSLATIONS["english"]
+    my_language = TRANSLATIONS.get(Config.language, {})
+    return my_language.get(key, english_language.get(key, "<missing>"))
 
 
 def get_font(font_name: str, size: int = 24) -> pygame.font.Font:
