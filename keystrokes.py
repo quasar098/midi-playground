@@ -7,7 +7,7 @@ class Keystrokes:
         self.keys: list[str] = []
         self.key_surfaces: dict[str, pygame.Surface] = {}
         for ascii_keycode in range(97, 123):
-            self.key_surfaces[ascii_keycode] = get_font("./assets/fonts/poppins-regular.ttf", 36).render(
+            self.key_surfaces[ascii_keycode] = get_font(36).render(
                 chr(ascii_keycode), True, (0, 0, 0)
             )
         self.keycodes = list(range(97, 123)) + list(range(1073741903, 1073741907))

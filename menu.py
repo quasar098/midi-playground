@@ -23,18 +23,18 @@ class MenuOption:
         self.hover_anim: float = 0
 
         # this type of graphics programming is hands down the most boring thing i've ever done
-        font = get_font("./assets/fonts/poppins-regular.ttf", Config.SCREEN_HEIGHT//15)
+        font = get_font(Config.SCREEN_HEIGHT // 15)
         title_surface = font.render(title, True, color.lerp((0, 0, 0), 0.7))
         brighter_title_surface = font.render(title, True, color.lerp((0, 0, 0), 0.2))
         shadow_surface = pygame.Surface((brighter_title_surface.get_rect().width + 100, MenuOption.HEIGHT), pygame.SRCALPHA)
         for _ in range(100):
-            chopped = pygame.transform.chop(brighter_title_surface, pygame.Rect(0, MenuOption.HEIGHT-9 - _, 0, 600))
+            chopped = pygame.transform.chop(brighter_title_surface, pygame.Rect(0, MenuOption.HEIGHT-9+lang_key("font-menu-shadow-length-offset") - _, 0, 600))
             shadow_surface.blit(chopped, (_, _))
 
         self.surface = pygame.Surface((int(Config.SCREEN_WIDTH / 2 + 300), self.HEIGHT + 8), pygame.SRCALPHA)
         draw_beveled_rectangle(self.surface, self.color, pygame.Rect(4, 4, Config.SCREEN_WIDTH, MenuOption.HEIGHT))
         title_rect = title_surface.get_rect(midleft=self.surface.get_rect().midleft).move(50, 0)
-        self.surface.blit(shadow_surface, shadow_surface.get_rect(midleft=title_rect.midleft).move(0, 9))
+        self.surface.blit(shadow_surface, shadow_surface.get_rect(midleft=title_rect.midleft).move(0, lang_key("font-menu-shadow-offset")))
         self.surface.blit(title_surface, title_rect)
 
     def update_hover(self, y_value: int) -> None:
@@ -63,11 +63,9 @@ class Menu:
         ]
         self.anim = 1
         # note that there are spaces after each line of code in the marquee text
-        self.marquee_text = """Contributors: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me. Just want to 
-watch the square and don't want to play the game? Turn on theatre mode in the config if that is the case. Interested in playing your 
-own song but don't know how? Check out docs/SONGS.md in the source code to learn how to add your own songs.""".replace("\n", '')
-        self.title_surf = get_font("./assets/fonts/poppins-regular.ttf", 72).render("midi-playground", True, get_colors()["hallway"])
-        self.marquee_surf = get_font("./assets/fonts/poppins-regular.ttf", 24).render(self.marquee_text, True, get_colors()["hallway"])
+        self.marquee_text = lang_key("title-marquee")
+        self.title_surf = get_font(72).render("midi-playground", True, get_colors()["hallway"])
+        self.marquee_surf = get_font(24).render(self.marquee_text, True, get_colors()["hallway"])
         self.prev_active = True
         self.active = True
         self.square = Square(100, 320)
@@ -89,8 +87,8 @@ own song but don't know how? Check out docs/SONGS.md in the source code to learn
             return
 
         if self.active and not self.prev_active:
-            self.title_surf = get_font("./assets/fonts/poppins-regular.ttf", 72).render("midi-playground", True, get_colors()["hallway"])
-            self.marquee_surf = get_font("./assets/fonts/poppins-regular.ttf", 24).render(self.marquee_text, True, get_colors()["hallway"])
+            self.title_surf = get_font(72).render("midi-playground", True, get_colors()["hallway"])
+            self.marquee_surf = get_font(24).render(self.marquee_text, True, get_colors()["hallway"])
         self.prev_active = self.active
 
         # interesting here

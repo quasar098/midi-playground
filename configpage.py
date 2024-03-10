@@ -12,7 +12,7 @@ class ConfigPage:
 
     def __init__(self):
         self.active = False
-        self.made_with_pgui_surf = get_font("./assets/fonts/poppins-regular.ttf", 12).render(
+        self.made_with_pgui_surf = get_font(12).render(
             "Config page made with pygame_gui library", True, (255, 255, 255))
 
         # pygame_gui stuff

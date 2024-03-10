@@ -221,11 +221,12 @@ def lang_key(key: str):
     return my_language.get(key, english_language.get(key, "<missing>"))
 
 
-def get_font(font_name: str, size: int = 24) -> pygame.font.Font:
-    fn_id = f"[{font_name}/{size}]"
+def get_font(size: int = 24) -> pygame.font.Font:
+    font_path = f'./assets/fonts/{lang_key("font")}'
+    fn_id = f"[{font_path}/{size}]"
     if fn_id not in _font_registry:
         try:
-            _font_registry[fn_id] = pygame.font.Font(font_name, size)
+            _font_registry[fn_id] = pygame.font.Font(font_path, size)
         except FileNotFoundError:
             print(f"Font {fn_id} not found!")
             _font_registry[fn_id] = pygame.font.SysFont("Arial", size)
