@@ -66,10 +66,17 @@ class Menu:
         self.marquee_text = lang_key("title-marquee")
         self.title_surf = get_font(72).render("midi-playground", True, get_colors()["hallway"])
         self.marquee_surf = get_font(24).render(self.marquee_text, True, get_colors()["hallway"])
+        self.flags = {}
+        for language in TRANSLATIONS:
+            self.flags[language] = pygame.image.load(f"./assets/flags/{language}.png").convert_alpha()
         self.prev_active = True
         self.active = True
         self.square = Square(100, 320)
         self.particles: list[Particle] = []
+
+        self.left_lang_rect: Optional[pygame.Rect] = None
+        self.right_lang_rect: Optional[pygame.Rect] = None
+        self.requires_restart_surf: Optional[pygame.Surface] = None
 
     @property
     def screensaver_rect(self):
@@ -169,6 +176,19 @@ class Menu:
                 play_sound("wood.wav")
             option.before_hover = new_hover
 
+        # flag chooser
+        current_flag = self.flags[Config.language]
+        cfrect = current_flag.get_rect(bottomright=(Config.SCREEN_WIDTH-50, Config.SCREEN_HEIGHT-30))
+        screen.blit(current_flag, cfrect)
+        left_arrow = get_font(72, "poppins-regular.ttf").render("<", True, get_colors()["hallway"])
+        right_arrow = get_font(72, "poppins-regular.ttf").render(">", True, get_colors()["hallway"])
+        self.left_lang_rect = left_arrow.get_rect(midright=cfrect.midleft).move(-5, 5)
+        screen.blit(left_arrow, self.left_lang_rect)
+        self.right_lang_rect = right_arrow.get_rect(midleft=cfrect.midright).move(5, 5)
+        screen.blit(right_arrow, self.right_lang_rect)
+        if self.requires_restart_surf is not None:
+            screen.blit(self.requires_restart_surf, self.requires_restart_surf.get_rect(midbottom=cfrect.midtop).move(0, -10))
+
     def handle_event(self, event: pygame.event.Event):
         if not self.active:
             return
@@ -185,3 +205,13 @@ class Menu:
                 if self.square.rect.inflate(20, 20).collidepoint(pygame.mouse.get_pos()):
                     play_sound("wood.wav", 1)
                     self.square.dir[randint(0, 1)] *= -1
+                if self.right_lang_rect.inflate(10, 10).collidepoint(pygame.mouse.get_pos()):
+                    play_sound("wood.wav", 1)
+                    languages = list(TRANSLATIONS.keys())
+                    Config.language = languages[(languages.index(Config.language)+1) % len(languages)]
+                    self.requires_restart_surf = get_font(18).render(lang_key('restart-required'), True, get_colors()["hallway"])
+                if self.left_lang_rect.inflate(10, 10).collidepoint(pygame.mouse.get_pos()):
+                    play_sound("wood.wav", 1)
+                    languages = list(TRANSLATIONS.keys())
+                    Config.language = languages[(languages.index(Config.language)-1) % len(languages)]
+                    self.requires_restart_surf = get_font(18).render(lang_key('restart-required'), True, get_colors()["hallway"])

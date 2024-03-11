@@ -179,7 +179,7 @@ class Config:
     save_attrs = ["theme", "seed", "camera_mode", "start_playing_delay", "max_notes", "bounce_min_spacing",
                   "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode",
                   "particle_trail", "shader_file_name", "do_color_bounce_pegs", 
-                  "do_particles_on_bounce",
+                  "do_particles_on_bounce", "language",
                   "SCREEN_WIDTH", "SCREEN_HEIGHT"]
 
     # glow effect, for dark_modern only for now

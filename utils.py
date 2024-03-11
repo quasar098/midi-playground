@@ -221,8 +221,10 @@ def lang_key(key: str):
     return my_language.get(key, english_language.get(key, "<missing>"))
 
 
-def get_font(size: int = 24) -> pygame.font.Font:
-    font_path = f'./assets/fonts/{lang_key("font")}'
+def get_font(size: int = 24, font_file_name: str = None) -> pygame.font.Font:
+    if font_file_name is None:
+        font_file_name = lang_key("font")
+    font_path = f'./assets/fonts/{font_file_name}'
     fn_id = f"[{font_path}/{size}]"
     if fn_id not in _font_registry:
         try:
