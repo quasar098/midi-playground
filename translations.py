@@ -1,16 +1,3 @@
-# font: name of the font file (in ./assets/fonts folder)
-# font-menu-shadow-offset: the offset of the shadow of the font rendered on the menu screen
-# font-menu-shadow-length-offset: the offset of the length of the shadow of the font rendered on the menu screen
-# play: "play" text
-# config: "config" text
-# contribute: "contribute" text
-# open-songs-folder: "open songs folder" text
-# quit: "quit" text
-# back: "back" text
-# title: the title of the software "midi-playground" text
-# title-marquee: the moving text that appears underneath the title on the main screen
-# restart-required: "restart required" text
-
 TRANSLATIONS = {
     "english": {
         "font": "poppins-regular.ttf",

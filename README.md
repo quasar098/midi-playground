@@ -39,10 +39,32 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes + QOL
 - [PurpleJuiceBox](https://github.com/PurpleJuiceBox) - Reset to Default Button
 - [sled45](https://github.com/sled45) - Mouse fix for high DPI displays
-- [Times0](https://github.com/Times0) - `dark-modern` theme, Glowing, Colored pegs on bounce
+- [Times0](https://github.com/Times0) - dark_modern theme, Glowing, Colored pegs on bounce
 - [Spring-Forever-with-me](https://github.com/Spring-Forever-with-me) - fix incorrect key name for screen resolution in the config
 - [sj-dan](https://github.com/sj-dan) - opengl fix on mac os
 - [cangerjun](https://github.com/cangerjun) - chinese translations
+
+## translation guide
+
+want to add translations for a different language? please create a github issue with the word "translations" in the title
+
+if so, please add translations for as many of the texts (they are listed below) as you can
+
+- "play"
+- "config"
+- "contribute"
+- "open songs folder"
+- "quit"
+- "back"
+- "midi-playground" text (this is the title of the software)
+- the marquee on the title screen (the moving text that appears underneath the title on the main screen; see translations.py file for english example)
+- "restart required"
+
+if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github issue
+
+currently, this game supports english and chinese
+
+also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 
 ## (old) todo list
 
