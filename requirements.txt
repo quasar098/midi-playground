@@ -9,3 +9,5 @@ PyMsgBox>=1.0.9
 xlib>=0.21
 opencv-python~=4.8.1.78
 numpy~=1.26.1
+pygame>=2.5.2
+pyinstaller>=6.5.0
