@@ -181,7 +181,7 @@ class Config:
                   "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode",
                   "particle_trail", "shader_file_name", "do_color_bounce_pegs", 
                   "do_particles_on_bounce", "language",
-                  "SCREEN_WIDTH", "SCREEN_HEIGHT", "discor_rpc"]
+                  "SCREEN_WIDTH", "SCREEN_HEIGHT", "discord_rpc"]
 
     # glow effect, for dark_modern only for now
     square_glow = True
