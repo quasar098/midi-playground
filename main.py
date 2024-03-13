@@ -223,7 +223,7 @@ def main():
         Config.dt = clock.tick(FRAMERATE) / 1000
 
     # setup discord rpc
-    if Config.discordrpc:
+    if Config.discord_rpc:
         startrpc()
 
     pygame.quit()
