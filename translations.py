@@ -32,8 +32,8 @@ own song but don't know how? Check out docs/SONGS.md in the source code to learn
         "back": "Voltar",
         "title": "midi-playground",
         "title-marquee": """Contribuintes: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651. 
-        Quer apenas assistir ao quadrado e não quer jogar o jogo? Se for esse o caso, ative o Modo Teatro nas configurações. Tem interesse em colocar sua própria música, 
-        mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adicionar suas próprias músicas.""".replace("\n", ''),
+Quer apenas assistir ao quadrado e não quer jogar o jogo? Se for esse o caso, ative o Modo Teatro nas configurações. Tem interesse em colocar sua própria música, 
+mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adicionar suas próprias músicas.""".replace("\n", ''),
 
         "restart-required": "Reinicialização Necessária"
     },
