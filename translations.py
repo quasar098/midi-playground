@@ -37,6 +37,25 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
 
         "restart-required": "Reinicialização Necessária"
     },
+    "spanish": {
+        "font": "poppins-regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "Jugar",
+        "config": "Configuraciones",
+        "contribute": "Contribuir",
+        "open-songs-folder": "Carpeta de Músicas",
+        "quit": "Salir",
+
+        "back": "Volver",
+        "title": "midi-playground",
+        "title-marquee": """Colaboradores: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651. 
+¿Sólo quieres ver el cuadrado y no jugar el juego? Si es así, activa el Modo Teatro en los ajustes. 
+¿Te interesa añadir tu propia música pero no sabes cómo? Consulta docs/SONGS.md en el código fuente para saber cómo puedes poner tu propia música.""".replace("\n", ''),
+
+        "restart-required": "Reinicio Necesario"
+    },
     "chinese": {
         "font": "hanyisongjian.ttf",
 
