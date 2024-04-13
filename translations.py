@@ -76,6 +76,25 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
 查看文件夹中的docs/SONGS.md，了解如何添加自己喜欢的歌曲。""".replace("\n", ''),
 
         "restart-required": "需要重新启动"
+    },
+    "french": {
+        "font" : "poppins-regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "Jouer",
+        "config": "Configuration",
+        "contribute": "Contribuer",
+        "open-songs-folder": "Dossier Chansons",
+        "quit": "Quitter",
+
+        "back": "Précédent",
+        "title": "midi-playground",
+        "title-marquee": """Contribueurs: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me cangerjun, lucmsilva651. Vous voulez simplement
+regarder le carré et ne pas jouer au jeu ? Activez le mode théâtre dans la configuration si tel est le cas. Vous êtes intéressé à jouer votre propre chanson mais ne savez pas comment faire ? 
+Consultez docs/SONGS.md dans le code source pour apprendre comment ajouter vos propres chansons.""".replace("\n", ''),
+
+        "restart-required": "Redémarrage nécessaire"
     }
 }
 
