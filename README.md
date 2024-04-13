@@ -44,6 +44,7 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [sj-dan](https://github.com/sj-dan) - opengl fix on mac os
 - [cangerjun](https://github.com/cangerjun) - chinese translations
 - [lucmsilva651](https://github.com/lucmsilva651) - brazilian portuguese and spanish translations
+- [leo539](https://github.com/leo539) - french translations
 
 ## translation guide
 
