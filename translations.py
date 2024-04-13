@@ -1,3 +1,5 @@
+contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539"
+
 TRANSLATIONS = {
     "english": {
         "font": "poppins-regular.ttf",
@@ -12,7 +14,7 @@ TRANSLATIONS = {
 
         "back": "Back",
         "title": "midi-playground",
-        "title-marquee": """Contributors: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me cangerjun, lucmsilva651. Just want to 
+        "title-marquee": f"""Contributors: {contributors}. Just want to 
 watch the square and don't want to play the game? Turn on theatre mode in the config if that is the case. Interested in playing your 
 own song but don't know how? Check out docs/SONGS.md in the source code to learn how to add your own songs.""".replace("\n", ''),
 
@@ -31,7 +33,7 @@ own song but don't know how? Check out docs/SONGS.md in the source code to learn
 
         "back": "Voltar",
         "title": "midi-playground",
-        "title-marquee": """Contribuintes: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651. 
+        "title-marquee": f"""Contribuintes: {contributors}. 
 Quer apenas assistir ao quadrado e não quer jogar o jogo? Se for esse o caso, ative o Modo Teatro nas configurações. Tem interesse em colocar sua própria música, 
 mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adicionar suas próprias músicas.""".replace("\n", ''),
 
@@ -50,7 +52,7 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
 
         "back": "Volver",
         "title": "midi-playground",
-        "title-marquee": """Colaboradores: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651. 
+        "title-marquee": f"""Colaboradores: {contributors}. 
 ¿Sólo quieres ver el cuadrado y no jugar el juego? Si es así, activa el Modo Teatro en los ajustes. 
 ¿Te interesa añadir tu propia música pero no sabes cómo? Consulta docs/SONGS.md en el código fuente para saber cómo puedes poner tu propia música.""".replace("\n", ''),
 
@@ -69,7 +71,7 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
 
         "back": "返回",
         "title": "midi游乐场",
-        "title-marquee": """贡献者: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651. 快来加入我们！ 
+        "title-marquee": f"""贡献者: {contributors}. 快来加入我们！
 想要看着方块自己动，不想玩游戏？
 如果是这样，请在设置中打开剧场模式。
 想要播放自己喜欢的歌曲，但不知道如何播放？
@@ -90,7 +92,7 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
 
         "back": "Précédent",
         "title": "midi-playground",
-        "title-marquee": """Contribueurs: quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me cangerjun, lucmsilva651. Vous voulez simplement
+        "title-marquee": f"""Contributeurs: {contributors}. Vous voulez simplement 
 regarder le carré et ne pas jouer au jeu ? Activez le mode théâtre dans la configuration si tel est le cas. Vous êtes intéressé à jouer votre propre chanson mais ne savez pas comment faire ? 
 Consultez docs/SONGS.md dans le code source pour apprendre comment ajouter vos propres chansons.""".replace("\n", ''),
 
