@@ -64,7 +64,7 @@ if so, please add translations for as many of the texts (they are listed below) 
 
 if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github issue
 
-currently, this game supports english and chinese
+currently, this game can be played in english, chinese, brazillian portuguese, spanish, and french.
 
 also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 
