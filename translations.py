@@ -1,4 +1,4 @@
-contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539"
+contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware"
 
 TRANSLATIONS = {
     "english": {
@@ -98,7 +98,7 @@ Consultez docs/SONGS.md dans le code source pour apprendre comment ajouter vos p
 
         "restart-required": "Redémarrage nécessaire"
     },
-    "swedish: {
+    "swedish": {
         "font" : "poppins-regular.ttf",
 
         "font-menu-shadow-offset": 9,
@@ -109,11 +109,14 @@ Consultez docs/SONGS.md dans le code source pour apprendre comment ajouter vos p
         "open-songs-folder": "Öppna låt-mappen",
         "quit": "Avsluta",
 
-        "back": "Précédent",
+        "back": "Tillbaka",
         "title": "midi-playground",
-        "title-marquee": f""" Medhjälpare: {contributors}. Vill du bara se
-kvadraten och inte vill spela? Sätt på teaterläge i konfigurationerna i så fall. Intresserad i att spela dina egna låtar men du vet inte hur?
+        "title-marquee": f"""Medhjälpare: {contributors}. Vill du bara se 
+kvadraten och inte vill spela? Sätt på teaterläge i konfigurationerna i så fall. Intresserad i att spela dina egna låtar men du vet inte hur? 
 Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egna låtar.""".replace("\n", ''),
+
+        "restart-required": "Omstart krävs",
+    }
 }
 
 
