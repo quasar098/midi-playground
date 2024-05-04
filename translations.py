@@ -126,7 +126,7 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
         "play": "Oyna",
         "config": "Yapılandırma",
         "contribute": "Katkıda Bulun",
-        "open-songs-folder": "Müzikler Klasörünü Aç",
+        "open-songs-folder": "Şarkılar Klasörünü Aç",
         "quit": "Çıkış",
 
         "back": "Geri",
