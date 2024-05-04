@@ -117,7 +117,6 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "restart-required": "Omstart krävs",
     },
-    SLATIONS = {
     "turkish": {
         "font": "poppins-regular.ttf",
 
@@ -134,6 +133,5 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
         "title-marquee": f"""Katkıda Bulunanlar: {contributors}. Sadece kareyi izliyor ve oyunu oynamak istemiyor musunuz? Durum böyleyse yapılandırmadan tiyatro modunu açın. Kendi şarkınızı oynamakla ilgilisiniz fakat nasıl yapılacağını bilmiyor musunuz? Kendi şarkılarınızı nasıl ekleyeceğinizi öğrenmek için kaynak koddaki docs/SONGS.md dosyasına göz atın.""".replace("\n", ''),
 
         "restart-required": "Yeniden Başlatma Gerekiyor"
+    }
 }
-
-
