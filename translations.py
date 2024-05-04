@@ -1,4 +1,4 @@
-contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware"
+contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide"
 
 TRANSLATIONS = {
     "english": {
@@ -116,7 +116,24 @@ kvadraten och inte vill spela? Sätt på teaterläge i konfigurationerna i så f
 Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egna låtar.""".replace("\n", ''),
 
         "restart-required": "Omstart krävs",
-    }
+    },
+    SLATIONS = {
+    "turkish": {
+        "font": "poppins-regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "Oyna",
+        "config": "Yapılandırma",
+        "contribute": "Katkıda Bulun",
+        "open-songs-folder": "Müzikler Klasörünü Aç",
+        "quit": "Çıkış",
+
+        "back": "Geri",
+        "title": "midi-oyunalanı",
+        "title-marquee": f"""Katkıda Bulunanlar: {contributors}. Sadece kareyi izliyor ve oyunu oynamak istemiyor musunuz? Durum böyleyse yapılandırmadan tiyatro modunu açın. Kendi şarkınızı oynamakla ilgilisiniz fakat nasıl yapılacağını bilmiyor musunuz? Kendi şarkılarınızı nasıl ekleyeceğinizi öğrenmek için kaynak koddaki docs/SONGS.md dosyasına göz atın.""".replace("\n", ''),
+
+        "restart-required": "Yeniden Başlatma Gerekiyor"
 }
 
 
