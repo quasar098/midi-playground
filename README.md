@@ -42,10 +42,12 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [Times0](https://github.com/Times0) - dark_modern theme, Glowing, Colored pegs on bounce
 - [Spring-Forever-with-me](https://github.com/Spring-Forever-with-me) - fix incorrect key name for screen resolution in the config
 - [sj-dan](https://github.com/sj-dan) - opengl fix on mac os
+
 - [cangerjun](https://github.com/cangerjun) - chinese translations
 - [lucmsilva651](https://github.com/lucmsilva651) - brazilian portuguese and spanish translations
 - [leo539](https://github.com/leo539) - french translations
 - [simpansoftware](https://github.com/simpansoftware) - swedish translations
+- [slideglide](https://github.com/slideglide) - turkish translations
 
 ## translation guide
 
@@ -65,7 +67,7 @@ if so, please add translations for as many of the texts (they are listed below) 
 
 if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github issue
 
-currently, this game can be played in english, chinese, brazillian portuguese, spanish, french, and swedish.
+currently, this game can be played in english, chinese, brazillian portuguese, spanish, french, turkish, and swedish.
 
 also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 
