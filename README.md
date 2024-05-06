@@ -48,6 +48,7 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [leo539](https://github.com/leo539) - french translations
 - [simpansoftware](https://github.com/simpansoftware) - swedish translations
 - [slideglide](https://github.com/slideglide) - turkish translations
+- [Guavvva](https://github.com/Guavvva) - russian translations
 
 ## translation guide
 
@@ -67,7 +68,7 @@ if so, please add translations for as many of the texts (they are listed below) 
 
 if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github issue
 
-currently, this game can be played in english, chinese, brazillian portuguese, spanish, french, turkish, and swedish.
+currently, this game can be played in english, chinese, russian, brazillian portuguese, spanish, french, turkish, and swedish.
 
 also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 

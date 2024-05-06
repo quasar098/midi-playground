@@ -1,4 +1,4 @@
-contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide"
+contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva"
 
 TRANSLATIONS = {
     "english": {
@@ -133,5 +133,22 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
         "title-marquee": f"""Katkıda Bulunanlar: {contributors}. Sadece kareyi izliyor ve oyunu oynamak istemiyor musunuz? Durum böyleyse yapılandırmadan tiyatro modunu açın. Kendi şarkınızı oynamakla ilgilisiniz fakat nasıl yapılacağını bilmiyor musunuz? Kendi şarkılarınızı nasıl ekleyeceğinizi öğrenmek için kaynak koddaki docs/SONGS.md dosyasına göz atın.""".replace("\n", ''),
 
         "restart-required": "Yeniden Başlatma Gerekiyor"
+    },
+    "russian": {
+        "font": "nunito-bold.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "играть",
+        "config": "настройки",
+        "contribute": "репозиторий",
+        "open-songs-folder": "папка с песнями",
+        "quit": "выйти",
+
+        "back": "назад",
+        "title": "проигрыватель-миди",
+        "title-marquee": f"""Участники: {contributors}. Хочешь просто смотреть, а не играть? Включи режим "Theatre Mode". Как добавить песню? Перейди по docs/SONGS.md в репозитории чтобы узнать.""".replace("\n", ''),
+        
+        "restart-required": "требуется перезагрузка"
     }
 }
