@@ -64,7 +64,7 @@ class Menu:
         self.anim = 1
         # note that there are spaces after each line of code in the marquee text
         self.marquee_text = lang_key("title-marquee")
-        self.title_surf = get_font(72).render("midi-playground", True, get_colors()["hallway"])
+        self.title_surf = get_font(72).render(lang_key("title"), True, get_colors()["hallway"])
         self.marquee_surf = get_font(24).render(self.marquee_text, True, get_colors()["hallway"])
         self.flags = {}
         for language in TRANSLATIONS:
@@ -178,7 +178,7 @@ class Menu:
 
         # flag chooser
         current_flag = self.flags[Config.language]
-        cfrect = current_flag.get_rect(bottomright=(Config.SCREEN_WIDTH-50, Config.SCREEN_HEIGHT-30))
+        cfrect = current_flag.get_rect(bottomright=(Config.SCREEN_WIDTH-100, Config.SCREEN_HEIGHT-30))
         screen.blit(current_flag, cfrect)
         left_arrow = get_font(72, "poppins-regular.ttf").render("<", True, get_colors()["hallway"])
         right_arrow = get_font(72, "poppins-regular.ttf").render(">", True, get_colors()["hallway"])
