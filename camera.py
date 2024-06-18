@@ -55,7 +55,7 @@ class Camera:
 
         # smooth camera
         if self.lock_type == CameraFollow.Smoothed:
-            easing_rate = 3
+            easing_rate = 10
             self.x = (square.x - Config.SCREEN_WIDTH / 2) * easing_rate * Config.dt + self.x - easing_rate * self.x * Config.dt
             self.y = (square.y - Config.SCREEN_HEIGHT / 2) * easing_rate * Config.dt + self.y - easing_rate * self.y * Config.dt
 
