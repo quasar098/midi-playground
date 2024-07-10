@@ -52,5 +52,5 @@ void main()
 		sumcol += w * texture( tex, barrelDistortion(uv, 0.7 * max_distort*t ) );
 	}
 		
-	gl_FragColor = sumcol / sumw;
+	f_color = sumcol / sumw;
 }
