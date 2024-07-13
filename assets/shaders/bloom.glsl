@@ -14,22 +14,22 @@ void main()
    {
         for ( int j = -3; j < 3; j++)
         {
-            sum += texture2D(tex, texcoord + vec2(j, i)*0.0006) * 0.13;
+            sum += texture(tex, texcoord + vec2(j, i)*0.0006) * 0.13;
         }
    }
-       if (texture2D(tex, texcoord).r < 0.3)
+       if (texture(tex, texcoord).r < 0.3)
     {
-       f_color = sum*sum*0.012 + texture2D(tex, texcoord);
+       f_color = sum*sum*0.012 + texture(tex, texcoord);
     }
     else
     {
-        if (texture2D(tex, texcoord).r < 0.5)
+        if (texture(tex, texcoord).r < 0.5)
         {
-            f_color = sum*sum*0.009 + texture2D(tex, texcoord);
+            f_color = sum*sum*0.009 + texture(tex, texcoord);
         }
         else
         {
-            f_color = sum*sum*0.0075 + texture2D(tex, texcoord);
+            f_color = sum*sum*0.0075 + texture(tex, texcoord);
         }
     }
 }

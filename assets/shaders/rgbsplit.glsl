@@ -16,6 +16,6 @@ void main() {
 	vec4 c2 = texture( tex, uvs - value );
 	vec4 c3 = texture( tex, uvs );
 
-	gl_FragColor = vec4( c1.r, c2.g, c3.b, c1.a + c2.a + c3.b );
+	f_color = vec4( c1.r, c2.g, c3.b, c1.a + c2.a + c3.b );
 
 }
