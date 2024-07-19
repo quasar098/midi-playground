@@ -131,7 +131,7 @@ class Game:
             offsetted = self.camera.offset(safe_area)
             if screen_rect.colliderect(offsetted):
                 total_rects += 1
-                pygame.draw.rect(screen, get_colors()["hallway"], offsetted)
+                pygame.draw.rect(screen, get_colors()["background"], offsetted)
 
         # draw pegs
         for i, bounce_rect in enumerate(self.world.rectangles):
