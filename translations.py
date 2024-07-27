@@ -1,4 +1,4 @@
-contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva, zetlen"
+contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva, zetlen, SpeckyYT"
 
 TRANSLATIONS = {
     "english": {
@@ -150,5 +150,22 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
         "title-marquee": f"""Участники: {contributors}. Хочешь просто смотреть, а не играть? Включи режим "Theatre Mode". Как добавить песню? Перейди по docs/SONGS.md в репозитории чтобы узнать.""".replace("\n", ''),
         
         "restart-required": "требуется перезагрузка"
-    }
+    },
+    "italian": {
+        "font": "poppins-regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "Gioca",
+        "config": "Impostazioni",
+        "contribute": "Contribuisci",
+        "open-songs-folder": "Apri cartella canzoni",
+        "quit": "Esci",
+
+        "back": "Indietro",
+        "title": "midi-playground",
+        "title-marquee": f"""Contributori: {contributors}. Vuoi vedere il quadrato senza giocare al gioco? Ti basta accendere la modalità "Theatre Mode" nelle impostazioni. Sei interessato a suonare le tue canzoni ma non sai come? Dai un' occhiata a docs/SONGS.md nel codice sorgente per scoprire come aggiungere le tue canzoni.""",
+
+        "restart-required": "Riavvio richiesto"
+    },
 }
