@@ -50,6 +50,7 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [simpansoftware](https://github.com/simpansoftware) - swedish translations
 - [slideglide](https://github.com/slideglide) - turkish translations
 - [Guavvva](https://github.com/Guavvva) - russian translations
+- [SpeckyYT](https://github.com/SpeckyYT) - italian translations
 
 ## translation guide
 
