@@ -70,8 +70,6 @@ if so, please add translations for as many of the texts (they are listed below) 
 
 if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github issue
 
-currently, this game can be played in english, chinese, russian, brazillian portuguese, spanish, french, turkish, and swedish.
-
 also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 
 ## (old) todo list
