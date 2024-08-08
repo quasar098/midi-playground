@@ -1,4 +1,4 @@
-contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva, zetlen, SpeckyYT"
+contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva, zetlen, SpeckyYT, suzuuuuu09"
 
 TRANSLATIONS = {
     "english": {
