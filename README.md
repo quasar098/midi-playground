@@ -51,6 +51,7 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [slideglide](https://github.com/slideglide) - turkish translations
 - [Guavvva](https://github.com/Guavvva) - russian translations
 - [SpeckyYT](https://github.com/SpeckyYT) - italian translations
+- [suzuuuuu09](https://github.com/suzuuuuu09) - japanese translations
 
 ## translation guide
 
