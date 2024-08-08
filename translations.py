@@ -168,4 +168,21 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "restart-required": "Riavvio richiesto"
     },
+    "japanese": {
+        "font": "NotoSansJP-Regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "遊ぶ",
+        "config": "設定",
+        "contribute": "貢献する",
+        "open-songs-folder": "楽曲フォルダを開く",
+        "quit": "終了",
+
+        "back": "戻る",
+        "title": "midi-playground",
+        "title-marquee": f"""貢献者: {contributors}. 正方形を見ているだけじゃつまらないからゲームをプレイしてみたい？設定でシアターモードをオンにしてみてください。自分の曲を演奏したいけどやり方がわからない？ソースコードのdocs/SONGS.mdを見れば、自分の曲を追加する方法が分かります。""".replace("\n", ''),
+
+        "restart-required": "再起動が必要です"
+    },
 }
