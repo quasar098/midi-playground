@@ -94,7 +94,7 @@ class Menu:
             return
 
         if self.active and not self.prev_active:
-            self.title_surf = get_font(72).render("midi-playground", True, get_colors()["hallway"])
+            self.title_surf = get_font(72).render(lang_key("title"), True, get_colors()["hallway"])
             self.marquee_surf = get_font(24).render(self.marquee_text, True, get_colors()["hallway"])
         self.prev_active = self.active
 
