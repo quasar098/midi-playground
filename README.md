@@ -55,9 +55,9 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 
 ## translation guide
 
-want to add translations for a different language? please create a github issue with the word "translations" in the title
+want to add translations for a different language? please create a github pull request with the word "translations" in the title
 
-if so, please add translations for as many of the texts (they are listed below) as you can
+if so, please add translations for as many of the texts (they are listed in translations.py) as you can
 
 - "play"
 - "config"
@@ -69,7 +69,9 @@ if so, please add translations for as many of the texts (they are listed below) 
 - the marquee on the title screen (the moving text that appears underneath the title on the main screen; see translations.py file for english example)
 - "restart required"
 
-if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github issue
+(there are more in translations.py)
+
+if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github pull request
 
 also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 

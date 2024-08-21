@@ -1,6 +1,7 @@
 from utils import *
 import pygame
 import pygame_gui as pgui
+from io import StringIO
 from os import listdir
 import webbrowser
 
@@ -15,8 +16,23 @@ class ConfigPage:
         self.made_with_pgui_surf = get_font(12).render(
             "Config page made with pygame_gui library", True, (255, 255, 255))
 
+        pgui_theme = "{}"
+        if lang_key("do-custom-pgui-font"):
+            pgui_theme = f"""
+            {{
+                "label":
+                {{
+                    "font":
+                    {{
+                        "name": "hanyisongjian",
+                        "regular_path": "./assets/fonts/{lang_key('font')}"
+                    }}
+                }}
+            }}
+            """
+
         # pygame_gui stuff
-        self.ui_manager = pgui.UIManager((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
+        self.ui_manager = pgui.UIManager((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT), StringIO(pgui_theme))
         self.back_button = pgui.elements.UIButton(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH - 120, 30, 90, 30)),
             text="Back",
@@ -33,7 +49,7 @@ class ConfigPage:
         )
         self.s_camera_mode_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT // 10 - 30, 240, 30)),
-            text="Camera mode:",
+            text=lang_key('camera-mode') + ":",
             manager=self.ui_manager
         )
 
@@ -46,7 +62,7 @@ class ConfigPage:
         self.s_seed.set_text(str(Config.seed if Config.seed is not None else ''))
         self.s_seed_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT * 2 // 10 - 30, 240, 30)),
-            text="RNG seed:",
+            text=lang_key('rng-seed') + ":",
             manager=self.ui_manager
         )
 
@@ -58,7 +74,7 @@ class ConfigPage:
         )
         self.s_start_playing_delay_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT * 3 // 10 - 30, 240, 30)),
-            text=f"Starting time delay ({self.s_start_playing_delay.get_current_value()}ms):",
+            text=lang_key('starting-time-delay') + f" ({self.s_start_playing_delay.get_current_value()}ms):",
             manager=self.ui_manager
         )
 
@@ -71,7 +87,7 @@ class ConfigPage:
         self.s_max_notes.set_text(str(Config.max_notes if Config.max_notes is not None else ''))
         self.s_max_notes_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT * 4 // 10 - 30, 240, 30)),
-            text="Max notes to generate:",
+            text=lang_key('max-notes-to-generate') + ":",
             manager=self.ui_manager
         )
 
@@ -83,7 +99,7 @@ class ConfigPage:
         )
         self.s_bounce_min_spacing_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT * 5 // 10 - 30, 240, 30)),
-            text=f"Bounce min spacing ({Config.bounce_min_spacing}ms):",
+            text=f"{lang_key('bounce-min-spacing')} ({Config.bounce_min_spacing}ms):",
             manager=self.ui_manager
         )
 
@@ -95,7 +111,7 @@ class ConfigPage:
         )
         self.s_square_speed_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT * 6 // 10 - 30, 240, 30)),
-            text=f"Square speed ({Config.square_speed} pixels/s):",
+            text=f"{lang_key('square-speed')} ({Config.square_speed} pixels/s):",
             manager=self.ui_manager
         )
 
@@ -107,7 +123,7 @@ class ConfigPage:
         )
         self.s_music_offset_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT * 7 // 10 - 30, 240, 30)),
-            text=f"Music offset ({Config.music_offset}ms):",
+            text=f"{lang_key('music-offset')} ({Config.music_offset}ms):",
             manager=self.ui_manager
         )
 
@@ -119,7 +135,7 @@ class ConfigPage:
         )
         self.s_direction_change_chance_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT * 8 // 10 - 30, 240, 30)),
-            text=f"Change dir chance ({Config.direction_change_chance}%):",
+            text=f"{lang_key('change-dir-chance')} ({Config.direction_change_chance}%):",
             manager=self.ui_manager
         )
 
@@ -131,7 +147,7 @@ class ConfigPage:
         )
         self.s_hp_drain_rate_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH // 10, Config.SCREEN_HEIGHT * 9 // 10 - 30, 240, 30)),
-            text=f"HP drain rate ({Config.hp_drain_rate}/s):",
+            text=f"{lang_key('hp-drain-rate')} ({Config.hp_drain_rate}/s):",
             manager=self.ui_manager
         )
 
@@ -145,7 +161,7 @@ class ConfigPage:
         )
         self.s_game_volume_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT // 10 - 30, 240, 30)),
-            text=f"Music volume ({Config.volume}%):",
+            text=f"{lang_key('music-volume')} ({Config.volume}%):",
             manager=self.ui_manager
         )
 
@@ -157,7 +173,7 @@ class ConfigPage:
         )
         self.s_color_theme_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 2 // 10 - 30, 240, 30)),
-            text="Color theme:",
+            text=f"{lang_key('color-theme')}:",
             manager=self.ui_manager
         )
 
@@ -169,7 +185,7 @@ class ConfigPage:
         )
         self.s_theatre_mode_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 3 // 10 - 30, 240, 30)),
-            text="Theatre mode:",
+            text=f"{lang_key('theatre-mode')}:",
             manager=self.ui_manager
         )
 
@@ -181,7 +197,7 @@ class ConfigPage:
         )
         self.s_particle_trail_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 4 // 10 - 30, 240, 30)),
-            text="Particle trail:",
+            text=f"{lang_key('particle-trail')}:",
             manager=self.ui_manager
         )
 
@@ -193,7 +209,7 @@ class ConfigPage:
         )
         self.s_shader_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect(Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 5 // 10 - 30, 240, 30),
-            text="Shader (requires restart):",
+            text=f"{lang_key('shader')} ({lang_key('restart-required')}):",
             manager=self.ui_manager
         )
 
@@ -205,7 +221,7 @@ class ConfigPage:
         )
         self.s_do_bounce_color_pegs_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 6 // 10 - 30, 240, 30)),
-            text="Color Pegs on Bounce:",
+            text=f"{lang_key('color-pegs-on-bounce')}:",
             manager=self.ui_manager
         )
 
@@ -217,7 +233,7 @@ class ConfigPage:
         )
         self.s_do_particles_on_bounce_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 7 // 10 - 30, 240, 30)),
-            text="Particles on Bounce:",
+            text=f"{lang_key('particles-on-bounce')}:",
             manager=self.ui_manager
         )
         self.s_resolution = pgui.elements.UIDropDownMenu(
@@ -229,7 +245,7 @@ class ConfigPage:
         )
         self.s_resolution_label = pgui.elements.UILabel(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 8 // 10 - 30, 240, 30)),
-            text="Resolution (requires restart):",
+            text=f"{lang_key('resolution')} ({lang_key('restart-required')}):",
             manager=self.ui_manager
         )
 
@@ -256,6 +272,7 @@ class ConfigPage:
                 return True
             if event.ui_element == self.s_reset_button:
                 # todo: rework this
+                # todo: this does not work with translation stuffs
 
                 Config.theme = "dark"
                 self.s_color_theme.selected_option = "dark"
@@ -337,7 +354,7 @@ class ConfigPage:
         if event.type == pgui.UI_DROP_DOWN_MENU_CHANGED:
             play_sound("wood.wav")
             if event.ui_element == self.s_camera_mode:
-                Config.camera_mode = "CLSP".index(event.text[0])
+                Config.camera_mode = "CLSP".index(event.text[0])  # awful way of doing this lol
             if event.ui_element == self.s_color_theme:
                 Config.theme = event.text
             if event.ui_element == self.s_theatre_mode:
@@ -370,27 +387,27 @@ class ConfigPage:
 
         if event.type == pgui.UI_HORIZONTAL_SLIDER_MOVED:
             if event.ui_element == self.s_start_playing_delay:
-                self.s_start_playing_delay_label.set_text(f"Starting time delay ({event.value}ms):")
+                self.s_start_playing_delay_label.set_text(f"{lang_key('starting-time-delay')} ({event.value}ms):")
                 Config.start_playing_delay = event.value
             if event.ui_element == self.s_bounce_min_spacing:
-                self.s_bounce_min_spacing_label.set_text(f"Bounce min spacing ({event.value}ms):")
+                self.s_bounce_min_spacing_label.set_text(f"{lang_key('bounce-min-spacing')} ({event.value}ms):")
                 Config.bounce_min_spacing = event.value
             if event.ui_element == self.s_square_speed:
                 rounded = round(event.value, -2)
-                self.s_square_speed_label.set_text(f"Square speed ({rounded} pixels/s):")
+                self.s_square_speed_label.set_text(f"{lang_key('square-speed')} ({rounded} pixels/s):")
                 Config.square_speed = rounded
             if event.ui_element == self.s_game_volume:
-                self.s_game_volume_label.set_text(f"Music volume ({event.value}%):")
+                self.s_game_volume_label.set_text(f"{lang_key('music-volume')} ({event.value}%):")
                 Config.volume = event.value
                 pygame.mixer.music.set_volume(event.value / 100)
             if event.ui_element == self.s_music_offset:
-                self.s_music_offset_label.set_text(f"Music offset ({event.value}ms):")
+                self.s_music_offset_label.set_text(f"{lang_key('music-offset')} ({event.value}ms):")
                 Config.music_offset = event.value
             if event.ui_element == self.s_direction_change_chance:
-                self.s_direction_change_chance_label.set_text(f"Change dir chance ({event.value}%):")
+                self.s_direction_change_chance_label.set_text(f"{lang_key('change-dir-chance')} ({event.value}%):")
                 Config.direction_change_chance = event.value
             if event.ui_element == self.s_hp_drain_rate:
-                self.s_hp_drain_rate_label.set_text(f"HP drain rate ({event.value}/s):")
+                self.s_hp_drain_rate_label.set_text(f"{lang_key('hp-drain-rate')} ({event.value}/s):")
                 Config.hp_drain_rate = event.value
 
         self.ui_manager.process_events(event)

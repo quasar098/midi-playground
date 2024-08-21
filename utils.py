@@ -218,6 +218,8 @@ def lang_key(key: str):
     """
     english_language = TRANSLATIONS["english"]
     my_language = TRANSLATIONS.get(Config.language, {})
+    if key not in english_language:
+        print(f"warning: there is no english text for {key} yet!!")
     return my_language.get(key, english_language.get(key, "<missing>"))
 
 

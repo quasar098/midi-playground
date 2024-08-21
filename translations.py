@@ -16,7 +16,27 @@ TRANSLATIONS = {
         "title": "midi-playground",
         "title-marquee": f"""Contributors: {contributors}. Just want to 
 watch the square and don't want to play the game? Turn on theatre mode in the config if that is the case. Interested in playing your 
-own song but don't know how? Check out docs/SONGS.md in the source code to learn how to add your own songs.""".replace("\n", ''),
+own song but don't know how? Check out docs/SONGS.md in the source code to learn how to add your own songs.""".replace(
+            "\n", ''),
+
+        "do-custom-pgui-font": False,
+        'camera-mode': 'Camera mode',
+        "rng-seed": "RNG seed",
+        "starting-time-delay": "Starting time delay",
+        "max-notes-to-generate": "Max notes to generate",
+        "bounce-min-spacing": "Bounce min spacing",
+        "square-speed": "Square speed",
+        "music-offset": "Music offset",
+        "change-dir-chance": "Change dir chance",
+        "hp-drain-rate": "HP drain rate",
+        "music-volume": "Music volume",
+        "color-theme": "Color theme",
+        "theatre-mode": "Theatre mode",
+        "particle-trail": "Particle trail",
+        "shader": "Shader",
+        "color-pegs-on-bounce": "Color Pegs on Bounce",
+        "particles-on-bounce": "Particles on bounce",
+        "resolution": "Resolution",
 
         "restart-required": "Restart Required"
     },
@@ -35,7 +55,8 @@ own song but don't know how? Check out docs/SONGS.md in the source code to learn
         "title": "midi-playground",
         "title-marquee": f"""Contribuintes: {contributors}. 
 Quer apenas assistir ao quadrado e não quer jogar o jogo? Se for esse o caso, ative o Modo Teatro nas configurações. Tem interesse em colocar sua própria música, 
-mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adicionar suas próprias músicas.""".replace("\n", ''),
+mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adicionar suas próprias músicas.""".replace(
+            "\n", ''),
 
         "restart-required": "Reinicialização Necessária"
     },
@@ -54,7 +75,8 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
         "title": "midi-playground",
         "title-marquee": f"""Colaboradores: {contributors}. 
 ¿Sólo quieres ver el cuadrado y no jugar el juego? Si es así, activa el Modo Teatro en los ajustes. 
-¿Te interesa añadir tu propia música pero no sabes cómo? Consulta docs/SONGS.md en el código fuente para saber cómo puedes poner tu propia música.""".replace("\n", ''),
+¿Te interesa añadir tu propia música pero no sabes cómo? Consulta docs/SONGS.md en el código fuente para saber cómo puedes poner tu propia música.""".replace(
+            "\n", ''),
 
         "restart-required": "Reinicio Necesario"
     },
@@ -77,10 +99,29 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
 想要播放自己喜欢的歌曲，但不知道如何播放？
 查看文件夹中的docs/SONGS.md，了解如何添加自己喜欢的歌曲。""".replace("\n", ''),
 
+        "do-custom-pgui-font": True,
+        "camera-mode": "相机模型",
+        "rng-seed": "随机粒子数",
+        "starting-time-delay": "开始时间延迟",
+        "max-notes-to-generate": "最大音符生成数",
+        "bounce-min-spacing": "最小弹跳间隔时间",
+        # we need square speed here
+        "music-offset": "音乐偏移",
+        "change-dir-chance": "改变方向概率",
+        "hp-drain-rate": "HP流失率",
+        "music-volume": "音乐音量",
+        "color-theme": "颜色主题",
+        "theatre-mode": "剧院模式",
+        "particle-trail": "粒子轨迹",
+        "shader": "着色器",
+        "color-pegs-on-bounce": "弹跳时是否显示颜色",
+        "particles-on-bounce": "弹跳时是否显示粒子",
+        "resolution": "分辨率",
+
         "restart-required": "需要重新启动"
     },
     "french": {
-        "font" : "poppins-regular.ttf",
+        "font": "poppins-regular.ttf",
 
         "font-menu-shadow-offset": 9,
         "font-menu-shadow-length-offset": 0,
@@ -99,7 +140,7 @@ Consultez docs/SONGS.md dans le code source pour apprendre comment ajouter vos p
         "restart-required": "Redémarrage nécessaire"
     },
     "swedish": {
-        "font" : "poppins-regular.ttf",
+        "font": "poppins-regular.ttf",
 
         "font-menu-shadow-offset": 9,
         "font-menu-shadow-length-offset": 0,
@@ -130,7 +171,8 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "back": "Geri",
         "title": "midi-oyunalanı",
-        "title-marquee": f"""Katkıda Bulunanlar: {contributors}. Sadece kareyi izliyor ve oyunu oynamak istemiyor musunuz? Durum böyleyse yapılandırmadan tiyatro modunu açın. Kendi şarkınızı oynamakla ilgilisiniz fakat nasıl yapılacağını bilmiyor musunuz? Kendi şarkılarınızı nasıl ekleyeceğinizi öğrenmek için kaynak koddaki docs/SONGS.md dosyasına göz atın.""".replace("\n", ''),
+        "title-marquee": f"""Katkıda Bulunanlar: {contributors}. Sadece kareyi izliyor ve oyunu oynamak istemiyor musunuz? Durum böyleyse yapılandırmadan tiyatro modunu açın. Kendi şarkınızı oynamakla ilgilisiniz fakat nasıl yapılacağını bilmiyor musunuz? Kendi şarkılarınızı nasıl ekleyeceğinizi öğrenmek için kaynak koddaki docs/SONGS.md dosyasına göz atın.""".replace(
+            "\n", ''),
 
         "restart-required": "Yeniden Başlatma Gerekiyor"
     },
@@ -147,8 +189,9 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "back": "назад",
         "title": "проигрыватель-миди",
-        "title-marquee": f"""Участники: {contributors}. Хочешь просто смотреть, а не играть? Включи режим "Theatre Mode". Как добавить песню? Перейди по docs/SONGS.md в репозитории чтобы узнать.""".replace("\n", ''),
-        
+        "title-marquee": f"""Участники: {contributors}. Хочешь просто смотреть, а не играть? Включи режим "Theatre Mode". Как добавить песню? Перейди по docs/SONGS.md в репозитории чтобы узнать.""".replace(
+            "\n", ''),
+
         "restart-required": "требуется перезагрузка"
     },
     "italian": {
@@ -181,7 +224,8 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "back": "戻る",
         "title": "midi-playground",
-        "title-marquee": f"""貢献者: {contributors}. 正方形を見ているだけじゃつまらないからゲームをプレイしてみたい？設定でシアターモードをオンにしてみてください。自分の曲を演奏したいけどやり方がわからない？ソースコードのdocs/SONGS.mdを見れば、自分の曲を追加する方法が分かります。""".replace("\n", ''),
+        "title-marquee": f"""貢献者: {contributors}. 正方形を見ているだけじゃつまらないからゲームをプレイしてみたい？設定でシアターモードをオンにしてみてください。自分の曲を演奏したいけどやり方がわからない？ソースコードのdocs/SONGS.mdを見れば、自分の曲を追加する方法が分かります。""".replace(
+            "\n", ''),
 
         "restart-required": "再起動が必要です"
     },
