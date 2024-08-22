@@ -242,7 +242,7 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
         "theatre-mode": "シアターモード",
         "particle-trail": "粒子の軌跡",
         "shader": "シェーダしぇーだ",
-        "color-pegs-on-bounce": "バウンス時のカラー釘", //ここで中国人のために記入するのは必ずしも正確ではありません。日本のネットユーザーは中国語を参照して適切に修正してください。
+        "color-pegs-on-bounce": "バウンス時のカラー釘", #ここで中国人のために記入するのは必ずしも正確ではありません。日本のネットユーザーは中国語を参照して適切に修正してください。
         "particles-on-bounce": "バウンス粒子",
         "resolution": "解像度",
         "restart-required": "再起動が必要です"
