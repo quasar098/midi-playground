@@ -58,6 +58,25 @@ Quer apenas assistir ao quadrado e não quer jogar o jogo? Se for esse o caso, a
 mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adicionar suas próprias músicas.""".replace(
             "\n", ''),
 
+        "do-custom-pgui-font": False,
+        "camera-mode": "Modo câmera",
+        "rng-seed": "Semente RNG",
+        "starting-time-delay": "Atraso inicial",
+        "max-notes-to-generate": "Máx. de notas a gerar",
+        "bounce-min-spacing": "Espaçamento mínimo do salto",
+        "square-speed": "Velocidade do quadrado",
+        "music-offset": "Deslocamento da música",
+        "change-dir-chance": "Chance de mudar de direção",
+        "hp-drain-rate": "Taxa de drenagem de HP",
+        "music-volume": "Volume da música",
+        "color-theme": "Tema de cores",
+        "theatre-mode": "Modo teatro",
+        "particle-trail": "Rastro de partículas",
+        "shader": "Shader",
+        "color-pegs-on-bounce": "Pinos coloridos no salto",
+        "particles-on-bounce": "Partículas no salto",
+        "resolution": "Resolução",
+
         "restart-required": "Reinicialização Necessária"
     },
     "spanish": {
