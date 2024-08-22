@@ -116,7 +116,7 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
         "resolution": "Resolución",
     
         "restart-required": "Reinicio Necesario"
-    }
+    },
     "chinese": {
         "font": "hanyisongjian.ttf",
 
