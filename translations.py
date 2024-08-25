@@ -142,10 +142,10 @@ mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adic
         "starting-time-delay": "开始时间延迟",
         "max-notes-to-generate": "最大音符生成数",
         "bounce-min-spacing": "最小弹跳间隔时间",
-        # we need square speed here
+        "square-speed": "方块速度",
         "music-offset": "音乐偏移",
         "change-dir-chance": "改变方向概率",
-        "hp-drain-rate": "HP流失率",
+        "hp-drain-rate": "HP的衰减速率",
         "music-volume": "音乐音量",
         "color-theme": "颜色主题",
         "theatre-mode": "剧院模式",
@@ -263,7 +263,25 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
         "title": "midi-playground",
         "title-marquee": f"""貢献者: {contributors}. 正方形を見ているだけじゃつまらないからゲームをプレイしてみたい？設定でシアターモードをオンにしてみてください。自分の曲を演奏したいけどやり方がわからない？ソースコードのdocs/SONGS.mdを見れば、自分の曲を追加する方法が分かります。""".replace(
             "\n", ''),
-
+        
+        "do-custom-pgui-font": True,
+        "camera-mode": "カメラモデル",
+        "rng-seed": "ランダム粒子数",
+        "starting-time-delay": "起動時間遅延",
+        "max-notes-to-generate": "音符最大生成数",
+        "bounce-min-spacing": "バウンドの最小間隔時間",
+        "square-speed": "ブロック速度",
+        "music-offset": "音楽オフセット",
+        "change-dir-chance": "方向を変える確率",
+        "hp-drain-rate": "HHPの減衰速度",
+        "music-volume": "音楽の音量",
+        "color-theme": "カラーテーマ",
+        "theatre-mode": "シアターモード",
+        "particle-trail": "粒子の軌跡",
+        "shader": "シェーダしぇーだ",
+        "color-pegs-on-bounce": "バウンス時のカラー釘", #ここで中国人のために記入するのは必ずしも正確ではありません。日本のネットユーザーは中国語を参照して適切に修正してください。
+        "particles-on-bounce": "バウンス粒子",
+        "resolution": "解像度",
         "restart-required": "再起動が必要です"
     },
 }
