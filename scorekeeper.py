@@ -43,7 +43,7 @@ class Scorekeeper:
         # remove unhit notes
         to_remove = []
         for timestamp in self.unhit_notes:
-            if timestamp+0.12 < current_time:  # 120ms late is missed note
+            if timestamp+0.12 < current_time and not self.world.square.died:  # 120ms late is missed note
                 self.hp -= 6
                 self.hit_icons.append(HitIcon(HitLevel.miss, self.world.square.pos))
                 to_remove.append(timestamp)
@@ -59,26 +59,27 @@ class Scorekeeper:
         # negative closest means hit before, positive means hit after
         for timestamp in self.unhit_notes:
             offset = current_time-timestamp
-            if offset > 0.06:  # 60ms late - 120ms late
-                self.hit_icons.append(HitIcon(HitLevel.late, self.world.square.pos.copy()))
-                self.hp -= 1
-                misses += 1
+            if not self.world.square.died:
+                if offset > 0.06:  # 60ms late - 120ms late
+                    self.hit_icons.append(HitIcon(HitLevel.late, self.world.square.pos.copy()))
+                    self.hp -= 1
+                    misses += 1
 
-            elif offset > -0.06:  # 60ms early - 60ms late
-                self.hit_icons.append(HitIcon(HitLevel.perfect, self.world.square.pos.copy()))
-                self.hp += 3
+                elif offset > -0.06:  # 60ms early - 60ms late
+                    self.hit_icons.append(HitIcon(HitLevel.perfect, self.world.square.pos.copy()))
+                    self.hp += 3
 
-            elif offset > -0.09:  # 60ms early - 90ms early
-                self.hit_icons.append(HitIcon(HitLevel.good, self.world.square.pos.copy()))
-                self.hp -= 1
+                elif offset > -0.09:  # 60ms early - 90ms early
+                    self.hit_icons.append(HitIcon(HitLevel.good, self.world.square.pos.copy()))
+                    self.hp -= 1
 
-            elif offset > -0.12:  # 90ms early - 120ms early
-                self.hit_icons.append(HitIcon(HitLevel.early, self.world.square.pos.copy()))
-                self.hp -= 2
-                misses += 1
+                elif offset > -0.12:  # 90ms early - 120ms early
+                    self.hit_icons.append(HitIcon(HitLevel.early, self.world.square.pos.copy()))
+                    self.hp -= 2
+                    misses += 1
 
-            else:
-                return misses
+                else:
+                    return misses
             self.unhit_notes.remove(timestamp)
             return misses
     
