@@ -261,7 +261,7 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "back": "戻る",
         "title": "midi-playground",
-        "title-marquee": f"""貢献者: {contributors}. 正方形を見ているだけじゃつまらないからゲームをプレイしてみたい？設定でシアターモードをオンにしてみてください。自分の曲を演奏したいけどやり方がわからない？ソースコードのdocs/SONGS.mdを見れば、自分の曲を追加する方法が分かります。""".replace(
+        "title-marquee": f"""貢献者: {contributors}. ブロックを見ているだけじゃつまらないからゲームをプレイしてみたい？設定でシアターモードをオンにしてみてください。自分の曲を演奏したいけどやり方がわからない？ソースコードのdocs/SONGS.mdを見れば、自分の曲を追加する方法が分かります。""".replace(
             "\n", ''),
         
         "do-custom-pgui-font": True,
