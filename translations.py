@@ -248,6 +248,42 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "restart-required": "Riavvio richiesto"
     },
+    "ladin": {
+        "font": "poppins-regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "Soga",
+        "config": "Impostaziuns",
+        "contribute": "Contribuësca",
+        "open-songs-folder": "Deura mapa cianties",
+        "quit": "Vá fora",
+
+        "back": "Zoruch",
+        "title": "midi-playground",
+        "title-marquee": f"""Contribuënc: {contributors}. Os udëi le quadrat zënza soghé al jüch? Al te basta impié la modalité "Modalité teater" tles impostaziuns. Sce t'es interessé a fa jì les tües cianties mo ne sas nia cô? Spo ciara a docs/SONGS.md tl codesc pur savëi sciöche ciafè fora cô mët ite les tües cianties.""",
+
+        "do-custom-pgui-font": False,
+        "camera-mode": "Modalité videocamera",
+        "rng-seed": "Somënza RNG",
+        "starting-time-delay": "Mët man plö tert",
+        "max-notes-to-generate": "Notes mascimes da generè",
+        "bounce-min-spacing": "Distanza minima de rembalz",
+        "square-speed": "Velocité dl quadrat",
+        "music-offset": "Offset musiga",
+        "change-dir-chance": "Probabilité mudamënt direziun",
+        "hp-drain-rate": "Velocité de  drenaje di HP",
+        "music-volume": "Volum musica",
+        "color-theme": "Tema corusc",
+        "theatre-mode": "Modalité teater",
+        "particle-trail": "Linia de particoles",
+        "shader": "Shader",
+        "color-pegs-on-bounce": "Punc coloris canche rembalzes",
+        "particles-on-bounce": "Particoles canche rembalzes",
+        "resolution": "Ressoluziun",
+
+        "restart-required": "Te mësses destodé y impié le jüch",
+    },
     "japanese": {
         "font": "NotoSansJP-Regular.ttf",
 
