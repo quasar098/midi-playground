@@ -244,7 +244,7 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "back": "Indietro",
         "title": "midi-playground",
-        "title-marquee": f"""Contributori: {contributors}. Vuoi vedere il quadrato senza giocare al gioco? Ti basta accendere la modalità "Theatre Mode" nelle impostazioni. Sei interessato a suonare le tue canzoni ma non sai come? Dai un' occhiata a docs/SONGS.md nel codice sorgente per scoprire come aggiungere le tue canzoni.""",
+        "title-marquee": f"""Contributori: {contributors}. Vuoi vedere il quadrato senza giocare al gioco? Ti basta accendere la modalità "Modalità teatro" nelle impostazioni. Sei interessato a suonare le tue canzoni ma non sai come? Dai un' occhiata a docs/SONGS.md nel codice sorgente per scoprire come aggiungere le tue canzoni.""",
 
         "do-custom-pgui-font": False,
         "camera-mode": "Modalità videocamera",
