@@ -74,6 +74,8 @@ if so, please add translations for as many of the texts (they are listed in tran
 
 if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github pull request
 
+and you can look translations for the others langguge text, which may be helpful to you
+
 also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 
 ## (old) todo list
