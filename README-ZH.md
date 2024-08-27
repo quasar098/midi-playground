@@ -1,64 +1,64 @@
 # midi 游乐园
-bouncing square video, FOSS edition (and gamified)
+方块弹跳视频，开源版和游戏化版
 
 <a href="./README.md">English</a> | <a href="./README-ZH.md">简体中文</a> | <a href="./README-JP.md">日本語</a> | <a href="./README-TR.md">Türkçe</a>
-## NOTICES
+## 公告
 
-### for content creators:
+### 对于内容创作者：
 
-please try to put the link to this repository in your youtube video descriptions if the youtube video features this software, that is all i request
+如果您上传视频平台的视频用了此软件，请尝试将此存储库的链接放入您的视频简介中，这就是我所要求的
 
-### for developers:
+### 对于开发者：
 
-***this code is licensed under GPL3, it is illegal to publicly distribute modified copies of this software without providing the source upon request!***
+****此代码根据GPL3获得许可，未经要求提供源代码就公开分发此软件的修改副本是违法的！***
 
-it is ok, however, to modify the code and not release the source if you are not releasing the modified version to the public.
+（但是，如果您不向公众发布修改后的版本，则可以修改代码而不发布源代码。）
 
-## how to do custom songs?
+## 如何制作自定义歌曲？
 
-see [docs/SONGS.md](https://github.com/quasar098/midi-playground/blob/master/docs/SONGS.md) for custom song tutorial
+参照 [docs/SONGS.md](https://github.com/quasar098/midi-playground/blob/master/docs/SONGS.md) 获取自定义歌曲教程
 
-## development guide
+## 开发指南
 
-this is how you set up the code to run it from source, rather than a bundled pyinstaller executable
+这是教您如何设置代码以从源代码运行它，而不是从捆绑的 PyInstaller 可执行文件运行它
 
-download python from [here](https://python.org) specifically (3.9.1 should work). do not download from windows store. that version is really janky and doesn't work that well for more complex python programs with lots of dependencies
+从[这里](https://python.org)下载 Python（3.11.0 可以工作）。请勿从 Windows 应用商店下载。那个版本真的很糟糕，对于具有大量依赖项的更复杂的 Python 程序来说效果不佳
 
-install requirements with `python3 -m pip install -r requirements.txt`
+使用`python3 -m pip install -r requirements.txt`安装依赖
 
-start program with `python3 main.py`
+使用`python3 main.py`来启动程序
 
-build command: `pyinstaller main.py --noconsole --onefile --clean --hidden-import glcontext`
+打包命令: `pyinstaller main.py --noconsole --onefile --clean --hidden-import glcontext`
 
-## credits
+## 鸣谢
 
-see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/docs/CREDITS.md)
+详见[docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/docs/CREDITS.md)
 
-## contributors
+## 贡献者
 
 - [quasar098](https://github.com/quasar098)
-- [TheCodingCrafter](https://github.com/TheCodingCrafter) - Themes + QOL
-- [PurpleJuiceBox](https://github.com/PurpleJuiceBox) - Reset to Default Button
-- [sled45](https://github.com/sled45) - Mouse fix for high DPI displays
-- [Times0](https://github.com/Times0) - dark_modern theme, Glowing, Colored pegs on bounce
-- [Spring-Forever-with-me](https://github.com/Spring-Forever-with-me) - fix incorrect key name for screen resolution in the config
-- [sj-dan](https://github.com/sj-dan) - opengl fix on mac os
-- [zetlen](https://github.com/zetlen) - update shaders to use modern opengl api
+- [TheCodingCrafter](https://github.com/TheCodingCrafter) - 主题 + QOL
+- [PurpleJuiceBox](https://github.com/PurpleJuiceBox) - 重置为默认值按钮
+- [sled45](https://github.com/sled45) - 高DPI显示器的鼠标修复
+- [Times0](https://github.com/Times0) - dark_modern主题，发光，彩色弹钉
+- [Spring-Forever-with-me](https://github.com/Spring-Forever-with-me) - 修复配置中屏幕分辨率的错误键名
+- [sj-dan](https://github.com/sj-dan) - mac操作系统上的opengl修复
+- [zetlen](https://github.com/zetlen) - 更新着色器以使用现代opengl api
 
-- [cangerjun](https://github.com/cangerjun) - chinese translations
-- [lucmsilva651](https://github.com/lucmsilva651) - brazilian portuguese and spanish translations
-- [leo539](https://github.com/leo539) - french translations
-- [simpansoftware](https://github.com/simpansoftware) - swedish translations
-- [slideglide](https://github.com/slideglide) - turkish translations
-- [Guavvva](https://github.com/Guavvva) - russian translations
-- [SpeckyYT](https://github.com/SpeckyYT) - italian translations
-- [suzuuuuu09](https://github.com/suzuuuuu09) - japanese translations
+- [cangerjun](https://github.com/cangerjun) - 中文翻译
+- [lucmsilva651](https://github.com/lucmsilva651) - 巴西葡萄牙语和西班牙语翻译
+- [leo539](https://github.com/leo539) - 法语翻译
+- [simpansoftware](https://github.com/simpansoftware) - 瑞典语翻译
+- [slideglide](https://github.com/slideglide) - 土耳其语翻译
+- [Guavvva](https://github.com/Guavvva) - 俄语翻译
+- [SpeckyYT](https://github.com/SpeckyYT) - 意大利语翻译
+- [suzuuuuu09](https://github.com/suzuuuuu09) - 日语翻译
 
-## translation guide
+## 翻译指南
 
-want to add translations for a different language? please create a github pull request with the word "translations" in the title
-
-if so, please add translations for as many of the texts (they are listed in translations.py) as you can
+想添加其他语言的翻译吗？
+请在标题中使用“translations”一词创建一个github pull请求
+如果是这样，请为尽可能多的文本添加翻译（它们列在translations.py中）
 
 - "play"
 - "config"
@@ -70,13 +70,13 @@ if so, please add translations for as many of the texts (they are listed in tran
 - the marquee on the title screen (the moving text that appears underneath the title on the main screen; see translations.py file for english example)
 - "restart required"
 
-(there are more in translations.py)
+(更多的内容在translations.py)
 
-if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github pull request
+如果你对任何文本的含义有任何疑问，在发出github pull请求之前，请参阅translations.py以获取英文示例
+如果你对文本的含义有疑问，也可以参考translations.py中其他语言翻译的内容，可能会对你有所帮助。
+另外，我们只添加真实的语言（没有海盗语言或像《我的世界》这样的颠倒语言）
 
-also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
+## (旧的) 全部列表
 
-## (old) todo list
-
-see [docs/TODO.md](https://github.com/quasar098/midi-playground/blob/master/docs/TODO.md)
+详见[docs/TODO.md](https://github.com/quasar098/midi-playground/blob/master/docs/TODO.md)
 
