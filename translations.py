@@ -58,26 +58,63 @@ Quer apenas assistir ao quadrado e não quer jogar o jogo? Se for esse o caso, a
 mas não sabe como? Consulte docs/SONGS.md no código-fonte para saber como adicionar suas próprias músicas.""".replace(
             "\n", ''),
 
+        "do-custom-pgui-font": False,
+        "camera-mode": "Modo câmera",
+        "rng-seed": "Semente RNG",
+        "starting-time-delay": "Atraso inicial",
+        "max-notes-to-generate": "Máx. de notas a gerar",
+        "bounce-min-spacing": "Espaçamento mínimo do salto",
+        "square-speed": "Velocidade do quadrado",
+        "music-offset": "Deslocamento da música",
+        "change-dir-chance": "Chance de mudar de direção",
+        "hp-drain-rate": "Taxa de drenagem de HP",
+        "music-volume": "Volume da música",
+        "color-theme": "Tema de cores",
+        "theatre-mode": "Modo teatro",
+        "particle-trail": "Rastro de partículas",
+        "shader": "Shader",
+        "color-pegs-on-bounce": "Pinos coloridos no salto",
+        "particles-on-bounce": "Partículas no salto",
+        "resolution": "Resolução",
+
         "restart-required": "Reinicialização Necessária"
     },
     "spanish": {
         "font": "poppins-regular.ttf",
-
+    
         "font-menu-shadow-offset": 9,
         "font-menu-shadow-length-offset": 0,
         "play": "Jugar",
-        "config": "Configuraciones",
+        "config": "Configuración",
         "contribute": "Contribuir",
-        "open-songs-folder": "Carpeta de Músicas",
+        "open-songs-folder": "Abrir Carpeta de Canciones",
         "quit": "Salir",
-
+    
         "back": "Volver",
         "title": "midi-playground",
         "title-marquee": f"""Colaboradores: {contributors}. 
-¿Sólo quieres ver el cuadrado y no jugar el juego? Si es así, activa el Modo Teatro en los ajustes. 
-¿Te interesa añadir tu propia música pero no sabes cómo? Consulta docs/SONGS.md en el código fuente para saber cómo puedes poner tu propia música.""".replace(
+    ¿Solo quieres ver el cuadrado y no quieres jugar? Si es así, activa el Modo Teatro en la configuración. ¿Interesado en agregar tu propia canción pero no sabes cómo? Consulta docs/SONGS.md en el código fuente para aprender a añadir tus propias canciones.""".replace(
             "\n", ''),
-
+    
+        "do-custom-pgui-font": False,
+        "camera-mode": "Modo cámara",
+        "rng-seed": "Semilla RNG",
+        "starting-time-delay": "Retraso inicial",
+        "max-notes-to-generate": "Máx. de notas a generar",
+        "bounce-min-spacing": "Espaciado mínimo de rebote",
+        "square-speed": "Velocidad del cuadrado",
+        "music-offset": "Desfase de la música",
+        "change-dir-chance": "Probabilidad de cambiar de dirección",
+        "hp-drain-rate": "Tasa de drenaje de HP",
+        "music-volume": "Volumen de la música",
+        "color-theme": "Tema de colores",
+        "theatre-mode": "Modo teatro",
+        "particle-trail": "Estela de partículas",
+        "shader": "Shader",
+        "color-pegs-on-bounce": "Pernos de color en el rebote",
+        "particles-on-bounce": "Partículas en el rebote",
+        "resolution": "Resolución",
+    
         "restart-required": "Reinicio Necesario"
     },
     "chinese": {
@@ -224,7 +261,7 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "back": "戻る",
         "title": "midi-playground",
-        "title-marquee": f"""貢献者: {contributors}. 正方形を見ているだけじゃつまらないからゲームをプレイしてみたい？設定でシアターモードをオンにしてみてください。自分の曲を演奏したいけどやり方がわからない？ソースコードのdocs/SONGS.mdを見れば、自分の曲を追加する方法が分かります。""".replace(
+        "title-marquee": f"""貢献者: {contributors}. ブロックを見ているだけじゃつまらないからゲームをプレイしてみたい？設定でシアターモードをオンにしてみてください。自分の曲を演奏したいけどやり方がわからない？ソースコードのdocs/SONGS.mdを見れば、自分の曲を追加する方法が分かります。""".replace(
             "\n", ''),
         
         "do-custom-pgui-font": True,
