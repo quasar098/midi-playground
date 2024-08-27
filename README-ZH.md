@@ -76,7 +76,7 @@
 如果你对文本的含义有疑问，也可以参考translations.py中其他语言翻译的内容，可能会对你有所帮助。
 另外，我们只添加真实的语言（没有海盗语言或像《我的世界》这样的颠倒语言）
 
-## (旧的) 全部列表
+## (旧的) 需要完成的列表
 
 详见[docs/TODO.md](https://github.com/quasar098/midi-playground/blob/master/docs/TODO.md)
 
