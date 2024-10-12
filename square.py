@@ -92,18 +92,19 @@ class Square:
             win.blit(surf, rect.move(-40, -40).topleft, special_flags=pygame.BLEND_RGBA_ADD)
 
     def draw(self, screen: pygame.Surface, sqrect: pygame.Rect):
-        if self.died:
-            return
-        square_color_index = round((self.dir_x + 1) / 2 + self.dir_y + 1)
-        self.register_past_color(get_colors()["square"][square_color_index % len(get_colors()["square"])])
+    if self.died:
+        return
 
-        if Config.theme == "dark_modern" and make_glowy2 is not None:
-            self.draw_glowing3(screen, sqrect)
-        else:
-            pygame.draw.rect(screen, (0, 0, 0), sqrect)
-            sq_surf = self.get_surface(
-                tuple(sqrect.inflate(-int(Config.SQUARE_SIZE / 5), -int(Config.SQUARE_SIZE / 5))[2:]))
-            screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
+    # Fixed color (yellow) for the frame
+    frame_color = (255, 255, 0)  # RGB for yellow
+
+    # Draw only the outline (frame) of the square
+    pygame.draw.rect(screen, frame_color, sqrect, width=3)  # `width=3` specifies it's just an outline
+    
+    # We can also keep the optional glowing effect logic if you want to use it
+    if Config.theme == "dark_modern" and make_glowy2 is not None:
+        self.draw_glowing3(screen, sqrect)
+
 
     @x.setter
     def x(self, val: int):
