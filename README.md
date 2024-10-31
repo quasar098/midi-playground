@@ -1,7 +1,7 @@
 # midi playground
 bouncing square video, FOSS edition (and gamified)
 
-<a href="./README.md">English</a> | <a href="./README-ZH.md">简体中文</a> | <a href="./README-JP.md">日本語</a> | <a href="./README-TR.md">Türkçe</a>
+[English](./README.md) | [简体中文](./README-ZH.md)
 ## NOTICES
 
 ### for content creators:
@@ -74,7 +74,7 @@ if so, please add translations for as many of the texts (they are listed in tran
 
 if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github pull request
 
-and you can look translations for the others langguge text, which may be helpful to you
+also, you can look at other languages' translations texts, which may be helpful to you
 
 also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 
