@@ -1,7 +1,7 @@
 # midi 游乐园
 方块弹跳视频，开源版和游戏化版
 
-<a href="./README.md">English</a> | <a href="./README-ZH.md">简体中文</a> | <a href="./README-JP.md">日本語</a> | <a href="./README-TR.md">Türkçe</a>
+[English](./README.md) | [简体中文](./README-ZH.md)
 ## 公告
 
 ### 对于内容创作者：
