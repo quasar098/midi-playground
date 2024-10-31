@@ -1,6 +1,7 @@
 # midi playground
 bouncing square video, FOSS edition (and gamified)
 
+[English](./README.md) | [简体中文](./README-ZH.md)
 ## NOTICES
 
 ### for content creators:
@@ -72,6 +73,8 @@ if so, please add translations for as many of the texts (they are listed in tran
 (there are more in translations.py)
 
 if you have any questions on what any texts are supposed to mean, see translations.py for the english examples before you make a github pull request
+
+also, you can look at other languages' translations texts, which may be helpful to you
 
 also, we are only adding real languages (no pirate speak or upside-down language like minecraft)
 
