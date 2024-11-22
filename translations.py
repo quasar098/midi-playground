@@ -267,42 +267,6 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
 
         "restart-required": "Riavvio richiesto"
     },
-    "ladin": {
-        "font": "poppins-regular.ttf",
-
-        "font-menu-shadow-offset": 9,
-        "font-menu-shadow-length-offset": 0,
-        "play": "Soga",
-        "config": "Impostaziuns",
-        "contribute": "Contribuësca",
-        "open-songs-folder": "Deura mapa cianties",
-        "quit": "Vá fora",
-
-        "back": "Zoruch",
-        "title": "midi-playground",
-        "title-marquee": f"""Contribuënc: {contributors}. Os udëi le quadrat zënza soghé al jüch? Al te basta impié la modalité "Modalité teater" tles impostaziuns. Sce t'es interessé a fa jì les tües cianties mo ne sas nia cô? Spo ciara a docs/SONGS.md tl codesc pur savëi sciöche ciafè fora cô mët ite les tües cianties.""",
-
-        "do-custom-pgui-font": False,
-        "camera-mode": "Modalité videocamera",
-        "rng-seed": "Somënza RNG",
-        "starting-time-delay": "Mët man plö tert",
-        "max-notes-to-generate": "Notes mascimes da generè",
-        "bounce-min-spacing": "Distanza minima de rembalz",
-        "square-speed": "Velocité dl quadrat",
-        "music-offset": "Offset musiga",
-        "change-dir-chance": "Probabilité mudamënt direziun",
-        "hp-drain-rate": "Velocité de  drenaje di HP",
-        "music-volume": "Volum musica",
-        "color-theme": "Tema corusc",
-        "theatre-mode": "Modalité teater",
-        "particle-trail": "Linia de particoles",
-        "shader": "Shader",
-        "color-pegs-on-bounce": "Punc coloris canche rembalzes",
-        "particles-on-bounce": "Particoles canche rembalzes",
-        "resolution": "Ressoluziun",
-
-        "restart-required": "Te mësses destodé y impié le jüch",
-    },
     "japanese": {
         "font": "NotoSansJP-Regular.ttf",
 
@@ -320,23 +284,60 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
             "\n", ''),
         
         "do-custom-pgui-font": True,
-        "camera-mode": "カメラのモード",
-        "rng-seed": "乱数の初期値",
-        "starting-time-delay": "ゲーム開始時の遅延",
-        "max-notes-to-generate": "生成するノーツの最大数",
-        "bounce-min-spacing": "バウンドの最小間隔",
-        "square-speed": "ブロックの速度",
-        "music-offset": "音楽のオフセット",
-        "change-dir-chance": "方向転換の確率",
-        "hp-drain-rate": "HPの減少率",
+        "camera-mode": "カメラモデル",
+        "rng-seed": "ランダム粒子数",
+        "starting-time-delay": "起動時間遅延",
+        "max-notes-to-generate": "音符最大生成数",
+        "bounce-min-spacing": "バウンドの最小間隔時間",
+        "square-speed": "ブロック速度",
+        "music-offset": "音楽オフセット",
+        "change-dir-chance": "方向を変える確率",
+        "hp-drain-rate": "HHPの減衰速度",
         "music-volume": "音楽の音量",
         "color-theme": "カラーテーマ",
         "theatre-mode": "シアターモード",
-        "particle-trail": "移動のエフェクト",
-        "shader": "シェーダー",
-        "color-pegs-on-bounce": "バウンド時のカラー表示",
-        "particles-on-bounce": "バウンド時のエフェクト表示",
+        "particle-trail": "粒子の軌跡",
+        "shader": "シェーダしぇーだ",
+        "color-pegs-on-bounce": "バウンス時のカラー釘", #ここで中国人のために記入するのは必ずしも正確ではありません。日本のネットユーザーは中国語を参照して適切に修正してください。
+        "particles-on-bounce": "バウンス粒子",
         "resolution": "解像度",
         "restart-required": "再起動が必要です"
     },
+    "czech": {
+        "font": "poppins-regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "Hrát",
+        "config": "Konfigurace",
+        "contribute": "Pomozte vylepšit",
+        "open-songs-folder": "Otevřít složku muziky",
+        "quit": "Ukončit",
+
+        "back": "Zpátky",
+        "title": "midi-playground",
+        "title-marquee": f"""Chcete jenom koukat na čtverec ale nechcete hrát? Zapnite automatické hraní v Konfiguraci když chcete. Zaujímá vás hraní vlastních písniček? Kouknite se na docs/SONGS.md (Je to anglicky) abyste zjistily jak to udělat.""".replace(
+            "\n", ''),
+
+        "do-custom-pgui-font": False,
+        'camera-mode': 'Mód kamery',
+        "rng-seed": "Náhodné semínko",
+        "starting-time-delay": "Doba opoždění na startu",
+        "max-notes-to-generate": "Maximální počet not na vytvoření",
+        "bounce-min-spacing": "Minimální vzdálenost odrazu",
+        "square-speed": "Rychlost čtverce",
+        "music-offset": "Posunutí muziky",
+        "change-dir-chance": "Šance diru?",
+        "hp-drain-rate": "Rychlost oddělávání zdraví",
+        "music-volume": "Hlasitost muziky",
+        "color-theme": "Barevné schéma",
+        "theatre-mode": "Automatické hraní",
+        "particle-trail": "Trail částice",
+        "shader": "Shader",
+        "color-pegs-on-bounce": "Barevné rohy na odrazu",
+        "particles-on-bounce": "Částice na odrazu",
+        "resolution": "Rozlišení",
+
+        "restart-required": "Restart Nutný"
+    }
 }
