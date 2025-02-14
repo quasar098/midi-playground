@@ -40,6 +40,45 @@ own song but don't know how? Check out docs/SONGS.md in the source code to learn
 
         "restart-required": "Restart Required"
     },
+    "german": {
+        "font": "poppins-regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "spielen",
+        "config": "",
+        "contribute": "",
+        "open-songs-folder": "",
+        "quit": "",
+
+        "back": "",
+        "title": "Midi-Spielplatz",
+        "title-marquee": f"""Contributors: {contributors}. Just want to 
+watch the square and don't want to play the game? Turn on theatre mode in the config if that is the case. Interested in playing your 
+own song but don't know how? Check out docs/SONGS.md in the source code to learn how to add your own songs.""".replace(
+            "\n", ''),
+
+        "do-custom-pgui-font": False,
+        'camera-mode': 'Camera mode',
+        "rng-seed": "RNG seed",
+        "starting-time-delay": "Starting time delay",
+        "max-notes-to-generate": "Max notes to generate",
+        "bounce-min-spacing": "Bounce min spacing",
+        "square-speed": "Square speed",
+        "music-offset": "Music offset",
+        "change-dir-chance": "Change dir chance",
+        "hp-drain-rate": "HP drain rate",
+        "music-volume": "Music volume",
+        "color-theme": "Color theme",
+        "theatre-mode": "Theatre mode",
+        "particle-trail": "Particle trail",
+        "shader": "Shader",
+        "color-pegs-on-bounce": "Color Pegs on Bounce",
+        "particles-on-bounce": "Particles on bounce",
+        "resolution": "Resolution",
+
+        "restart-required": "Restart Required"
+    },
     "brazilian-pt": {
         "font": "poppins-regular.ttf",
 
