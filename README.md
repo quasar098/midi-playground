@@ -53,6 +53,7 @@ see [docs/CREDITS.md](https://github.com/quasar098/midi-playground/blob/master/d
 - [Guavvva](https://github.com/Guavvva) - russian translations
 - [SpeckyYT](https://github.com/SpeckyYT) - italian, ladin translations
 - [suzuuuuu09](https://github.com/suzuuuuu09) - japanese translations
+- [CoderMonkey1956](https://github.com/CoderMonkey1956) - german translations
 
 ## translation guide
 

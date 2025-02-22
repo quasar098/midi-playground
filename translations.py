@@ -53,11 +53,9 @@ own song but don't know how? Check out docs/SONGS.md in the source code to learn
 
         "back": "Zurück",
         "title": "Midi-Spielplatz",
-        "title-marquee": "Sch""" auf Beitragszahler: {contributors}. Sie wollen nur 
+        "title-marquee": """Sch auf Beitragszahler: {contributors}. Sie wollen nur 
 den quadratischer Sprung sehen und nicht das Spiel spielen? Schalten Sie den Theatermodus in der Konfiguration ein, wenn das der Fall ist. Möchten Sie Ihr 
-eigenes Lied spielen 
-, wissen aber nicht wie? Schauen Sie sich docs/SONGS.md im Quellcode an, um zu erfahren, wie Sie Ihre eigenen Lieder hinzufügen können.""".replace(
-            "\n", ''),
+eigenes Lied spielen, wissen aber nicht wie? Schauen Sie sich docs/SONGS.md im Quellcode an, um zu erfahren, wie Sie Ihre eigenen Lieder hinzufügen können.""".replace("\n", ''),
 
         "do-custom-pgui-font": False,
         'camera-mode': 'Kameramodus',

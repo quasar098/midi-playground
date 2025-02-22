@@ -53,6 +53,7 @@
 - [Guavvva](https://github.com/Guavvva) - 俄语翻译
 - [SpeckyYT](https://github.com/SpeckyYT) - 意大利语翻译
 - [suzuuuuu09](https://github.com/suzuuuuu09) - 日语翻译
+- [CoderMonkey1956](https://github.com/CoderMonkey1956) - 德语翻译
 
 ## 翻译指南
 
