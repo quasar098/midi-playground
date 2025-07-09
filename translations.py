@@ -342,40 +342,40 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
         "restart-required": "再起動が必要です"
     },
     "czech": {
-        "font": "poppins-regular.ttf",
+    "font": "poppins-regular.ttf",
 
-        "font-menu-shadow-offset": 9,
-        "font-menu-shadow-length-offset": 0,
-        "play": "Hrát",
-        "config": "Konfigurace",
-        "contribute": "Pomozte vylepšit",
-        "open-songs-folder": "Otevřít složku muziky",
-        "quit": "Ukončit",
+    "font-menu-shadow-offset": 9,
+    "font-menu-shadow-length-offset": 0,
+    "play": "Hrát",
+    "config": "Nastavení",
+    "contribute": "Pomozte nám!",
+    "open-songs-folder": "Otevřít složku s písničkami",
+    "quit": "Ukončit",
 
-        "back": "Zpátky",
-        "title": "midi-playground",
-        "title-marquee": f"""Chcete jenom koukat na čtverec ale nechcete hrát? Zapnite automatické hraní v Konfiguraci když chcete. Zaujímá vás hraní vlastních písniček? Kouknite se na docs/SONGS.md (Je to anglicky) abyste zjistily jak to udělat.""".replace(
-            "\n", ''),
+    "back": "Zpět",
+    "title": "midi-playground",
+    "title-marquee": f"""Přispěvatelé: {contributors}. Chcete se jen dívat na čtverec a nechcete hrát hru? Pokud ano, zapněte si divadelní režim v nastavení. Zajímá vás, jak přidat vlastní píseň, ale nevíte jak? Podívejte se do souboru docs/SONGS.md ve zdrojovém kódu, kde najdete návod, jak přidat své vlastní písně.""".replace("\n", ''),
 
-        "do-custom-pgui-font": False,
-        'camera-mode': 'Mód kamery',
-        "rng-seed": "Náhodné semínko",
-        "starting-time-delay": "Doba opoždění na startu",
-        "max-notes-to-generate": "Maximální počet not na vytvoření",
-        "bounce-min-spacing": "Minimální vzdálenost odrazu",
-        "square-speed": "Rychlost čtverce",
-        "music-offset": "Posunutí muziky",
-        "change-dir-chance": "Šance diru?",
-        "hp-drain-rate": "Rychlost oddělávání zdraví",
-        "music-volume": "Hlasitost muziky",
-        "color-theme": "Barevné schéma",
-        "theatre-mode": "Automatické hraní",
-        "particle-trail": "Trail částice",
-        "shader": "Shader",
-        "color-pegs-on-bounce": "Barevné rohy na odrazu",
-        "particles-on-bounce": "Částice na odrazu",
-        "resolution": "Rozlišení",
+    "do-custom-pgui-font": False,
+    "camera-mode": "Režim kamery",
+    "rng-seed": "Náhodné semínko",
+    "starting-time-delay": "Zpoždění na začátku",
+    "max-notes-to-generate": "Maximální počet not",
+    "bounce-min-spacing": "Minimální rozestup odrazů",
+    "square-speed": "Rychlost čtverce",
+    "music-offset": "Posun hudby",
+    "change-dir-chance": "Šance na změnu směru",
+    "hp-drain-rate": "Úbytek životů",
+    "music-volume": "Hlasitost hudby",
+    "color-theme": "Barevné téma",
+    "theatre-mode": "Divadelní režim",
+    "particle-trail": "Stopa částic",
+    "shader": "Shader",
+    "color-pegs-on-bounce": "Barevné kolíky při odrazu",
+    "particles-on-bounce": "Částice při odrazu",
+    "resolution": "Rozlišení",
 
-        "restart-required": "Restart Nutný"
-    }
+    "restart-required": "Vyžadován restart"
+}
+
 }
