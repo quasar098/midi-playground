@@ -1,4 +1,4 @@
-contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva, zetlen, SpeckyYT, suzuuuuu09"
+contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva, zetlen, SpeckyYT, suzuuuuu09, CoderMonkey1956"
 
 TRANSLATIONS = {
     "english": {
@@ -39,6 +39,44 @@ own song but don't know how? Check out docs/SONGS.md in the source code to learn
         "resolution": "Resolution",
 
         "restart-required": "Restart Required"
+    },
+    "german": {
+        "font": "poppins-regular.ttf",
+
+        "font-menu-shadow-offset": 9,
+        "font-menu-shadow-length-offset": 0,
+        "play": "Spielen",
+        "config": "Konfigurieren",
+        "contribute": "Beitragen",
+        "open-songs-folder": "Öffnen Sie den Ordner Songs",
+        "quit": "Beenden Sie",
+
+        "back": "Zurück",
+        "title": "Midi-Spielplatz",
+        "title-marquee": """Sch auf Beitragszahler: {contributors}. Sie wollen nur 
+den quadratischer Sprung sehen und nicht das Spiel spielen? Schalten Sie den Theatermodus in der Konfiguration ein, wenn das der Fall ist. Möchten Sie Ihr 
+eigenes Lied spielen, wissen aber nicht wie? Schauen Sie sich docs/SONGS.md im Quellcode an, um zu erfahren, wie Sie Ihre eigenen Lieder hinzufügen können.""".replace("\n", ''),
+
+        "do-custom-pgui-font": False,
+        'camera-mode': 'Kameramodus',
+        "rng-seed": "Rng-Saatgut",
+        "starting-time-delay": "Startzeitverzögerung",
+        "max-notes-to-generate": "Maximal zu erzeugende Noten",
+        "bounce-min-spacing": "Minimaler Platz zum Hüpfen",
+        "square-speed": "Quadratische Geschwindigkeit",
+        "music-offset": "Musik Versatz",
+        "change-dir-chance": "Wahrscheinlichkeit eines Richtungswechsels",
+        "hp-drain-rate": "Gesundheitliche Erschöpfungsrate",
+        "music-volume": "Musik Lautstärke",
+        "color-theme": "Thema Farbe",
+        "theatre-mode": "Thema Farbe",
+        "particle-trail": "Partikelspur",
+        "shader": "Shader",
+        "color-pegs-on-bounce": "Farbige Flecken auf Aufprall",
+        "particles-on-bounce": "Partikel beim Abprallen",
+        "resolution": "Auflösung",
+
+        "restart-required": "Neustart erforderlich"
     },
     "brazilian-pt": {
         "font": "poppins-regular.ttf",
