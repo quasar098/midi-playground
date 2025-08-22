@@ -1,4 +1,4 @@
-contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva, zetlen, SpeckyYT, suzuuuuu09, CoderMonkey1956"
+contributors = "quasar098, TheCodingCrafter, PurpleJuiceBox, sled45, Times0, Spring-Forever-with-me, cangerjun, lucmsilva651, leo539, simpansoftware, slideglide, Guavvva, zetlen, SpeckyYT, suzuuuuu09, CoderMonkey1956, JenikH"
 
 TRANSLATIONS = {
     "english": {
@@ -377,4 +377,41 @@ Kolla docs/SONGS.md i källkoden för att lära dig hur du lägger till dina egn
         "resolution": "解像度",
         "restart-required": "再起動が必要です"
     },
+    "czech": {
+    "font": "poppins-regular.ttf",
+
+    "font-menu-shadow-offset": 9,
+    "font-menu-shadow-length-offset": 0,
+    "play": "Hrát",
+    "config": "Nastavení",
+    "contribute": "Pomozte nám!",
+    "open-songs-folder": "Otevřít složku s písničkami",
+    "quit": "Ukončit",
+
+    "back": "Zpět",
+    "title": "midi-playground",
+    "title-marquee": f"""Přispěvatelé: {contributors}. Chcete se jen dívat na čtverec a nechcete hrát hru? Pokud ano, zapněte si divadelní režim v nastavení. Zajímá vás, jak přidat vlastní píseň, ale nevíte jak? Podívejte se do souboru docs/SONGS.md ve zdrojovém kódu, kde najdete návod, jak přidat své vlastní písně.""".replace("\n", ''),
+
+    "do-custom-pgui-font": False,
+    "camera-mode": "Režim kamery",
+    "rng-seed": "Náhodné semínko",
+    "starting-time-delay": "Zpoždění na začátku",
+    "max-notes-to-generate": "Maximální počet not",
+    "bounce-min-spacing": "Minimální rozestup odrazů",
+    "square-speed": "Rychlost čtverce",
+    "music-offset": "Posun hudby",
+    "change-dir-chance": "Šance na změnu směru",
+    "hp-drain-rate": "Úbytek životů",
+    "music-volume": "Hlasitost hudby",
+    "color-theme": "Barevné téma",
+    "theatre-mode": "Divadelní režim",
+    "particle-trail": "Stopa částic",
+    "shader": "Shader",
+    "color-pegs-on-bounce": "Barevné kolíky při odrazu",
+    "particles-on-bounce": "Částice při odrazu",
+    "resolution": "Rozlišení",
+
+    "restart-required": "Vyžadován restart"
+}
+
 }
