@@ -155,6 +155,7 @@ class Config:
     shader_file_name = "none.glsl"
     do_color_bounce_pegs = False
     do_particles_on_bounce = True
+    discord_rpc = False
 
     # settings that are not configurable (yet)
     backtrack_chance: Optional[float] = 0.02
@@ -180,7 +181,7 @@ class Config:
                   "square_speed", "volume", "music_offset", "direction_change_chance", "hp_drain_rate", "theatre_mode",
                   "particle_trail", "shader_file_name", "do_color_bounce_pegs", 
                   "do_particles_on_bounce", "language",
-                  "SCREEN_WIDTH", "SCREEN_HEIGHT"]
+                  "SCREEN_WIDTH", "SCREEN_HEIGHT", "discord_rpc"]
 
     # glow effect, for dark_modern only for now
     square_glow = True

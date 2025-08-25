@@ -4,6 +4,7 @@ from game import Game
 from configpage import ConfigPage
 from songselector import SongSelector
 from errorscreen import ErrorScreen
+from discord_rpc import *
 from os import getcwd
 from platform import system as get_os
 from config import save_to_file
@@ -220,6 +221,11 @@ def main():
         update_screen(screen, glsl_program, render_object)
 
         Config.dt = clock.tick(FRAMERATE) / 1000
+
+    # setup discord rpc
+    if Config.discord_rpc:
+        startrpc()
+
     pygame.quit()
     save_to_file()
 

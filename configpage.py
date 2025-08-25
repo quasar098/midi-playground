@@ -153,6 +153,19 @@ class ConfigPage:
 
         # audio and general settings
 
+        self.s_discord_rpc_label = pgui.elements.UILabel(
+            relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 9 // 10 - 30, 300, 30)),
+            text="Discord RPC",
+            manager=self.ui_manager
+        )
+
+        self.s_discord_rpc = pgui.elements.UIDropDownMenu(
+            ["Off", "On"],
+            relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT * 9 // 10, 300, 30)),
+            starting_option=["Off", "On"][int(Config.discord_rpc)],
+            manager=self.ui_manager
+        )
+
         self.s_game_volume = pgui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect((Config.SCREEN_WIDTH * 5 / 10, Config.SCREEN_HEIGHT // 10, 300, 30)),
             start_value=Config.volume,
@@ -370,6 +383,8 @@ class ConfigPage:
             if event.ui_element == self.s_resolution:
                 event.text = event.text.split("x")
                 Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT = int(event.text[0]), int(event.text[1])
+            if event.ui_element == self.s_discord_rpc:
+                Config.discord_rpc = bool(["Off", "On"].index(event.text))
 
         if event.type == pgui.UI_TEXT_ENTRY_CHANGED:
             if event.ui_element == self.s_seed:
