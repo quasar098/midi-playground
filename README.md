@@ -1,6 +1,8 @@
 # midi playground
 bouncing square video, FOSS edition (and gamified)
 
+![gif](https://github.com/user-attachments/assets/b2da77ce-b8b4-4a32-af93-23c02420e6af)
+
 [English](./README.md) | [简体中文](./README-ZH.md)
 ## NOTICES
 
@@ -82,3 +84,4 @@ also, we are only adding real languages (no pirate speak or upside-down language
 ## (old) todo list
 
 see [docs/TODO.md](https://github.com/quasar098/midi-playground/blob/master/docs/TODO.md)
+
