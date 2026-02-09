@@ -1,6 +1,8 @@
 # midi 游乐园
 方块弹跳视频，开源版和游戏化版
 
+![gif](https://github.com/user-attachments/assets/b2da77ce-b8b4-4a32-af93-23c02420e6af)
+
 [English](./README.md) | [简体中文](./README-ZH.md)
 ## 公告
 
