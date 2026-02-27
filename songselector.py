@@ -1,4 +1,5 @@
 from utils import *
+from discord_rpc import setrpc
 from os import listdir
 from os.path import isfile, join
 from zipfile import ZipFile
@@ -180,6 +181,7 @@ class SongSelector:
                         pygame.mixer.music.set_volume(Config.volume/100)
                         pygame.mixer.music.play()
                         self.selected_index = index
+                        setrpc(song.name)
                         return
                 if self.play_button_rect.collidepoint(pygame.mouse.get_pos()):
                     if self.selected_index+1:
@@ -187,6 +189,7 @@ class SongSelector:
                         pygame.mixer.music.stop()
                         self.active = False
                         return self.songs[self.selected_index]
+
                 if self.back_button_rect.collidepoint(pygame.mouse.get_pos()):
                     play_sound("select.mp3")
                     self.active = False
