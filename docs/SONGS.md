@@ -37,6 +37,8 @@ it may look something like this example:
 
 the above example is extracted for the `bad-piggies.zip`
 
+There is a tool made by [@ltorl](https://github.com/ltorl) to help with making custom songs: <make pages site site and add here>
+
 before we examine what is the purpose of each part, i will warn you that future versions of the metadata.json file and their key-value pairs are subject to change at any time. i will eventually make a list of different versions and their supported key/value pairs.
 
 anyways, here is the purpose of each key/value pair for version 1:

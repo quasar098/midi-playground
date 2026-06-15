@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midi-Playground Song Maker</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f0d1a;
+      --bg-soft: #1a1730;
+      --card: #1f1b38;
+      --border: #322c52;
+      --accent: #8b5cf6;
+      --accent-2: #ec4899;
+      --text: #ece9f5;
+      --muted: #9d96b8;
+      --ok: #34d399;
+      --err: #fb7185;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin: 0 0 6px;
+      background: var(--accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    header a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    header a:hover {
+      text-decoration: underline;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--card), var(--bg-soft));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 18px 0 7px;
+      font-weight: 600;
+    }
+
+    label:first-of-type {
+      margin-top: 0;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: #16132a;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+    }
+
+    .drop {
+      position: relative;
+      border: 1.5px dashed var(--border);
+      border-radius: 13px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      background: #16132a;
+    }
+
+    .drop:hover,
+    .drop.drag {
+      border-color: var(--accent);
+      background: #1b1733;
+    }
+
+    .drop input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .drop .icon {
+      font-size: 1.6rem;
+    }
+
+    .drop .hint {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    .drop .file {
+      color: var(--ok);
+      font-weight: 600;
+      margin-top: 6px;
+      word-break: break-all;
+    }
+
+    .preview {
+      margin-top: 24px;
+      background: #14112680;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      color: var(--muted);
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .preview .k {
+      color: var(--accent-2);
+    }
+
+    .preview .s {
+      color: var(--ok);
+    }
+
+    button.go {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: transform .08s, opacity .15s;
+    }
+
+    button.go:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    button.go:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    button.go:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.9rem;
+      min-height: 1.2em;
+    }
+
+    .status.err {
+      color: var(--err);
+    }
+
+    .status.ok {
+      color: var(--ok);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-top: 22px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Midi-Playground Song Maker</h1>
+      <p>Package songs for <a href="https://github.com/quasar098/midi-playground/" target="_blank"
+          rel="noopener">midi-playground</a></p>
+    </header>
+
+    <div class="card">
+      <label for="name">Song name</label>
+      <input type="text" id="name" autocomplete="off" />
+
+      <label for="author">Author</label>
+      <input type="text" id="author" autocomplete="off" />
+
+      <label>MIDI file (.mid / .midi)</label>
+      <div class="drop" id="midiDrop">
+        <input type="file" id="midi" accept=".mid,.midi" />
+        <div class="hint">Click or drop your MIDI file</div>
+        <div class="file" id="midiName"></div>
+      </div>
+
+      <label>Audio file (.mp3)</label>
+      <div class="drop" id="audioDrop">
+        <input type="file" id="audio" accept=".mp3,audio/mpeg" />
+        <div class="hint">Click or drop your MP3 file</div>
+        <div class="file" id="audioName"></div>
+      </div>
+
+      <label>metadata.json preview</label>
+      <div class="preview" id="preview"></div>
+
+      <button class="go" id="download" disabled>Download .zip</button>
+      <div class="status" id="status"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const els = {
+      name: $("name"), author: $("author"),
+      midi: $("midi"), audio: $("audio"),
+      midiName: $("midiName"), audioName: $("audioName"),
+      preview: $("preview"), download: $("download"), status: $("status"),
+    };
+
+    const sanitize = (s) => s.trim().replace(/\s+/g, "_");
+
+    function meta() {
+      const name = sanitize(els.name.value);
+      const author = sanitize(els.author.value);
+      const base = `${name}-${author}`;
+      return {
+        name: els.name.value.trim(),
+        author: els.author.value.trim(),
+        mapper: "you",
+        song_file: `${base}--mainlines.mid`,
+        audio_file: `${base}.mp3`,
+        version: 1,
+      };
+    }
+
+    function ready() {
+      return (
+        els.name.value.trim() &&
+        els.author.value.trim() &&
+        els.midi.files.length &&
+        els.audio.files.length
+      );
+    }
+
+    function refresh() {
+      const m = meta();
+      els.preview.innerHTML = JSON.stringify(m, null, 2)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/"([^"]+)":/g, '<span class="k">"$1"</span>:')
+        .replace(/: "([^"]*)"/g, ': <span class="s">"$1"</span>');
+      els.download.disabled = !ready();
+      els.status.textContent = "";
+      els.status.className = "status";
+    }
+
+    function wireDrop(dropId, inputEl, nameEl, exts) {
+      const drop = $(dropId);
+      inputEl.addEventListener("change", () => {
+        nameEl.textContent = inputEl.files[0]?.name || "";
+        refresh();
+      });
+      ["dragenter", "dragover"].forEach((e) =>
+        drop.addEventListener(e, (ev) => { ev.preventDefault(); drop.classList.add("drag"); })
+      );
+      ["dragleave", "drop"].forEach((e) =>
+        drop.addEventListener(e, (ev) => { ev.preventDefault(); drop.classList.remove("drag"); })
+      );
+      drop.addEventListener("drop", (ev) => {
+        const f = ev.dataTransfer.files[0];
+        if (!f) return;
+        const ok = exts.some((x) => f.name.toLowerCase().endsWith(x));
+        if (!ok) {
+          els.status.textContent = `Expected ${exts.join(" or ")} file`;
+          els.status.className = "status err";
+          return;
+        }
+        const dt = new DataTransfer();
+        dt.items.add(f);
+        inputEl.files = dt.files;
+        nameEl.textContent = f.name;
+        refresh();
+      });
+    }
+
+    els.name.addEventListener("input", refresh);
+    els.author.addEventListener("input", refresh);
+    wireDrop("midiDrop", els.midi, els.midiName, [".mid", ".midi"]);
+    wireDrop("audioDrop", els.audio, els.audioName, [".mp3"]);
+
+    els.download.addEventListener("click", async () => {
+      if (!ready()) return;
+      try {
+        els.status.textContent = "Building zip…";
+        els.status.className = "status";
+        const m = meta();
+        const zip = new JSZip();
+        zip.file("metadata.json", JSON.stringify(m, null, 4));
+        zip.file(m.song_file, els.midi.files[0]);
+        zip.file(m.audio_file, els.audio.files[0]);
+        const blob = await zip.generateAsync({ type: "blob" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${sanitize(els.name.value)}-${sanitize(els.author.value)}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        els.status.textContent = "Done! Check your downloads.";
+        els.status.className = "status ok";
+      } catch (err) {
+        els.status.textContent = "Error: " + err.message;
+        els.status.className = "status err";
+      }
+    });
+
+    refresh();
+  </script>
+</body>
+
+</html>
